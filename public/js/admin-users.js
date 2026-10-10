@@ -136,7 +136,7 @@
 
   async function changeStatus(user, status) {
     const message = status === 'banned'
-      ? `${user.nickname}(@${user.username}) 님의 이용을 정지할까요? 정지된 회원은 바로 로그아웃되고 다시 로그인할 수 없습니다.`
+      ? `${user.nickname}(@${user.username}) 님의 이용을 정지할까요? 정지하면 다음 요청부터 사이트를 이용할 수 없고 다시 로그인할 수 없습니다.`
       : `${user.nickname}(@${user.username}) 님의 정지를 해제할까요?`;
     if (!(await BoxTick.confirm(message, { okText: status === 'banned' ? '정지' : '해제', danger: status === 'banned' }))) return;
     statusButton.disabled = true;
