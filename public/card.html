@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>카드 상세 · BoxTick</title>
+  <link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="/css/card.css">
+  <script src="/js/common.js"></script>
+</head>
+<body data-stage="sword">
+  <div id="site-header"></div>
+  <main class="container card-page">
+    <header class="card-title-row">
+      <div>
+        <h1 class="page-title"><span class="page-title__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 3h12v18H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>CARD STATUS</h1>
+        <p class="page-sub" id="card-subtitle">카드 정보를 불러오는 중입니다.</p>
+      </div>
+      <a class="btn btn--secondary" href="/cards.html">도감으로</a>
+    </header>
+
+    <section class="card-status">
+      <div class="card-art-panel panel diag-accent">
+        <div class="panel-head"><span id="card-name-head">CARD</span><span id="card-number-head">-</span></div>
+        <div id="card-image" class="card-art"></div>
+        <div class="row card-tags" id="card-tags"></div>
+      </div>
+      <div class="card-stats panel">
+        <div class="panel-head"><span>MARKET DATA</span><span id="latest-date">-</span></div>
+        <table class="stat-table"><tbody>
+          <tr><th scope="row">현재 시세</th><td id="current-price">-</td></tr>
+          <tr><th scope="row">기간 변동</th><td id="change-price">-</td></tr>
+          <tr><th scope="row">최고가</th><td id="max-price">-</td></tr>
+          <tr><th scope="row">최저가</th><td id="min-price">-</td></tr>
+          <tr><th scope="row">평균가</th><td id="avg-price">-</td></tr>
+          <tr><th scope="row">팩 환산</th><td id="pack-equivalent">-</td></tr>
+        </tbody></table>
+
+        <div class="card-set-divider"><span>SET DATA</span><strong id="set-name">-</strong></div>
+        <table class="stat-table card-set-table"><tbody>
+          <tr><th scope="row">박스 정가</th><td id="set-box-price">-</td></tr>
+          <tr><th scope="row">현재 박스 시세</th><td id="set-current-box-price">-</td></tr>
+          <tr><th scope="row">정가 대비</th><td id="set-box-change">-</td></tr>
+          <tr><th scope="row">박스 구성</th><td id="set-pack-count">-</td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <section class="market-panel panel">
+      <div class="market-panel__head">
+        <div><p class="text-small text-muted">PRICE HISTORY</p><h2>시세 그래프</h2></div>
+        <ul class="round-select" id="range-select" aria-label="시세 기간">
+          <li><button type="button" data-range="1w" aria-pressed="false">1주</button></li>
+          <li><button type="button" data-range="1m" aria-pressed="true">1개월</button></li>
+          <li><button type="button" data-range="3m" aria-pressed="false">3개월</button></li>
+          <li><button type="button" data-range="all" aria-pressed="false">전체</button></li>
+        </ul>
+      </div>
+      <div id="price-chart" class="market-chart" aria-live="polite"></div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="/js/market-chart.js"></script><script src="/js/card.js"></script>
+</body></html>

@@ -3,11 +3,45 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BoxTick</title>
+  <title>BoxTick · 포켓몬카드 시세</title>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/home.css">
+  <script src="/js/common.js"></script>
 </head>
-<body>
-  <!-- 임시 페이지: 화면 구현 시 docs/웹사이트디자인.MD 7-1 메인 화면으로 교체 -->
-  <h1>BoxTick</h1>
-  <p>서버가 실행 중입니다. 화면은 준비 중입니다.</p>
+<body data-stage="sword">
+  <div id="site-header"></div>
+
+  <main class="container home-main">
+    <section class="home-hero" aria-labelledby="home-title">
+      <div>
+        <p class="home-kicker">CARD MARKET + COMMUNITY</p>
+        <h1 id="home-title">BoxTick</h1>
+        <p class="home-copy">카드와 박스의 샘플 시세를 확인하고, 커뮤니티에서 이야기를 나눠보세요.</p>
+      </div>
+      <button type="button" class="home-orb" id="home-orb" aria-pressed="false" aria-label="볼 열기"><span class="home-orb__top" aria-hidden="true"></span><span class="home-orb__button" aria-hidden="true"></span></button>
+    </section>
+
+    <nav aria-label="BoxTick 메뉴" class="home-menu-wrap">
+      <ul class="circle-menu" id="home-menu">
+        <li><a class="circle-item is-selected" href="/cards.html"><span class="circle-item__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#e52b70" stroke-width="2.2"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M8 8h8M8 12h5M8 16h7"/></svg></span>카드 시세</a></li>
+        <li><a class="circle-item" href="/boxes.html"><span class="circle-item__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#f08c00" stroke-width="2.2"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M3 8v8l9 4 9-4V8M12 12v8"/></svg></span>박스 시세</a></li>
+        <li><a class="circle-item" href="/board.html"><span class="circle-item__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#00a6c8" stroke-width="2.2"><path d="M4 5h16v11H9l-5 4V5z"/><path d="M8 9h8M8 12h5"/></svg></span>커뮤니티</a></li>
+        <li><a class="circle-item" href="/mypage.html"><span class="circle-item__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#7a4cd9" stroke-width="2.2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></span>마이페이지</a></li>
+        <li id="admin-menu-item" hidden><a class="circle-item" href="/admin/"><span class="circle-item__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#3a3a40" stroke-width="2.2"><circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1"/></svg></span>관리자</a></li>
+      </ul>
+    </nav>
+
+    <section class="home-status-grid" aria-label="BoxTick 현황">
+      <div class="info-bar" id="home-info">샘플 데이터를 불러오는 중입니다.</div>
+      <div class="home-summary panel">
+        <div class="home-summary__item"><span>등록 카드</span><strong id="card-count">-</strong></div>
+        <div class="home-summary__item"><span>박스 세트</span><strong id="set-count">-</strong></div>
+        <div class="home-summary__item"><span>최근 박스 시세</span><strong id="latest-box-price">-</strong></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="/js/home.js"></script>
 </body>
 </html>
