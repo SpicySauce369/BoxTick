@@ -1,0 +1,103 @@
+const express = require('express');
+const bcrypt = require('bcrypt');
+const { requireLogin } = require('../middleware/auth');
+const { BCRYPT_ROUNDS, createUser, findByUsernameWithHash, toPublicUser } = require('../db/users');
+
+const router = express.Router();
+
+const USERNAME_RE = /^[A-Za-z0-9_]{4,20}$/;
+const PASSWORD_MIN = 8;
+const PASSWORD_MAX_BYTES = 72; // bcrypt 는 72바이트 이후를 무시한다
+const NICKNAME_MIN = 2;
+const NICKNAME_MAX = 20;
+
+// 존재하지 않는 아이디로 로그인할 때도 bcrypt 비교를 수행해 응답 시간 차이를 줄인다.
+const DUMMY_HASH = bcrypt.hashSync('boxtick-dummy-password', BCRYPT_ROUNDS);
+
+function validateRegister(body) {
+  const errors = {};
+  const { username, password, nickname } = body;
+
+  if (typeof username !== 'string' || !USERNAME_RE.test(username)) {
+    errors.username = '아이디는 영문, 숫자, _ 로 4~20자여야 합니다.';
+  }
+  if (typeof password !== 'string' || password.length < PASSWORD_MIN) {
+    errors.password = `비밀번호는 ${PASSWORD_MIN}자 이상이어야 합니다.`;
+  } else if (Buffer.byteLength(password, 'utf8') > PASSWORD_MAX_BYTES) {
+    errors.password = '비밀번호가 너무 깁니다.';
+  }
+  const trimmedNickname = typeof nickname === 'string' ? nickname.trim() : '';
+  if (trimmedNickname.length < NICKNAME_MIN || trimmedNickname.length > NICKNAME_MAX) {
+    errors.nickname = `닉네임은 ${NICKNAME_MIN}~${NICKNAME_MAX}자여야 합니다.`;
+  }
+
+  return { errors, values: { username, password, nickname: trimmedNickname } };
+}
+
+// POST /api/auth/register — 회원가입 (가입 후 자동 로그인하지 않는다)
+router.post('/register', async (req, res) => {
+  if (req.session.userId) {
+    return res.status(400).json({ error: '이미 로그인되어 있습니다.' });
+  }
+
+  const { errors, values } = validateRegister(req.body || {});
+  if (Object.keys(errors).length > 0) {
+    return res.status(400).json({ error: '입력값을 확인해 주세요.', fields: errors });
+  }
+
+  try {
+    const user = await createUser(req.app.locals.db, values);
+    res.status(201).json({ user });
+  } catch (err) {
+    if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+      return res.status(409).json({
+        error: '이미 사용 중인 아이디입니다.',
+        fields: { username: '이미 사용 중인 아이디입니다.' },
+      });
+    }
+    throw err;
+  }
+});
+
+// POST /api/auth/login — 로그인
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body || {};
+  if (typeof username !== 'string' || typeof password !== 'string' || !username || !password) {
+    return res.status(400).json({ error: '아이디와 비밀번호를 입력해 주세요.' });
+  }
+
+  const user = findByUsernameWithHash(req.app.locals.db, username);
+  const ok = await bcrypt.compare(password, user ? user.password_hash : DUMMY_HASH);
+  if (!user || !ok) {
+    return res.status(401).json({ error: '아이디 또는 비밀번호가 올바르지 않습니다.' });
+  }
+  if (user.status === 'banned') {
+    return res.status(403).json({ error: '이용이 정지된 계정입니다.' });
+  }
+
+  // 세션 고정 공격 방지: 로그인 시 세션 ID 를 새로 발급한다.
+  req.session.regenerate((err) => {
+    if (err) return res.status(500).json({ error: '로그인 처리 중 오류가 발생했습니다.' });
+    req.session.userId = user.id;
+    req.session.save((saveErr) => {
+      if (saveErr) return res.status(500).json({ error: '로그인 처리 중 오류가 발생했습니다.' });
+      res.json({ user: toPublicUser(user) });
+    });
+  });
+});
+
+// POST /api/auth/logout — 로그아웃
+router.post('/logout', requireLogin, (req, res) => {
+  req.session.destroy((err) => {
+    if (err) return res.status(500).json({ error: '로그아웃 처리 중 오류가 발생했습니다.' });
+    res.clearCookie(req.app.locals.sessionCookieName);
+    res.status(204).end();
+  });
+});
+
+// GET /api/auth/me — 내 정보
+router.get('/me', requireLogin, (req, res) => {
+  res.json({ user: req.user });
+});
+
+module.exports = router;
