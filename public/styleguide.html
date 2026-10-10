@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>스타일 가이드 · BoxTick</title>
+  <link rel="stylesheet" href="/css/base.css">
+  <script src="/js/common.js"></script>
+  <style>
+    /* 이 페이지 전용: 견본 배치만 */
+    .sg-section { margin-top: var(--sp-6); }
+    .sg-section > h2 { margin-bottom: var(--sp-2); }
+    .sg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--sp-2); }
+    .sg-swatch { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
+    .sg-swatch > div { height: 72px; }
+    .sg-swatch > p { padding: var(--sp-1); font-size: var(--fs-small); }
+    .sg-two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
+    @media (max-width: 700px) { .sg-two { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body data-accent="sword">
+  <div id="site-header"></div>
+
+  <main class="container">
+    <h1 class="diag-title">스타일 가이드</h1>
+    <p class="text-muted mt-2">공통 기반(<code>css/base.css</code>, <code>js/common.js</code>)의 토큰과 primitive 견본입니다. 페이지 고유 레이아웃은 각 페이지 CSS에서 만듭니다.</p>
+
+    <div class="row mt-3">
+      <span class="text-small text-muted">주 강조색</span>
+      <ul class="round-select round-select--row" id="accent-select">
+        <li><button type="button" aria-pressed="true" data-accent="sword">Sword</button></li>
+        <li><button type="button" aria-pressed="false" data-accent="shield">Shield</button></li>
+      </ul>
+    </div>
+
+    <section class="sg-section" aria-labelledby="sg-color">
+      <h2 id="sg-color">컬러 토큰</h2>
+      <div class="sg-grid" id="swatches"></div>
+    </section>
+
+    <section class="sg-section" aria-labelledby="sg-type">
+      <h2 id="sg-type">타이포그래피 · 시세 표기</h2>
+      <div class="panel stack">
+        <h1>페이지 제목 h1 (28px / 800)</h1>
+        <h2>섹션 제목 h2 (22px / 700)</h2>
+        <p>본문 16px. 시스템 폰트 스택(Segoe UI, Noto Sans KR, Malgun Gothic, Apple SD Gothic Neo)을 씁니다.</p>
+        <p class="text-small text-muted">보조 텍스트 14px</p>
+        <div class="row" id="price-samples"></div>
+      </div>
+    </section>
+
+    <section class="sg-section" aria-labelledby="sg-btn">
+      <h2 id="sg-btn">버튼 · 입력</h2>
+      <div class="sg-two">
+        <div class="panel stack">
+          <div class="row">
+            <button class="btn btn--primary" type="button">기본</button>
+            <button class="btn btn--accent" type="button">강조</button>
+            <button class="btn btn--secondary" type="button">보조</button>
+            <button class="btn btn--danger" type="button" id="demo-confirm">삭제</button>
+            <button class="btn btn--ghost" type="button" id="demo-toast">토스트</button>
+          </div>
+          <button class="btn btn--accent btn--block" type="button" disabled>비활성</button>
+        </div>
+        <form class="panel stack" id="demo-form" novalidate>
+          <div class="field">
+            <label for="demo-title">제목</label>
+            <input class="input" id="demo-title" name="title" placeholder="제목을 입력하세요">
+            <p class="field-error" id="title-error"></p>
+          </div>
+          <div class="field">
+            <label for="demo-category">카테고리</label>
+            <select class="select" id="demo-category" name="category">
+              <option>자유</option><option>시세 정보</option><option>개봉 자랑</option>
+            </select>
+          </div>
+          <button class="btn btn--primary" type="submit">오류 표시 보기</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="sg-section" aria-labelledby="sg-prim">
+      <h2 id="sg-prim">Primitive</h2>
+      <div class="sg-two">
+        <div class="stack">
+          <div class="panel panel--dark diag">
+            <h3>.diag</h3>
+            <p class="text-small">오른쪽 아래가 비스듬히 잘린 패널</p>
+          </div>
+          <div class="panel diag--left">
+            <h3>.diag--left</h3>
+            <p class="text-small text-muted">왼쪽이 잘린 패널</p>
+          </div>
+          <div class="panel diag-band">
+            <h3>.diag-band</h3>
+            <p class="text-small text-muted">섹션 배경의 대각선 색 면</p>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>.round-select</h3>
+          <ul class="round-select mt-2" id="demo-select">
+            <li><button type="button" aria-pressed="true">카드 시세</button></li>
+            <li><button type="button" aria-pressed="false">박스 시세</button></li>
+            <li><button type="button" aria-pressed="false">커뮤니티</button></li>
+          </ul>
+        </div>
+      </div>
+      <nav class="control-hint" aria-label="조작 안내">
+        <span><kbd>A</kbd> 결정</span>
+        <span><kbd>B</kbd> 돌아가기</span>
+        <span><kbd>Y</kbd> 검색</span>
+      </nav>
+    </section>
+
+    <section class="sg-section" aria-labelledby="sg-state">
+      <h2 id="sg-state">상태</h2>
+      <div class="sg-grid">
+        <div class="panel"><div class="skeleton" style="height: 96px"></div><p class="text-small text-muted mt-2">로딩 (.skeleton)</p></div>
+        <div class="panel" id="demo-image"></div>
+        <div class="panel"><p class="empty-state">검색 결과가 없습니다.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    (async () => {
+      const { el, changeBadge, formatPrice, formatPriceChange, toast, confirm, image, showFieldErrors } = BoxTick;
+      await BoxTick.initPage();
+
+      // 컬러 견본
+      const tokens = ['--sword', '--shield', '--signal', '--navy', '--off-white', '--price-up', '--price-down',
+        '--accent', '--bg', '--surface', '--surface-dark', '--text', '--text-muted', '--border'];
+      const swatches = document.getElementById('swatches');
+      const renderSwatches = () => BoxTick.replaceChildren(swatches, tokens.map((name) =>
+        el('div', { class: 'sg-swatch' }, [
+          el('div', { style: `background: var(${name})` }),
+          el('p', { class: 'num' }, [el('strong', null, name), el('br'), BoxTick.cssVar(name)]),
+        ])));
+      renderSwatches();
+      document.addEventListener('boxtick:themechange', renderSwatches);
+
+      // 시세 표기
+      const change = formatPriceChange(9500);
+      document.getElementById('price-samples').append(
+        el('strong', { class: 'num' }, formatPrice(125000)),
+        changeBadge(8.24),
+        changeBadge(-3.1),
+        changeBadge(0),
+        el('span', { class: `${change.className} num` }, change.text),
+      );
+
+      // 강조색 전환
+      for (const select of [document.getElementById('accent-select'), document.getElementById('demo-select')]) {
+        select.addEventListener('click', (event) => {
+          const button = event.target.closest('button');
+          if (!button) return;
+          for (const b of select.querySelectorAll('button')) b.setAttribute('aria-pressed', String(b === button));
+          if (button.dataset.accent) {
+            document.body.dataset.accent = button.dataset.accent;
+            renderSwatches();
+          }
+        });
+      }
+
+      document.getElementById('demo-toast').addEventListener('click', () => toast('저장했습니다.', 'success'));
+      document.getElementById('demo-confirm').addEventListener('click', async () => {
+        const ok = await confirm('이 글을 삭제할까요?', { okText: '삭제', danger: true });
+        toast(ok ? '삭제했습니다.' : '취소했습니다.', ok ? 'success' : 'info');
+      });
+      document.getElementById('demo-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        showFieldErrors(event.currentTarget, { title: '제목을 입력해 주세요.' });
+      });
+      document.getElementById('demo-image').append(
+        image('/missing-card.png', '이미지를 불러오지 못한 카드'),
+        el('p', { class: 'text-small text-muted mt-2' }, '이미지 실패 → 자리표시'),
+      );
+    })();
+  </script>
+</body>
+</html>

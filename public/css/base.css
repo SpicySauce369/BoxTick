@@ -1,0 +1,890 @@
+/* =========================================================
+   BoxTick 공통 기반 스타일
+   - 디자인 토큰 / reset / 테마 / 공통 header·footer / 기본 컴포넌트 / primitive
+   - 페이지 고유 레이아웃(도감, 상태창, 가방, Y-COMM, 관리자)은 각 페이지 CSS 에서 만든다.
+   - 게임 원본 에셋(아이콘·로고·폰트·텍스처)은 쓰지 않고 CSS 도형으로만 표현한다.
+   ========================================================= */
+
+/* ---------- 1. 디자인 토큰 ---------- */
+:root {
+  /* 브랜드 */
+  --sword: #00a6c8;
+  --shield: #e52b70;
+  --signal: #ffd447;
+  --navy: #171a24;
+  --off-white: #f7f7f4;
+
+  /* 시세 (상승 빨강 ▲ / 하락 파랑 ▼ — 색만으로 의미를 전달하지 않는다) */
+  --price-up: #e5484d;
+  --price-down: #3e63dd;
+
+  /* 페이지 주 강조색: <body data-accent="sword|shield"> 로 바꾼다 */
+  --accent: var(--sword);
+  --accent-alt: var(--shield);
+  --on-accent: var(--navy);
+
+  /* 라이트 테마 표면 */
+  --bg: var(--off-white);
+  --surface: #ffffff;
+  --surface-alt: #ecece8;
+  --surface-dark: var(--navy);
+  --on-surface-dark: #f7f7f4;
+  --text: var(--navy);
+  --text-muted: #5c6070;
+  --border: #d9d9d3;
+  --overlay: rgba(23, 26, 36, 0.55);
+
+  /* 타이포 */
+  --font: "Segoe UI", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  --fs-h1: 1.75rem;   /* 28px */
+  --fs-h2: 1.375rem;  /* 22px */
+  --fs-body: 1rem;    /* 16px */
+  --fs-small: 0.875rem; /* 14px */
+
+  /* 간격 (8px 단위) */
+  --sp-1: 8px;
+  --sp-2: 16px;
+  --sp-3: 24px;
+  --sp-4: 32px;
+  --sp-6: 48px;
+
+  /* 모양 */
+  --radius: 8px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  --slant: 24px;          /* 대각선 패널 기울기 폭 */
+  --touch: 44px;          /* 최소 터치 타깃 */
+  --content-max: 1080px;
+  --shadow: 0 2px 0 rgba(23, 26, 36, 0.12);
+  --header-h: 64px;
+}
+
+/* 페이지별 주 강조색 */
+body[data-accent="shield"] {
+  --accent: var(--shield);
+  --accent-alt: var(--sword);
+  --on-accent: #ffffff;
+}
+
+/* ---------- 2. 다크 테마 (<html data-theme="dark">) ---------- */
+:root[data-theme="dark"] {
+  --bg: #11131b;
+  --surface: #1c1f2b;
+  --surface-alt: #262a38;
+  --surface-dark: #2a2f40; /* 배경(#11131b)보다 밝게: 다크 패널·조작 안내가 묻히지 않도록 */
+  --text: #f4f4f1;
+  --text-muted: #a6a9b6;
+  --border: #33384a;
+  --overlay: rgba(0, 0, 0, 0.65);
+  --shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+  /* 어두운 배경에서 대비를 확보하기 위해 하락색만 밝힌다 */
+  --price-down: #7b96f0;
+  color-scheme: dark;
+}
+
+/* ---------- 3. reset / 기본 typography ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+figure {
+  margin: 0;
+}
+
+h1 {
+  font-size: var(--fs-h1);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+/* 키보드 포커스: 노란 링 (배경과 상관없이 보이도록 남색 외곽선을 겹친다) */
+:focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px var(--navy);
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- 4. 레이아웃 ---------- */
+.container {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding-inline: var(--sp-2);
+}
+
+main {
+  flex: 1;
+  padding-block: var(--sp-4) calc(var(--sp-6) + var(--slant));
+}
+
+/* ---------- 5. 공통 header ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--surface-dark);
+  color: var(--on-surface-dark);
+  border-bottom: 4px solid var(--accent);
+}
+
+/* 오른쪽 위 대각선 색띠 (Sword/Shield 메뉴 느낌) */
+.site-header::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent 0 30%, var(--accent-alt) 30% 34%, transparent 34% 40%, var(--accent) 40%);
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.site-header__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: var(--header-h);
+}
+
+.site-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: 1.375rem;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* 로고 마크: 두 색 대각선 사각형 (자체 도형) */
+.site-logo__mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--sword) 0 50%, var(--shield) 50% 100%);
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.85);
+  transform: skewX(-8deg);
+}
+
+.site-logo__tick {
+  color: var(--signal);
+}
+
+.site-nav {
+  display: flex;
+  gap: 4px;
+}
+
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch);
+  padding: 0 var(--sp-2);
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+.site-nav a:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.site-nav a[aria-current="page"] {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.site-search {
+  flex: 1;
+  display: flex;
+  max-width: 320px;
+  margin-left: auto;
+}
+
+.site-search input {
+  width: 100%;
+  min-height: var(--touch);
+  padding: 0 var(--sp-2);
+  border: 2px solid transparent;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--on-surface-dark);
+}
+
+.site-search input::placeholder {
+  color: rgba(247, 247, 244, 0.6);
+}
+
+.site-search input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.site-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  white-space: nowrap;
+}
+
+.site-user {
+  font-weight: 700;
+  text-decoration: none;
+  max-width: 10em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.badge-admin {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--signal);
+  color: var(--navy);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.theme-toggle {
+  width: var(--touch);
+  height: var(--touch);
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--on-surface-dark);
+  cursor: pointer;
+  font-size: 1.125rem;
+}
+
+/* ---------- 6. 공통 footer ---------- */
+.site-footer {
+  position: relative;
+  background: var(--surface-dark);
+  color: var(--on-surface-dark);
+  padding: var(--sp-4) 0 var(--sp-3);
+  font-size: var(--fs-small);
+  padding-top: calc(var(--sp-3) + var(--slant));
+  clip-path: polygon(0 var(--slant), 100% 0, 100% 100%, 0 100%);
+  margin-top: calc(var(--slant) * -1);
+}
+
+.site-footer__name {
+  font-weight: 800;
+  font-style: italic;
+  margin-bottom: var(--sp-1);
+}
+
+.site-footer p {
+  color: #b9bcc8;
+}
+
+.site-footer p + p {
+  margin-top: 4px;
+}
+
+/* ---------- 7. 버튼 ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-1);
+  min-height: var(--touch);
+  padding: 0 var(--sp-3);
+  border: 2px solid transparent;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.08s ease, background-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 기본: 남색 단색 */
+.btn--primary {
+  background: var(--text);
+  color: var(--bg);
+}
+
+/* 강조: 페이지 주 강조색 */
+.btn--accent {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* 보조: 테두리만 */
+.btn--secondary {
+  background: transparent;
+  border-color: currentColor;
+}
+
+.btn--danger {
+  background: var(--price-up);
+  color: #ffffff;
+}
+
+.btn--ghost {
+  background: transparent;
+  padding: 0 var(--sp-2);
+}
+
+.btn--ghost:hover {
+  background: var(--surface-alt);
+}
+
+.btn--block {
+  width: 100%;
+}
+
+/* ---------- 8. 입력 ---------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field label {
+  font-weight: 700;
+  font-size: var(--fs-small);
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  min-height: var(--touch);
+  padding: 10px var(--sp-2);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.textarea {
+  min-height: 160px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.input[aria-invalid="true"],
+.select[aria-invalid="true"],
+.textarea[aria-invalid="true"] {
+  border-color: var(--price-up);
+}
+
+.field-error {
+  min-height: 1.4em;
+  color: var(--price-up);
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+/* ---------- 9. 패널 ---------- */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-3);
+  box-shadow: var(--shadow);
+}
+
+.panel--dark {
+  background: var(--surface-dark);
+  color: var(--on-surface-dark);
+  border-color: transparent;
+}
+
+/* ---------- 10. diagonal primitive ----------
+   .diag            : 오른쪽 아래가 비스듬히 잘린 패널
+   .diag--left      : 왼쪽이 잘린 패널
+   .diag-title      : 기울어진 색띠 위의 굵은 제목 (화면 제목용)
+   .diag-band       : 섹션 배경에 깔리는 대각선 색 면 */
+.diag {
+  clip-path: polygon(0 0, 100% 0, calc(100% - var(--slant)) 100%, 0 100%);
+  padding-right: calc(var(--sp-3) + var(--slant));
+}
+
+.diag--left {
+  clip-path: polygon(var(--slant) 0, 100% 0, 100% 100%, 0 100%);
+  padding-left: calc(var(--sp-3) + var(--slant));
+}
+
+.diag-title {
+  position: relative;
+  display: inline-block;
+  padding: 6px calc(var(--sp-3) + 12px) 6px var(--sp-2);
+  color: var(--on-accent);
+  font-weight: 900;
+  font-style: italic;
+  isolation: isolate;
+}
+
+.diag-title::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--accent);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 16px) 100%, 0 100%);
+}
+
+.diag-title::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -6px;
+  width: 10px;
+  height: 100%;
+  z-index: -1;
+  background: var(--accent-alt);
+  clip-path: polygon(60% 0, 100% 0, 40% 100%, 0 100%);
+}
+
+.diag-band {
+  position: relative;
+  isolation: isolate;
+}
+
+.diag-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(160deg, var(--accent) 0 38%, transparent 38%);
+  opacity: 0.14;
+}
+
+/* ---------- 11. round selector primitive ----------
+   게임 메뉴처럼 둥근 항목 목록. 선택된 항목은 강조색 + ▶ 표시.
+   마크업: <ul class="round-select"><li><button aria-pressed="true">…</button></li></ul>
+           (탭으로 쓸 때는 role="tab" + aria-selected 도 같은 모양) */
+.round-select {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: 0;
+  list-style: none;
+}
+
+.round-select--row {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.round-select button,
+.round-select a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  width: 100%;
+  min-height: var(--touch);
+  padding: 0 var(--sp-3) 0 calc(var(--sp-3) + 8px);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 700;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.12s ease, transform 0.12s ease;
+}
+
+.round-select--row button,
+.round-select--row a {
+  width: auto;
+}
+
+.round-select button:hover,
+.round-select a:hover {
+  transform: translateX(2px);
+}
+
+.round-select [aria-pressed="true"],
+.round-select [aria-selected="true"],
+.round-select [aria-current="page"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.round-select [aria-pressed="true"]::before,
+.round-select [aria-selected="true"]::before,
+.round-select [aria-current="page"]::before {
+  content: "▶";
+  position: absolute;
+  left: 12px;
+  font-size: 0.7em;
+}
+
+/* ---------- 12. bottom game-control hint ----------
+   <nav class="control-hint"><span><kbd>A</kbd> 결정</span>…</nav> */
+.control-hint {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--radius-pill);
+  background: var(--surface-dark);
+  color: var(--on-surface-dark);
+  font-size: var(--fs-small);
+  font-weight: 700;
+}
+
+.control-hint > * {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.control-hint kbd {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--on-surface-dark);
+  color: var(--surface-dark);
+  font-family: var(--font);
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+/* ---------- 13. toast ---------- */
+.toast-region {
+  position: fixed;
+  left: 50%;
+  bottom: var(--sp-3);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+  width: min(92vw, 420px);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.toast {
+  width: 100%;
+  padding: 12px var(--sp-2);
+  border-left: 6px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--surface-dark);
+  color: var(--on-surface-dark);
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  animation: toast-in 0.18s ease-out;
+  pointer-events: auto;
+}
+
+.toast--error {
+  border-left-color: var(--price-up);
+}
+
+.toast--success {
+  border-left-color: var(--sword);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* ---------- 14. modal (<dialog class="modal">) ---------- */
+.modal {
+  width: min(92vw, 440px);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+}
+
+.modal::backdrop {
+  background: var(--overlay);
+}
+
+.modal__body {
+  padding: var(--sp-3);
+  border-top: 6px solid var(--accent);
+}
+
+.modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-1);
+  margin-top: var(--sp-3);
+}
+
+/* ---------- 15. 시세 표기 ---------- */
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.price-up {
+  color: var(--price-up);
+  font-weight: 700;
+}
+
+.price-down {
+  color: var(--price-down);
+  font-weight: 700;
+}
+
+.price-flat {
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+/* ---------- 16. 상태 표시 ---------- */
+.empty-state,
+.loading-state {
+  padding: var(--sp-6) var(--sp-2);
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.skeleton {
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, var(--surface-alt) 25%, var(--border) 50%, var(--surface-alt) 75%);
+  background-size: 200% 100%;
+  animation: skeleton 1.2s linear infinite;
+}
+
+@keyframes skeleton {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* 이미지 로드 실패 / 없음: 테두리만 있는 회색 자리표시 */
+.img-placeholder {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 63 / 88;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-alt);
+  color: var(--text-muted);
+  font-size: var(--fs-small);
+}
+
+/* ---------- 17. 공통 utility ---------- */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-1) var(--sp-2);
+}
+
+.spread {
+  justify-content: space-between;
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-small {
+  font-size: var(--fs-small);
+}
+
+.mt-2 {
+  margin-top: var(--sp-2);
+}
+
+.mt-3 {
+  margin-top: var(--sp-3);
+}
+
+.scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- 18. breakpoint ----------
+   Desktop ≥ 1025px / Tablet 701–1024px / Mobile ≤ 700px */
+@media (max-width: 1024px) {
+  :root {
+    --fs-h1: 1.5rem;
+    --slant: 18px;
+  }
+
+  .site-search {
+    max-width: 220px;
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    --fs-h1: 1.375rem;
+    --fs-h2: 1.25rem;
+    --slant: 14px;
+  }
+
+  main {
+    padding-block-start: var(--sp-3);
+  }
+
+  /* 헤더 재배치: 1줄 로고·액션 / 2줄 메뉴(가로 스크롤) / 3줄 검색 */
+  .site-header__inner {
+    flex-wrap: wrap;
+    gap: var(--sp-1);
+    padding-top: var(--sp-1);
+    padding-bottom: var(--sp-1);
+  }
+
+  .site-actions {
+    margin-left: auto;
+  }
+
+  .site-user {
+    max-width: 6em;
+  }
+
+  .site-nav {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .site-search {
+    order: 4;
+    max-width: none;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .panel {
+    padding: var(--sp-2);
+  }
+
+  .control-hint {
+    justify-content: center;
+  }
+
+  .btn {
+    padding: 0 var(--sp-2);
+  }
+}
