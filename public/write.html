@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>글쓰기 · BoxTick</title>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/board.css">
+  <script src="/js/common.js"></script>
+  <script src="/js/board-common.js"></script>
+</head>
+<body data-stage="shield">
+  <div id="site-header"></div>
+  <main class="container board-main write-main">
+    <h1 class="page-title"><span class="page-title__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13 7l4 4"/></svg></span><span id="write-title">글쓰기</span></h1>
+
+    <form class="panel write-form" id="write-form" novalidate>
+      <div class="panel-head"><span id="write-head">NEW POST</span><span>Y-COMM</span></div>
+
+      <fieldset class="field write-categories">
+        <legend>카테고리</legend>
+        <div class="round-select" id="category-options"></div>
+        <p class="field-error" id="category-error"></p>
+      </fieldset>
+
+      <div class="field">
+        <label for="title">제목</label>
+        <input class="input" id="title" name="title" maxlength="100" required autocomplete="off">
+        <p class="field-error" id="title-error"></p>
+      </div>
+
+      <div class="field">
+        <label for="content">내용</label>
+        <textarea class="textarea write-content" id="content" name="content" maxlength="10000" required></textarea>
+        <div class="write-content__foot">
+          <p class="field-error" id="content-error"></p>
+          <span class="text-small text-muted num" id="content-length">0 / 10000</span>
+        </div>
+      </div>
+
+      <div class="write-actions">
+        <a class="btn btn--secondary" id="cancel-link" href="/board.html">취소</a>
+        <button class="btn btn--primary" type="submit" id="submit-button">등록</button>
+      </div>
+    </form>
+  </main>
+  <div id="site-footer"></div>
+  <script src="/js/write.js"></script>
+</body>
+</html>
