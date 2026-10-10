@@ -384,14 +384,102 @@
    * hints: [{ key: 'A', label: '결정' }, { key: 'B', label: '돌아가기', onClick }, { key: 'Y', label: '글쓰기', href }]
    * href/onClick 이 있으면 실제로 누를 수 있는 버튼·링크가 된다.
    */
+  /**
+   * A 의 기본 동작: 포커스된 링크·버튼을 누르고, 없으면 화면에서 선택 표시된 항목을 연다.
+   * (카드 목록의 검정 알약 행, 메인 메뉴의 선택된 원 등 — 페이지 코드를 고치지 않아도 동작)
+   */
+  function activateSelection() {
+    const active = document.activeElement;
+    if (active && active !== document.body && active.matches('a[href], button:not([disabled])') && !active.closest('.control-bar')) {
+      active.click();
+      return true;
+    }
+    const selected = document.querySelector(
+      'main .is-selected, main [aria-current="page"]:not(.site-nav a), main [aria-selected="true"]'
+    );
+    const target = selected && (selected.matches('a[href], button') ? selected : selected.querySelector('a[href], button'));
+    if (target) {
+      target.click();
+      return true;
+    }
+    return false;
+  }
+
+  /** 하단 바 항목 하나의 실행: href → 이동, onClick → 호출, 둘 다 없고 A 면 선택 항목 열기 */
+  function runHint(hint) {
+    if (hint.href) location.href = hint.href;
+    else if (hint.onClick) hint.onClick();
+    else if (String(hint.key).toUpperCase() === 'A') activateSelection();
+  }
+
+  /** 눌린 키에 해당하는 안내 항목을 찾는다 (대소문자 무시, A·B·X·Y 만). */
+  function findHint(hints, key) {
+    const upper = String(key || '').toUpperCase();
+    if (!['A', 'B', 'X', 'Y'].includes(upper)) return null;
+    return hints.find((hint) => String(hint.key).toUpperCase() === upper) || null;
+  }
+
+  /** 글자를 입력 중이면 단축키를 쓰지 않는다. */
+  function isTyping(target) {
+    return !!target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName));
+  }
+
+  /**
+   * 화면 맨 아래 검정 조작 안내 바. 게임의 "Ⓐ 결정  Ⓑ 돌아가기" 자리.
+   * hints: [{ key: 'A', label: '결정' }, { key: 'B', label: '돌아가기', onClick }, { key: 'Y', label: '글쓰기', href }]
+   * 모든 항목은 마우스로 누를 수 있고, 키보드의 같은 글자 키로도 실행된다.
+   */
   function renderControlBar(hints) {
-    const items = hints.map(({ key, label, href, onClick }) => {
-      const content = [el('span', { class: 'key', 'aria-hidden': 'true' }, key), label];
-      if (href) return el('a', { class: 'control-hint', href }, content);
-      if (onClick) return el('button', { type: 'button', class: 'control-hint', onClick }, content);
-      return el('span', { class: 'control-hint' }, content);
+    const items = hints.map((hint) => {
+      const content = [el('span', { class: 'key', 'aria-hidden': 'true' }, hint.key), hint.label];
+      const attrs = { class: 'control-hint', 'aria-keyshortcuts': hint.key };
+      if (hint.href) return el('a', { ...attrs, href: hint.href }, content);
+      return el('button', { ...attrs, type: 'button', onClick: () => runHint(hint) }, content);
     });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.defaultPrevented || event.repeat || event.ctrlKey || event.metaKey || event.altKey) return;
+      if (isTyping(event.target) || document.querySelector('dialog[open]')) return;
+      const hint = findHint(hints, event.key);
+      if (!hint) return;
+      event.preventDefault();
+      runHint(hint);
+    });
+
     return el('nav', { class: 'control-bar', 'aria-label': '조작 안내' }, el('div', { class: 'container control-bar__inner' }, items));
+  }
+
+  /* ---------- 처음 접속 안내 (ABXY 조작 튜토리얼) ---------- */
+
+  const TUTORIAL_KEY = 'boxtick-tutorial-seen';
+
+  function showTutorialOnce() {
+    try {
+      if (localStorage.getItem(TUTORIAL_KEY)) return;
+      localStorage.setItem(TUTORIAL_KEY, '1');
+    } catch {
+      return; // 저장할 수 없는 환경에서는 매번 띄우지 않도록 생략
+    }
+    const rows = [
+      ['A', '선택한 항목 열기 · 결정'],
+      ['B', '돌아가기'],
+      ['X', '화면마다 다른 기능 (아래 바 참고)'],
+      ['Y', '검색 · 바로가기 (아래 바 참고)'],
+    ];
+    const close = el('button', { type: 'submit', class: 'btn btn--primary' }, '알겠어요');
+    const dialog = el('dialog', { class: 'modal tutorial', 'aria-labelledby': 'tutorial-title' }, [
+      el('form', { method: 'dialog', class: 'modal__body' }, [
+        el('h2', { id: 'tutorial-title', class: 'tutorial__title' }, '키보드로도 조작할 수 있어요'),
+        el('p', { class: 'text-muted text-small' }, '게임처럼 A · B · X · Y 키를 눌러 보세요. 화면 아래 검정 바의 버튼을 눌러도 똑같이 동작해요.'),
+        el('ul', { class: 'tutorial__keys' }, rows.map(([key, label]) =>
+          el('li', null, [el('span', { class: 'key', 'aria-hidden': 'true' }, key), el('span', null, [el('strong', null, key + ' 키'), ' ' + label])]))),
+        el('div', { class: 'modal__actions' }, close),
+      ]),
+    ]);
+    dialog.addEventListener('close', () => dialog.remove());
+    document.body.append(dialog);
+    dialog.showModal();
+    close.focus();
   }
 
   /** 자주 쓰는 안내: 뒤로 가기 */
@@ -434,6 +522,9 @@
       setTimeout(() => location.replace('/'), 800);
       return new Promise(() => {});
     }
+    // 튜토리얼은 권한 검사를 통과해 이 페이지에 머무를 때만 띄운다
+    // (로그인 페이지로 바로 넘어가는 경우 '본 것'으로 기록되지 않도록)
+    if (hints && hints.length) showTutorialOnce();
     return user;
   }
 
@@ -476,6 +567,8 @@
     confirm: confirmDialog,
     image,
     renderControlBar,
+    findHint,
+    isTyping,
     HINT_BACK,
     initPage,
   };

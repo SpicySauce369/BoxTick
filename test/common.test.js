@@ -49,3 +49,25 @@ describe('escapeHtml', () => {
     assert.equal(BoxTick.escapeHtml(null), '');
   });
 });
+
+describe('조작 키 (ABXY)', () => {
+  const hints = [{ key: 'A', label: '결정' }, { key: 'B', label: '돌아가기', href: '/' }, { key: 'Y', label: '검색' }];
+
+  it('대소문자와 상관없이 같은 글자의 안내 항목을 찾는다', () => {
+    assert.equal(BoxTick.findHint(hints, 'b').label, '돌아가기');
+    assert.equal(BoxTick.findHint(hints, 'Y').label, '검색');
+  });
+
+  it('안내에 없는 키나 ABXY 이외의 키는 무시한다', () => {
+    assert.equal(BoxTick.findHint(hints, 'x'), null);
+    assert.equal(BoxTick.findHint(hints, 'Enter'), null);
+    assert.equal(BoxTick.findHint(hints, 'c'), null);
+  });
+
+  it('입력칸에서 글을 쓰는 중이면 단축키로 보지 않는다', () => {
+    assert.equal(BoxTick.isTyping({ tagName: 'INPUT' }), true);
+    assert.equal(BoxTick.isTyping({ tagName: 'TEXTAREA' }), true);
+    assert.equal(BoxTick.isTyping({ tagName: 'DIV', isContentEditable: true }), true);
+    assert.equal(BoxTick.isTyping({ tagName: 'A' }), false);
+  });
+});
