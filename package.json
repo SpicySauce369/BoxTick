@@ -1,0 +1,35 @@
+{
+  "name": "boxtick",
+  "version": "1.0.0",
+  "description": "(과제용) 포켓몬 카드 및 카드 박스의 시세를 조회하고 사용자들이 정보를 공유할 수 있는 커뮤니티형 웹사이트",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "db:init": "node db/seed.js",
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SpicySauce369/BoxTick.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SpicySauce369/BoxTick/issues"
+  },
+  "homepage": "https://github.com/SpicySauce369/BoxTick#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "better-sqlite3": "^13.0.3",
+    "express": "^5.3.0",
+    "express-session": "^1.19.0"
+  },
+  "devDependencies": {
+    "supertest": "^7.3.1"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  }
+}
