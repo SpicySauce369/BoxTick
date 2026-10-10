@@ -1192,8 +1192,30 @@ a.control-hint:hover .key {
     --band-to: 78%;
   }
 
+  /* 태블릿: 공간이 모자라면 검색창이 다음 줄로 내려간다 (가로 넘침 방지) */
+  .site-header__inner {
+    flex-wrap: wrap;
+    gap: 4px var(--sp-1);
+    padding-block: 6px;
+  }
+
+  .site-nav a {
+    padding-inline: 12px;
+  }
+
   .site-search {
-    max-width: 200px;
+    flex: 1 1 140px;
+    min-width: 140px;
+    max-width: none;
+  }
+
+  .site-actions {
+    margin-left: auto;
+  }
+
+  /* 관리자는 ADMIN 배지가 있으므로 좁은 화면에서는 닉네임을 숨겨 검색창 자리를 남긴다 */
+  .site-actions .badge-admin + .site-user {
+    display: none;
   }
 
   .circle-menu {
@@ -1234,6 +1256,11 @@ a.control-hint:hover .key {
 
   .site-user {
     max-width: 6em;
+  }
+
+  .site-actions a,
+  .site-actions button {
+    padding-inline: 8px;
   }
 
   .site-nav {

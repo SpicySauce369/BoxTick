@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>관리자 대시보드 · BoxTick</title>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <script src="/js/common.js"></script>
+  <script src="/js/admin.js"></script>
+</head>
+<body data-stage="neutral">
+  <div id="site-header"></div>
+
+  <main class="container admin-layout">
+    <aside class="admin-sidebar" id="admin-sidebar"></aside>
+
+    <section aria-labelledby="admin-title">
+      <div class="admin-head">
+        <div>
+          <h1 class="page-title" id="admin-title">
+            <span class="page-title__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg>
+            </span>
+            대시보드
+          </h1>
+          <p class="page-sub" id="admin-greeting"></p>
+        </div>
+      </div>
+
+      <div class="admin-grid">
+        <section class="panel" aria-labelledby="stats-title">
+          <div class="panel-head"><h2 id="stats-title">현황</h2></div>
+          <ul class="admin-stats" id="admin-stats">
+            <li class="skeleton" style="height: 48px"></li>
+            <li class="skeleton" style="height: 48px"></li>
+            <li class="skeleton" style="height: 48px"></li>
+          </ul>
+        </section>
+
+        <section class="panel" aria-labelledby="recent-title">
+          <div class="panel-head"><h2 id="recent-title">최근 게시글</h2><a class="text-small" href="/admin/posts.html">전체 보기</a></div>
+          <ul class="list" id="recent-posts"><li class="loading-state">불러오는 중…</li></ul>
+        </section>
+
+        <section class="panel" aria-labelledby="box-title">
+          <div class="panel-head"><h2 id="box-title">세트별 박스 시세</h2><a class="text-small" href="/admin/box-prices.html">관리</a></div>
+          <ul class="list" id="box-prices"><li class="loading-state">불러오는 중…</li></ul>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    (async () => {
+      const { el, api, formatPrice, formatDate, changeBadge, replaceChildren, setText } = BoxTick;
+      const CATEGORY_LABEL = { free: '자유', price: '시세 정보', brag: '개봉 자랑', notice: '공지' };
+
+      const user = await BoxTickAdmin.initAdminPage({ active: 'dashboard' });
+      setText('#admin-greeting', `${user.nickname} 님, 오늘의 운영 현황입니다.`);
+
+      // 현황 수치: 각 API 의 total 을 쓴다. 하나가 실패해도 나머지는 보여준다.
+      const total = (path) => api(path).then((data) => data.total);
+      const stats = [
+        { label: '전체 회원', href: '/admin/users.html', load: () => total('/api/admin/users?size=1') },
+        { label: '정지 회원', href: '/admin/users.html?status=banned', warn: true, load: () => total('/api/admin/users?status=banned&size=1') },
+        { label: '게시글', href: '/admin/posts.html', load: () => total('/api/admin/posts?size=1') },
+        { label: '공지', href: '/admin/posts.html?category=notice', load: () => total('/api/posts?category=notice&size=1') },
+        { label: '세트', href: '/admin/sets.html', load: () => api('/api/sets').then((data) => data.sets.length) },
+        { label: '카드', href: '/admin/cards.html', load: () => total('/api/cards?size=1') },
+      ];
+      const values = await Promise.allSettled(stats.map((stat) => stat.load()));
+      replaceChildren(document.getElementById('admin-stats'), stats.map((stat, i) => {
+        const value = values[i].status === 'fulfilled' ? values[i].value : '-';
+        const warn = stat.warn && Number(value) > 0;
+        return el('li', null, el('a', { class: `admin-stat${warn ? ' admin-stat--warn' : ''}`, href: stat.href }, [
+          el('span', null, stat.label),
+          el('span', { class: 'list-row__aside' }, typeof value === 'number' ? value.toLocaleString('ko-KR') : value),
+        ]));
+      }));
+
+      // 최근 게시글 5개 (작성자 닉네임 등 사용자 입력은 텍스트로만)
+      try {
+        const { posts } = await api('/api/admin/posts?size=5');
+        replaceChildren(document.getElementById('recent-posts'), posts.length
+          ? posts.map((post) => el('li', null, el('a', { class: 'list-row', href: `/post.html?id=${post.id}` }, [
+              el('span', { class: `chip${post.category === 'notice' ? ' chip--signal' : ''}` }, CATEGORY_LABEL[post.category] || post.category),
+              el('span', { class: 'list-row__main' }, post.title),
+              el('span', { class: 'list-row__aside text-small' }, formatDate(post.created_at)),
+            ])))
+          : el('li', { class: 'empty-state' }, '게시글이 없습니다.'));
+      } catch (err) {
+        replaceChildren(document.getElementById('recent-posts'), el('li', { class: 'empty-state' }, '게시글을 불러오지 못했습니다.'));
+        BoxTick.handleError(err);
+      }
+
+      // 세트별 현재 박스 시세와 정가 대비 상승률
+      try {
+        const { sets } = await api('/api/sets');
+        replaceChildren(document.getElementById('box-prices'), sets.length
+          ? sets.map((set) => el('li', null, el('a', { class: 'list-row', href: `/admin/box-prices.html?set=${set.id}` }, [
+              el('span', { class: 'list-row__main' }, set.name),
+              changeBadge(set.box_change_rate),
+              el('span', { class: 'list-row__aside' }, formatPrice(set.current_box_price)),
+            ])))
+          : el('li', { class: 'empty-state' }, '등록된 세트가 없습니다.'));
+      } catch (err) {
+        replaceChildren(document.getElementById('box-prices'), el('li', { class: 'empty-state' }, '박스 시세를 불러오지 못했습니다.'));
+        BoxTick.handleError(err);
+      }
+    })();
+  </script>
+</body>
+</html>
