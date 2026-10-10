@@ -1,0 +1,121 @@
+/* 관리자 회원·게시글 관리 (users.html, posts.html)
+   목록·상세 패널 뼈대는 admin-catalog.css 의 admin-workspace / admin-record 를 그대로 쓰고,
+   여기에는 검색줄 · 필터 · 페이지 · 상세 표시만 더한다. */
+
+.manage-toolbar {
+  display: flex;
+  gap: var(--sp-1);
+  margin-bottom: var(--sp-2);
+}
+
+.manage-toolbar .input {
+  min-width: 0;
+}
+
+.manage-filter {
+  margin-bottom: var(--sp-2);
+}
+
+.manage-chip {
+  margin-left: 6px;
+  vertical-align: 2px;
+}
+
+.admin-record .board-chip {
+  margin-right: 6px;
+  vertical-align: 2px;
+}
+
+/* 정지 회원: 상태 캡슐을 빨강으로 (글자 "정지"와 함께 표시) */
+.admin-record__aside.manage-aside--banned {
+  background: var(--price-up);
+  color: #ffffff;
+}
+
+.manage-author-filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-1);
+  margin: 0 0 var(--sp-2);
+  padding: 6px 6px 6px var(--sp-2);
+  border-radius: var(--radius-pill);
+  background: var(--label-cell);
+  font-size: var(--fs-small);
+}
+
+.manage-author-filter__clear {
+  min-height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  color: var(--on-ink);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.manage-pager {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+
+.manage-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.manage-detail__name {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.manage-note {
+  margin: 0;
+  padding: 10px var(--sp-2);
+  border-radius: var(--radius);
+  background: var(--label-cell);
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .manage-filter {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+  }
+
+  .manage-filter button {
+    white-space: nowrap;
+  }
+
+  /* 공통 모바일 규칙은 상태 캡슐을 아래 줄로 내리지만, 여기 값(활동/정지 · 날짜)은 짧아서 오른쪽에 둔다 */
+  .admin-record {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .manage-year {
+    display: none;
+  }
+
+  .admin-record__aside {
+    min-width: 0;
+    justify-self: end;
+    text-align: right;
+  }
+
+  .manage-pager {
+    justify-content: space-between;
+  }
+
+  .manage-pager .btn {
+    flex: 1;
+  }
+}
