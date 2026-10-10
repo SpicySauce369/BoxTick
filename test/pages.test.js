@@ -18,6 +18,12 @@ describe('로그인 · 회원가입 화면', () => {
       }
     });
   }
+
+  it('회원가입 화면은 next를 이어받을 로그인 링크를 제공한다', async () => {
+    const res = await request(app).get('/register.html');
+    assert.equal(res.status, 200);
+    assert.ok(res.text.includes('id="login-link"'));
+  });
 });
 
 describe('마이페이지 화면', () => {
