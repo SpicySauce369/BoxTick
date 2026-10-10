@@ -1,0 +1,140 @@
+/* 마이페이지: 왼쪽 트레이너 카드 + 메뉴, 오른쪽 탭 내용 */
+.my-main .page-title {
+  margin: 0 0 var(--sp-3);
+}
+
+.my-layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: var(--sp-4);
+  align-items: start;
+}
+
+.my-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.my-card__name {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.my-card__id {
+  margin: 0 0 var(--sp-2);
+}
+
+.my-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.my-form .btn {
+  align-self: flex-start;
+}
+
+.my-form .text-small {
+  margin: 0;
+}
+
+.my-write {
+  min-height: 32px;
+  padding-block: 0;
+}
+
+.my-post .list-row__main {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+.my-post .chip {
+  flex: none;
+}
+
+.my-post__title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.my-post__comments {
+  flex: none;
+  color: var(--price-up);
+  font-size: var(--fs-small);
+}
+
+.my-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+
+/* 태블릿: 카드와 메뉴를 위에 나란히, 내용은 아래로 */
+@media (max-width: 1024px) {
+  .my-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .my-side {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+/* 모바일: 한 줄로 쌓고, 탭은 가로 두 칸 */
+@media (max-width: 700px) {
+  .my-side {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .my-tabs {
+    flex-direction: row;
+    padding-left: 0;
+  }
+
+  .my-tabs li {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* 가로 탭에서는 바깥 > 표시가 탭 사이에 끼므로 검은 알약만으로 선택을 표시한다 */
+  .my-tabs .list-row::before {
+    display: none;
+  }
+
+  .my-tabs .list-row__aside {
+    min-width: 0;
+  }
+
+  .my-form .btn {
+    align-self: stretch;
+  }
+
+  .my-posts .list {
+    padding-left: var(--sp-2);
+  }
+
+  .my-post .list-row__aside {
+    min-width: 0;
+  }
+
+  .my-post__year {
+    display: none;
+  }
+
+  .my-pagination {
+    justify-content: space-between;
+  }
+
+  .my-pagination .btn {
+    flex: 1;
+  }
+}

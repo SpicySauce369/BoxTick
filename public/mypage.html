@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>마이페이지 · BoxTick</title>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/mypage.css">
+  <script src="/js/common.js"></script>
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="container my-main">
+    <h1 class="page-title"><span class="page-title__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></span>마이페이지</h1>
+
+    <div class="my-layout">
+      <aside class="my-side">
+        <!-- 트레이너 카드 -->
+        <section class="panel my-card" aria-labelledby="my-nickname">
+          <div class="panel-head"><span>TRAINER CARD</span><span id="my-role"></span></div>
+          <p class="my-card__name" id="my-nickname">-</p>
+          <p class="my-card__id text-muted" id="my-username"></p>
+          <table class="stat-table">
+            <tr><th>가입일</th><td id="my-joined">-</td></tr>
+            <tr><th>작성한 글</th><td id="my-post-count">-</td></tr>
+          </table>
+        </section>
+
+        <ul class="list my-tabs" role="tablist" aria-label="마이페이지 메뉴">
+          <li><button type="button" class="list-row" role="tab" id="tab-info" aria-controls="panel-info" aria-selected="true" data-tab="info"><span class="list-row__main">내 정보</span></button></li>
+          <li><button type="button" class="list-row" role="tab" id="tab-posts" aria-controls="panel-posts" aria-selected="false" data-tab="posts" tabindex="-1"><span class="list-row__main">내가 쓴 글</span><span class="list-row__aside" id="tab-posts-count"></span></button></li>
+        </ul>
+      </aside>
+
+      <div class="my-content">
+        <!-- 내 정보 -->
+        <section id="panel-info" role="tabpanel" aria-labelledby="tab-info" class="stack">
+          <form class="panel my-form" id="nickname-form" novalidate>
+            <div class="panel-head"><span>닉네임 변경</span></div>
+            <div class="field">
+              <label for="nickname">닉네임</label>
+              <input class="input" id="nickname" name="nickname" maxlength="20" autocomplete="nickname" required>
+              <p class="text-small text-muted">2~20자</p>
+              <p class="field-error" id="nickname-error"></p>
+            </div>
+            <button class="btn btn--primary" type="submit">닉네임 저장</button>
+          </form>
+
+          <form class="panel my-form" id="password-form" novalidate>
+            <div class="panel-head"><span>비밀번호 변경</span></div>
+            <!-- 비밀번호 관리자 대응용 숨은 아이디 칸 -->
+            <input type="text" name="username" autocomplete="username" class="visually-hidden" tabindex="-1" aria-hidden="true">
+            <div class="field">
+              <label for="currentPassword">현재 비밀번호</label>
+              <input class="input" id="currentPassword" name="currentPassword" type="password" autocomplete="current-password" required>
+              <p class="field-error" id="currentPassword-error"></p>
+            </div>
+            <div class="field">
+              <label for="newPassword">새 비밀번호</label>
+              <input class="input" id="newPassword" name="newPassword" type="password" autocomplete="new-password" required>
+              <p class="text-small text-muted">8자 이상</p>
+              <p class="field-error" id="newPassword-error"></p>
+            </div>
+            <div class="field">
+              <label for="newPasswordConfirm">새 비밀번호 확인</label>
+              <input class="input" id="newPasswordConfirm" name="newPasswordConfirm" type="password" autocomplete="new-password" required>
+              <p class="field-error" id="newPasswordConfirm-error"></p>
+            </div>
+            <button class="btn btn--primary" type="submit">비밀번호 변경</button>
+          </form>
+        </section>
+
+        <!-- 내가 쓴 글 -->
+        <section id="panel-posts" role="tabpanel" aria-labelledby="tab-posts" hidden>
+          <div class="panel my-posts">
+            <div class="panel-head"><span>내가 쓴 글</span><a class="btn btn--accent my-write" href="/write.html">글쓰기</a></div>
+            <ul class="list" id="my-post-list"></ul>
+            <div class="my-pagination">
+              <button type="button" class="btn btn--secondary" id="prev-page">이전</button>
+              <span class="num" id="page-label">1 / 1</span>
+              <button type="button" class="btn btn--secondary" id="next-page">다음</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <script src="/js/mypage.js"></script>
+</body>
+</html>
