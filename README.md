@@ -22,7 +22,7 @@
 
 ## 실행 방법
 
-Node.js 20 이상이 필요합니다.
+Node.js 22 이상이 필요합니다.
 
 ```bash
 npm install

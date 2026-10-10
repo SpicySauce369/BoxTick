@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "db:init": "node db/seed.js",
-    "test": "node --test"
+    "test": "node --test test/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,6 @@
   },
   "private": true,
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   }
 }
