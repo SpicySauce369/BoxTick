@@ -148,10 +148,9 @@ vite.config.ts.timestamp-*
 # Turbo Repo
 .turbo
 
-# BoxTick
-data/
-*.db
-*.db-journal
-*.db-wal
-*.db-shm
+# BoxTick — SQLite DB 파일만 제외 (data/*.seed.json 등은 커밋한다)
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
 .env

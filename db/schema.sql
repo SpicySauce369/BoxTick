@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS card_sets (
   release_date  DATE,
   box_price     INTEGER CHECK (box_price IS NULL OR box_price >= 0),
   packs_per_box INTEGER CHECK (packs_per_box IS NULL OR packs_per_box > 0),
-  image_url     TEXT
+  image_url     TEXT,
+  external_id   TEXT UNIQUE -- 외부 카드 데이터 API(TCGdex) 세트 ID, seed 중복 방지
 );
 
 -- 4-4. 카드 (카드가 남아 있는 세트는 삭제할 수 없다)
@@ -31,10 +32,12 @@ CREATE TABLE IF NOT EXISTS cards (
   card_number TEXT,
   rarity      TEXT,
   image_url   TEXT,
+  external_id TEXT UNIQUE, -- 외부 카드 데이터 API(TCGdex) 카드 ID
   created_at  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-CREATE INDEX IF NOT EXISTS idx_cards_set_id ON cards (set_id);
-CREATE INDEX IF NOT EXISTS idx_cards_name   ON cards (name);
+-- 같은 세트 안에서 카드 번호는 하나뿐이다 (seed 재실행 시 중복 방지, set_id 조회 인덱스 겸용)
+CREATE UNIQUE INDEX IF NOT EXISTS uq_cards_set_number ON cards (set_id, card_number);
+CREATE INDEX IF NOT EXISTS idx_cards_name ON cards (name);
 
 -- 4-5. 카드 시세 이력
 CREATE TABLE IF NOT EXISTS price_history (
@@ -47,11 +50,17 @@ CREATE TABLE IF NOT EXISTS price_history (
 CREATE INDEX IF NOT EXISTS idx_price_history_card_date ON price_history (card_id, recorded_at);
 
 -- 4-6. 박스 시세 이력
+-- 실시간 API 는 쓰지 않고, 네이버·다나와·카드샵 가격을 참고해 관리자가 대표 시세를 입력한다.
+-- source: 참고한 곳의 분류 / source_url: 참고 페이지 / seller_name: 판매처 이름
 CREATE TABLE IF NOT EXISTS box_price_history (
   id          INTEGER PRIMARY KEY AUTOINCREMENT,
   set_id      INTEGER NOT NULL REFERENCES card_sets(id) ON DELETE CASCADE,
   price       INTEGER NOT NULL CHECK (price >= 0),
-  recorded_at DATE    NOT NULL
+  recorded_at DATE    NOT NULL,
+  source      TEXT    NOT NULL DEFAULT 'seed'
+              CHECK (source IN ('seed', 'admin', 'naver', 'danawa', 'cardshop', 'other')),
+  source_url  TEXT,
+  seller_name TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_box_price_history_set_date ON box_price_history (set_id, recorded_at);
 
