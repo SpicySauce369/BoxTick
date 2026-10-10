@@ -855,23 +855,28 @@ a.control-hint:hover .key {
 .chip--shield { background: var(--shield); color: #ffffff; }
 .chip--signal { background: var(--signal); color: var(--ink); }
 
-/* 대각선 장식 면 (상태창 왼쪽 아래의 사선) — 섹션에 덧붙여 쓴다 */
+/* 하단 리본 장식 — 패널 맨 아래에 얇은 띠: 강조색 ─ 사선 끊김 ─ 강조색 ─ 사선 끊김 ─ 글자색 마감.
+   카드·박스 상세와 목록 미리보기 패널에 덧붙여 쓴다. (사용자 확정: B안) */
 .diag-accent {
+  --ribbon-h: 14px;
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  padding-bottom: calc(var(--sp-3) + var(--ribbon-h));
 }
 
 .diag-accent::after {
   content: "";
   position: absolute;
-  left: -10%;
-  bottom: -40px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: -1;
-  width: 55%;
-  height: 90px;
-  background: var(--accent);
-  transform: skewY(-12deg);
+  height: var(--ribbon-h);
+  background: linear-gradient(110deg,
+    var(--accent) 0 58%, transparent 58% 60%,
+    var(--accent) 60% 74%, transparent 74% 76%,
+    var(--text) 76%);
 }
 
 /* 대각선으로 잘린 패널 */
@@ -1282,6 +1287,10 @@ a.control-hint:hover .key {
 
   .panel {
     padding: var(--sp-2);
+  }
+
+  .diag-accent {
+    padding-bottom: calc(var(--sp-2) + var(--ribbon-h));
   }
 
   .panel-head {
