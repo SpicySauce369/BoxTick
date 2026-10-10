@@ -1,4 +1,4 @@
-// 게시판 seed JSON(data/posts.seed.json, data/comments.seed.json) 무결성 검사
+// 게시판·회원 seed JSON(data/posts, comments, users.seed.json) 무결성 검사
 const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -11,6 +11,7 @@ const readSeed = (name) => JSON.parse(fs.readFileSync(path.join(DATA_DIR, name),
 
 const posts = readSeed('posts.seed.json');
 const comments = readSeed('comments.seed.json');
+const users = readSeed('users.seed.json');
 const postsBySeedId = new Map(posts.map((p) => [p.seed_id, p]));
 const DATETIME_RE = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
 
@@ -51,13 +52,38 @@ describe('게시판 seed 데이터', () => {
     }
   });
 
-  it('users.seed.json 이 있으면, 작성자가 모두 그 안에 있다', (t) => {
-    const usersPath = path.join(DATA_DIR, 'users.seed.json');
-    if (!fs.existsSync(usersPath)) return t.skip('users.seed.json 이 아직 없음');
-
-    const userSeedIds = new Set(readSeed('users.seed.json').map((u) => u.seed_id));
+  it('게시글·댓글 작성자가 모두 users.seed.json 에 있다', () => {
+    const userSeedIds = new Set(users.map((u) => u.seed_id));
     for (const item of [...posts, ...comments]) {
       assert.ok(userSeedIds.has(item.author), `${item.seed_id} → ${item.author}`);
+    }
+  });
+});
+
+describe('회원 seed 데이터', () => {
+  // routes/auth.js 의 가입 규칙과 같다: seed 계정도 화면에서 가입 가능한 형식이어야 한다.
+  const USERNAME_RE = /^[A-Za-z0-9_]{4,20}$/;
+  const regularUsers = users.filter((u) => !u.managed_by_env);
+
+  it('seed_id 와 username 이 중복되지 않는다', () => {
+    assert.equal(new Set(users.map((u) => u.seed_id)).size, users.length);
+    const usernames = regularUsers.map((u) => u.username.toLowerCase());
+    assert.equal(new Set(usernames).size, usernames.length);
+  });
+
+  it('관리자는 db:init 의 환경변수 계정에 매핑하고, 비밀번호를 파일에 두지 않는다', () => {
+    const admin = users.find((u) => u.seed_id === 'admin');
+    assert.deepEqual(admin, { seed_id: 'admin', managed_by_env: true });
+  });
+
+  it('일반 회원은 가입 규칙을 만족하는 user / active 계정이다', () => {
+    assert.ok(regularUsers.length > 0);
+    for (const user of regularUsers) {
+      assert.match(user.username, USERNAME_RE, user.seed_id);
+      assert.ok(typeof user.password === 'string' && user.password.length >= 8, user.seed_id);
+      assert.ok(user.nickname.length >= 2 && user.nickname.length <= 20, user.seed_id);
+      assert.equal(user.role, 'user', user.seed_id);
+      assert.equal(user.status, 'active', user.seed_id);
     }
   });
 });
