@@ -215,6 +215,7 @@ describe('관리자 카드/시세 API', () => {
       rarity: 'R',
     });
     assert.equal(second.status, 409);
+    assert.match(second.body.error, /카드 번호|외부 ID/);
   });
 
   it('카드 시세와 박스 시세를 등록·수정·삭제할 수 있다', async () => {
@@ -261,7 +262,9 @@ describe('관리자 카드/시세 API', () => {
 
   it('카드가 남은 세트는 삭제할 수 없고 빈 세트는 삭제할 수 있다', async () => {
     const usedId = db.prepare("SELECT id FROM card_sets WHERE name='블랙볼트'").get().id;
-    assert.equal((await adminAgent.delete(`/api/admin/sets/${usedId}`)).status, 409);
+    const blocked = await adminAgent.delete(`/api/admin/sets/${usedId}`);
+    assert.equal(blocked.status, 409);
+    assert.equal(blocked.body.error, '카드가 남아 있는 세트는 삭제할 수 없습니다.');
 
     const created = await adminAgent.post('/api/admin/sets').send({
       name: '빈 세트',
