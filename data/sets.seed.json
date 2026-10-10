@@ -1,0 +1,29 @@
+[
+  {
+    "seed_id": "black-bolt",
+    "name": "블랙볼트",
+    "release_date": "2026-07-18",
+    "box_price": 50000,
+    "packs_per_box": 20,
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "white-flare",
+    "name": "화이트플레어",
+    "release_date": "2026-07-18",
+    "box_price": 50000,
+    "packs_per_box": 20,
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "terastal-festival",
+    "name": "테라스탈 페스 ex",
+    "release_date": "2025-12-06",
+    "box_price": 60000,
+    "packs_per_box": 10,
+    "image_url": null,
+    "external_id": null
+  }
+]
