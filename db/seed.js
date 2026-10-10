@@ -1,4 +1,4 @@
-// npm run db:init — 스키마, 관리자 계정, 카드/박스 샘플 데이터를 만든다.
+// npm run db:init — 스키마, 관리자, 카드/박스 샘플, 회원·게시글·댓글 샘플 데이터를 만든다.
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -153,12 +153,127 @@ function seedCatalog(db) {
   return transaction();
 }
 
+/**
+ * users.seed.json → users. seed_id → users.id 맵을 돌려준다.
+ * - managed_by_env 항목(admin)은 seedAdmin 이 만든 ADMIN_USERNAME 계정에 매핑한다.
+ * - 일반 회원은 username 으로 찾고, 없을 때만 createUser()(bcrypt)로 만든다.
+ *   이미 있으면 그대로 둔다 (회원이 바꾼 닉네임·비밀번호를 덮어쓰지 않는다).
+ */
+async function seedUsers(db) {
+  const users = loadJson('users.seed.json');
+  const userIds = new Map();
+  let created = 0;
+
+  for (const item of users) {
+    if (item.managed_by_env) {
+      const admin = db.prepare('SELECT id FROM users WHERE username = ?').get(ADMIN_USERNAME);
+      if (!admin) throw new Error(`관리자 계정이 없습니다: ${ADMIN_USERNAME} (seedAdmin 을 먼저 실행하세요)`);
+      userIds.set(item.seed_id, admin.id);
+      continue;
+    }
+
+    let row = db.prepare('SELECT id FROM users WHERE username = ?').get(item.username);
+    if (!row) {
+      row = await createUser(db, {
+        username: item.username,
+        password: item.password,
+        nickname: item.nickname,
+        role: item.role || 'user',
+      });
+      if (item.status && item.status !== 'active') {
+        db.prepare('UPDATE users SET status = ? WHERE id = ?').run(item.status, row.id);
+      }
+      created += 1;
+    }
+    userIds.set(item.seed_id, row.id);
+  }
+
+  return { userIds, total: users.length, created };
+}
+
+/**
+ * posts.seed.json, comments.seed.json → posts, comments.
+ * posts 에는 seed 키 컬럼이 없으므로 (작성자, 작성 시각, 제목) / (게시글, 작성자, 작성 시각, 내용)으로
+ * 이미 들어간 seed 를 찾는다. 있으면 건너뛰므로 재실행해도 중복되지 않고, 회원이 수정한 내용도 유지된다.
+ */
+function seedBoard(db, userIds) {
+  const posts = loadJson('posts.seed.json');
+  const comments = loadJson('comments.seed.json');
+
+  const userIdOf = (seedId, owner) => {
+    const id = userIds.get(seedId);
+    if (!id) throw new Error(`seed 회원을 찾을 수 없습니다: ${seedId} (${owner})`);
+    return id;
+  };
+
+  const transaction = db.transaction(() => {
+    const postIds = new Map();
+    let createdPosts = 0;
+    let createdComments = 0;
+
+    const findPost = db.prepare('SELECT id FROM posts WHERE user_id = ? AND created_at = ? AND title = ?');
+    const insertPost = db.prepare(
+      `INSERT INTO posts (user_id, category, title, content, views, created_at, updated_at)
+       VALUES (@user_id, @category, @title, @content, @views, @created_at, @created_at)`
+    );
+    for (const item of posts) {
+      const userId = userIdOf(item.author, item.seed_id);
+      let row = findPost.get(userId, item.created_at, item.title);
+      if (!row) {
+        row = {
+          id: insertPost.run({
+            user_id: userId,
+            category: item.category,
+            title: item.title,
+            content: item.content,
+            views: item.views ?? 0,
+            created_at: item.created_at,
+          }).lastInsertRowid,
+        };
+        createdPosts += 1;
+      }
+      postIds.set(item.seed_id, row.id);
+    }
+
+    const findComment = db.prepare(
+      'SELECT id FROM comments WHERE post_id = ? AND user_id = ? AND created_at = ? AND content = ?'
+    );
+    const insertComment = db.prepare(
+      'INSERT INTO comments (post_id, user_id, content, created_at) VALUES (?, ?, ?, ?)'
+    );
+    for (const item of comments) {
+      const postId = postIds.get(item.post);
+      if (!postId) throw new Error(`seed 게시글을 찾을 수 없습니다: ${item.post} (${item.seed_id})`);
+      const userId = userIdOf(item.author, item.seed_id);
+      if (!findComment.get(postId, userId, item.created_at, item.content)) {
+        insertComment.run(postId, userId, item.content, item.created_at);
+        createdComments += 1;
+      }
+    }
+
+    return { posts: posts.length, comments: comments.length, createdPosts, createdComments };
+  });
+
+  return transaction();
+}
+
+/** db:init 전체 순서: 관리자 → 카드/세트/시세 → 회원 → 게시글 → 댓글 */
+async function seedAll(db) {
+  const adminCreated = await seedAdmin(db);
+  const catalog = seedCatalog(db);
+  const users = await seedUsers(db);
+  const board = seedBoard(db, users.userIds);
+  return { adminCreated, catalog, users: { total: users.total, created: users.created }, board };
+}
+
 async function main() {
   const db = openDatabase();
   initSchema(db);
   console.log(`[db:init] 스키마 적용 완료: ${db.name}`);
 
-  if (await seedAdmin(db)) {
+  const { adminCreated, catalog, users, board } = await seedAll(db);
+
+  if (adminCreated) {
     console.log(`[db:init] 관리자 계정 생성: ${ADMIN_USERNAME}`);
     if (!process.env.ADMIN_PASSWORD) {
       console.warn('[db:init] 기본 관리자 비밀번호(admin1234)를 사용했습니다. 배포 전 ADMIN_PASSWORD 로 변경하세요.');
@@ -166,10 +281,11 @@ async function main() {
   } else {
     console.log(`[db:init] 관리자 계정이 이미 있습니다: ${ADMIN_USERNAME}`);
   }
-
-  const counts = seedCatalog(db);
   console.log(
-    `[db:init] 샘플 데이터: 세트 ${counts.sets}, 카드 ${counts.cards}, 카드 시세 ${counts.cardPrices}, 박스 시세 ${counts.boxPrices}`
+    `[db:init] 샘플 데이터: 세트 ${catalog.sets}, 카드 ${catalog.cards}, 카드 시세 ${catalog.cardPrices}, 박스 시세 ${catalog.boxPrices}`
+  );
+  console.log(
+    `[db:init] 회원 ${users.total}명(새로 ${users.created}), 게시글 ${board.posts}(새로 ${board.createdPosts}), 댓글 ${board.comments}(새로 ${board.createdComments})`
   );
   db.close();
 }
@@ -181,4 +297,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { seedAdmin, seedCatalog };
+module.exports = { seedAdmin, seedCatalog, seedUsers, seedBoard, seedAll };
