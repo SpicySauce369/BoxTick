@@ -1,6 +1,6 @@
 /* =========================================================
    BoxTick 공통 기반 스타일 — Sword/Shield UI 문법
-   1) 화면마다 꽉 찬 단색 "스테이지" 배경 + 옅은 큰 대각선 띠  (body[data-stage])
+   1) 밝은 바탕 + 가운데 큰 대각선 띠. 띠 색만 페이지마다 연하게 바꾼다 (body[data-stage])
    2) 그 위는 단순하게: 흰 알약 행, 굵은 글자, 테두리·그림자 최소
    3) 선택 = 검정 알약 + 흰 글자 + 왼쪽 바깥 굵은 검정 ">" (강조색 채우기가 아님)
    4) 표 = 회색 라벨 칸 + 흰 값 칸
@@ -26,11 +26,14 @@
   --ink: #18181c;
   --on-ink: #ffffff;
 
-  /* 스테이지(페이지 배경) — body[data-stage] 로 바꾼다. 기본은 밝은 스테이지 */
+  /* 스테이지(페이지 배경): 밝은 바탕은 고정, 대각선 띠 색만 body[data-stage] 로 바꾼다 */
   --stage: #eef0f3;
-  --stage-band: rgba(0, 166, 200, 0.16); /* 대각선 띠 */
-  --stage-band-2: rgba(255, 255, 255, 0.6);
-  --on-stage: var(--ink);                /* 스테이지 위에 바로 놓이는 제목 글자 */
+  --band-color: var(--sword);   /* 띠 색 */
+  --band-strength: 20%;         /* 띠 진하기 (연하게) */
+  --band-angle: 112deg;         /* 띠 각도·위치 — breakpoint 마다 바뀐다 */
+  --band-from: 56%;
+  --band-to: 74%;
+  --on-stage: var(--ink);       /* 바탕 위에 바로 놓이는 제목 글자 */
 
   /* 페이지 주 강조색 (작은 포인트용: 소제목 띠, 진행 바 등) */
   --accent: var(--sword);
@@ -82,40 +85,35 @@
   --shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
 }
 
-/* ---------- 2. 스테이지 (페이지 배경색) ----------
-   <body data-stage="shield">  메인 메뉴처럼 마젠타
-   <body data-stage="signal">  가방처럼 노랑
-   <body data-stage="sword">   시안
-   (없으면)                     박스 화면처럼 밝은 바탕 + 시안 대각선 */
+/* ---------- 2. 스테이지 (대각선 띠 색) ----------
+   바탕은 모든 페이지가 같고, 가운데 대각선 띠 색과 강조색만 바뀐다.
+   <body data-stage="sword">   시안 (기본값 — 생략해도 같음)
+   <body data-stage="shield">  마젠타
+   <body data-stage="signal">  노랑
+   <body data-stage="neutral"> 회색 (관리자 등) */
 body[data-stage="shield"] {
-  --stage: var(--shield);
-  --stage-band: rgba(255, 255, 255, 0.12);
-  --stage-band-2: rgba(255, 255, 255, 0.07);
-  --on-stage: #ffffff;
+  --band-color: var(--shield);
+  --band-strength: 16%;
   --accent: var(--shield);
   --on-accent: #ffffff;
 }
 
 body[data-stage="signal"] {
-  --stage: var(--signal);
-  --stage-band: rgba(255, 255, 255, 0.3);
-  --stage-band-2: rgba(255, 160, 0, 0.12);
-  --on-stage: var(--ink);
+  --band-color: var(--signal);
+  --band-strength: 45%; /* 노랑은 밝아서 더 진하게 섞어야 같은 정도로 보인다 */
   --accent: #f08c00;
   --on-accent: var(--ink);
 }
 
-body[data-stage="sword"] {
-  --stage: var(--sword);
-  --stage-band: rgba(255, 255, 255, 0.16);
-  --stage-band-2: rgba(0, 60, 90, 0.1);
-  --on-stage: var(--ink);
-  --accent: var(--sword);
-  --on-accent: var(--ink);
+body[data-stage="neutral"] {
+  --band-color: #8a8d99;
+  --band-strength: 18%;
+  --accent: #5d5f68;
+  --on-accent: #ffffff;
 }
 
 /* ---------- 3. 다크 테마 (<html data-theme="dark">) ----------
-   게임에는 없는 모드라, 스테이지를 어둡게 낮추고 선택 표시를 반전(흰 알약 + 검정 글자)한다. */
+   게임에는 없는 모드라, 바탕을 어둡게 하고 선택 표시를 반전(흰 알약 + 검정 글자)한다. */
 :root[data-theme="dark"] {
   --panel: #202127;
   --row: #2a2b32;
@@ -131,26 +129,14 @@ body[data-stage="sword"] {
 
 :root[data-theme="dark"] body {
   --stage: #15161b;
-  --stage-band: rgba(0, 166, 200, 0.1);
-  --stage-band-2: rgba(255, 255, 255, 0.03);
+  background-image:
+    linear-gradient(var(--band-angle), transparent 0 var(--band-from), var(--band) var(--band-from) var(--band-to), transparent var(--band-to));
+  --band-strength: 14%;
   --on-stage: #f1f1f3;
-}
-
-:root[data-theme="dark"] body[data-stage="shield"] {
-  --stage: color-mix(in srgb, var(--shield) 38%, #111);
-  --stage-band: rgba(255, 255, 255, 0.06);
 }
 
 :root[data-theme="dark"] body[data-stage="signal"] {
-  --stage: color-mix(in srgb, var(--signal) 26%, #111);
-  --stage-band: rgba(255, 255, 255, 0.05);
-  --on-stage: #f1f1f3;
-}
-
-:root[data-theme="dark"] body[data-stage="sword"] {
-  --stage: color-mix(in srgb, var(--sword) 30%, #111);
-  --stage-band: rgba(255, 255, 255, 0.05);
-  --on-stage: #f1f1f3;
+  --band-strength: 18%;
 }
 
 /* ---------- 4. reset / 기본 typography ---------- */
@@ -175,11 +161,12 @@ body {
   line-height: 1.55;
   word-break: keep-all;
   overflow-wrap: anywhere;
-  /* 스테이지: 단색 + 큰 대각선 띠 두 개 (메뉴 화면 배경 느낌) */
+  /* 밝은 바탕 + 가운데 큰 대각선 띠 (연한 띠 색) + 왼쪽 가는 흰 띠 */
+  --band: color-mix(in srgb, var(--band-color) var(--band-strength), transparent);
   background-color: var(--stage);
   background-image:
-    linear-gradient(112deg, transparent 0 56%, var(--stage-band) 56% 74%, transparent 74%),
-    linear-gradient(112deg, transparent 0 8%, var(--stage-band-2) 8% 22%, transparent 22%);
+    linear-gradient(var(--band-angle), transparent 0 var(--band-from), var(--band) var(--band-from) var(--band-to), transparent var(--band-to)),
+    linear-gradient(var(--band-angle), transparent 0 8%, rgba(255, 255, 255, 0.55) 8% 20%, transparent 20%);
   background-attachment: fixed;
 }
 
@@ -796,6 +783,10 @@ a.control-hint:hover .key {
   font-weight: 600;
 }
 
+:root[data-theme="dark"] .info-bar {
+  background: #2c2d35;
+}
+
 /* ---------- 14. 패널 · 표 · 칩 ---------- */
 .panel {
   background: var(--panel);
@@ -1196,6 +1187,9 @@ a.control-hint:hover .key {
 @media (max-width: 1024px) {
   :root {
     --fs-h1: 1.5rem;
+    --band-angle: 108deg;
+    --band-from: 54%;
+    --band-to: 78%;
   }
 
   .site-search {
@@ -1213,6 +1207,10 @@ a.control-hint:hover .key {
 
 @media (max-width: 700px) {
   :root {
+    /* 세로로 긴 화면: 띠를 더 세우고 넓혀서 가운데를 지나가게 */
+    --band-angle: 100deg;
+    --band-from: 46%;
+    --band-to: 82%;
     --fs-h1: 1.375rem;
     --fs-h2: 1.25rem;
     --row-h: 46px;

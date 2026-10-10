@@ -17,7 +17,7 @@
     @media (max-width: 700px) { .sg-two { grid-template-columns: 1fr; } }
   </style>
 </head>
-<body data-stage="shield">
+<body data-stage="sword">
   <div id="site-header"></div>
 
   <main class="container">
@@ -28,14 +28,14 @@
         </span>
         스타일 가이드
       </h1>
-      <ul class="round-select" id="stage-select" aria-label="스테이지 색">
-        <li><button type="button" aria-pressed="true" data-stage="shield">Shield</button></li>
+      <ul class="round-select" id="stage-select" aria-label="대각선 띠 색">
+        <li><button type="button" aria-pressed="true" data-stage="sword">Sword</button></li>
+        <li><button type="button" aria-pressed="false" data-stage="shield">Shield</button></li>
         <li><button type="button" aria-pressed="false" data-stage="signal">Signal</button></li>
-        <li><button type="button" aria-pressed="false" data-stage="sword">Sword</button></li>
-        <li><button type="button" aria-pressed="false" data-stage="">Light</button></li>
+        <li><button type="button" aria-pressed="false" data-stage="neutral">Neutral</button></li>
       </ul>
     </div>
-    <p class="page-sub">공통 기반(css/base.css, js/common.js) 견본입니다. 페이지마다 <code>&lt;body data-stage&gt;</code>로 배경 색을 고릅니다.</p>
+    <p class="page-sub">공통 기반(css/base.css, js/common.js) 견본입니다. 바탕은 모든 페이지가 같고, <code>&lt;body data-stage&gt;</code>로 가운데 대각선 띠 색과 강조색만 바꿉니다.</p>
 
     <!-- 원형 메뉴 + 정보 띠 : 메인 메뉴 화면 문법 -->
     <section class="sg-section" aria-labelledby="sg-menu">
@@ -190,8 +190,7 @@
           if (!button) return;
           for (const b of group.querySelectorAll('button')) b.setAttribute('aria-pressed', String(b === button));
           if (group.id === 'stage-select') {
-            if (button.dataset.stage) document.body.dataset.stage = button.dataset.stage;
-            else delete document.body.dataset.stage;
+            document.body.dataset.stage = button.dataset.stage;
             renderSwatches();
           }
         });
