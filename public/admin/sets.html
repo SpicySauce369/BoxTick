@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>세트 관리 · BoxTick</title>
+  <link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="/css/admin.css"><link rel="stylesheet" href="/css/admin-catalog.css">
+  <script src="/js/common.js"></script><script src="/js/admin.js"></script>
+</head>
+<body data-stage="neutral" data-admin-catalog="sets">
+  <div id="site-header"></div>
+  <main class="container admin-layout">
+    <aside class="admin-sidebar" id="admin-sidebar"></aside>
+    <section class="admin-catalog" aria-labelledby="admin-title">
+      <div class="admin-head">
+        <div>
+          <h1 class="page-title" id="admin-title"><span class="page-title__icon" aria-hidden="true">▣</span>세트 관리</h1>
+          <p class="page-sub">확장팩 세트 정보와 박스 정가를 관리합니다.</p>
+        </div>
+        <button class="btn btn--primary" type="button" data-new>새 세트</button>
+      </div>
+
+      <div class="admin-workspace">
+        <section class="panel admin-list-panel" aria-labelledby="set-list-title">
+          <div class="panel-head"><h2 id="set-list-title">세트 목록</h2><span id="result-count">-</span></div>
+          <div class="admin-toolbar">
+            <input class="input" id="list-search" type="search" placeholder="세트 이름 검색" aria-label="세트 이름 검색">
+          </div>
+          <div id="item-list" class="admin-record-list"><div class="loading-state">불러오는 중…</div></div>
+        </section>
+
+        <section class="panel admin-editor" aria-labelledby="editor-title">
+          <div class="panel-head"><h2 id="editor-title">새 세트</h2><span id="editor-state">NEW</span></div>
+          <form id="editor-form" class="admin-form" novalidate>
+            <input type="hidden" name="id">
+            <div class="field"><label for="name">세트 이름 *</label><input class="input" id="name" name="name" maxlength="100" required><div class="field-error" id="name-error"></div></div>
+            <div class="admin-form-grid">
+              <div class="field"><label for="release_date">발매일</label><input class="input" id="release_date" name="release_date" type="date"><div class="field-error" id="release_date-error"></div></div>
+              <div class="field"><label for="box_price">박스 정가</label><input class="input" id="box_price" name="box_price" type="number" min="0" step="1"><div class="field-error" id="box_price-error"></div></div>
+              <div class="field"><label for="packs_per_box">박스당 팩 수</label><input class="input" id="packs_per_box" name="packs_per_box" type="number" min="1" step="1"><div class="field-error" id="packs_per_box-error"></div></div>
+              <div class="field"><label for="external_id">외부 ID</label><input class="input" id="external_id" name="external_id" autocomplete="off"><div class="field-error" id="external_id-error"></div></div>
+            </div>
+            <div class="field"><label for="image_url">이미지 URL</label><input class="input" id="image_url" name="image_url" type="url" autocomplete="off"><div class="field-error" id="image_url-error"></div></div>
+            <div class="admin-form-actions">
+              <button class="btn btn--secondary" type="button" data-reset>초기화</button>
+              <button class="btn btn--danger" type="button" data-delete hidden>삭제</button>
+              <button class="btn btn--primary" type="submit">저장</button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="/js/admin-catalog.js"></script>
+</body></html>

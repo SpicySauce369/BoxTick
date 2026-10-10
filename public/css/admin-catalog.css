@@ -1,0 +1,38 @@
+/* 관리자 카탈로그/시세 화면 전용 */
+.admin-catalog{min-width:0}
+.admin-workspace{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:var(--sp-3);align-items:start}
+.admin-workspace--prices{margin-top:var(--sp-3)}
+.admin-list-panel,.admin-editor{min-width:0}
+.admin-editor{position:sticky;top:calc(var(--header-h) + var(--sp-2))}
+.admin-toolbar{display:grid;grid-template-columns:1fr;gap:var(--sp-1);margin-bottom:var(--sp-2)}
+.admin-toolbar--cards{grid-template-columns:minmax(0,1fr) minmax(150px,.65fr)}
+.admin-record-list{display:flex;flex-direction:column;gap:8px}
+.admin-record{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--sp-2);align-items:center;min-height:54px;padding:8px 10px 8px var(--sp-2);border:0;border-radius:var(--radius-pill);background:var(--row);color:var(--text);box-shadow:var(--shadow);text-align:left;cursor:pointer}
+.admin-record:hover,.admin-record.is-selected{background:var(--ink);color:var(--on-ink)}
+:root[data-theme="dark"] .admin-record:hover,:root[data-theme="dark"] .admin-record.is-selected{background:#f1f1f3;color:#111}
+.admin-record__main{min-width:0}
+.admin-record__title{display:block;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-record__meta{display:block;margin-top:2px;font-size:var(--fs-small);color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-record:hover .admin-record__meta,.admin-record.is-selected .admin-record__meta{color:inherit;opacity:.72}
+.admin-record__aside{min-width:92px;padding:7px 12px;border-radius:var(--radius-pill);background:var(--capsule);color:var(--on-capsule);font-weight:800;text-align:right;white-space:nowrap}
+.admin-form{display:flex;flex-direction:column;gap:var(--sp-2)}
+.admin-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-2)}
+.admin-form-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:var(--sp-1);padding-top:var(--sp-1)}
+.admin-target-panel{margin-bottom:var(--sp-3)}
+.admin-target-controls{display:grid;grid-template-columns:minmax(150px,.6fr) minmax(180px,1fr) minmax(220px,1fr);gap:var(--sp-2)}
+.admin-target-controls--single{grid-template-columns:minmax(220px,420px)}
+.admin-record-list .empty-state,.admin-record-list .loading-state{padding:var(--sp-4) var(--sp-2)}
+.admin-record .price-up,.admin-record .price-down,.admin-record .price-flat{white-space:nowrap}
+.admin-record:hover .price-up,.admin-record.is-selected .price-up,
+.admin-record:hover .price-down,.admin-record.is-selected .price-down,
+.admin-record:hover .price-flat,.admin-record.is-selected .price-flat{color:inherit}
+@media(max-width:1024px){
+  .admin-workspace{grid-template-columns:1fr}
+  .admin-editor{position:static}
+}
+@media(max-width:700px){
+  .admin-toolbar--cards,.admin-form-grid,.admin-target-controls{grid-template-columns:1fr}
+  .admin-record{grid-template-columns:minmax(0,1fr)}
+  .admin-record__aside{text-align:left;justify-self:start}
+  .admin-form-actions .btn{flex:1}
+}
