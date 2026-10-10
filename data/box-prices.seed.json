@@ -1,0 +1,206 @@
+[
+  {
+    "set": "black-bolt",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 53000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-06-01",
+        "price": 57000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-07-01",
+        "price": 62000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-08-01",
+        "price": 63000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-09-01",
+        "price": 64000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-09-15",
+        "price": 66000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-09-22",
+        "price": 67000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-09-29",
+        "price": 68000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-10-01",
+        "price": 69000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      }
+    ]
+  },
+  {
+    "set": "white-flare",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 51000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-06-01",
+        "price": 54000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-07-01",
+        "price": 59000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-08-01",
+        "price": 60000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-09-01",
+        "price": 61000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-09-15",
+        "price": 63000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-09-22",
+        "price": 64000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-09-29",
+        "price": 65000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-10-01",
+        "price": 66000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      }
+    ]
+  },
+  {
+    "set": "terastal-festival",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 67000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-06-01",
+        "price": 72000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-07-01",
+        "price": 78000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-08-01",
+        "price": 80000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-09-01",
+        "price": 81000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-09-15",
+        "price": 83000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-09-22",
+        "price": 84000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-09-29",
+        "price": 86000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      },
+      {
+        "date": "2026-10-01",
+        "price": 87000,
+        "source": "seed",
+        "source_url": null,
+        "seller_name": null
+      }
+    ]
+  }
+]
