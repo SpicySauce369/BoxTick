@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>박스 상세 · BoxTick</title>
+  <link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="/css/box.css">
+  <script src="/js/common.js"></script>
+</head>
+<body data-stage="signal">
+  <div id="site-header"></div>
+  <main class="container box-page">
+    <header class="box-detail-title">
+      <div>
+        <h1 class="page-title"><span class="page-title__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M3 8v8l9 4 9-4V8"/></svg></span>BOX STATUS</h1>
+        <p class="page-sub" id="box-subtitle">박스 정보를 불러오는 중입니다.</p>
+      </div>
+      <a class="btn btn--secondary" href="/boxes.html">가방으로</a>
+    </header>
+
+    <section class="box-status">
+      <div class="box-showcase panel diag-accent">
+        <div class="panel-head"><span id="box-name-head">BOX</span><span id="box-date-head">-</span></div>
+        <div class="box-package" id="box-package"><span>BOX</span></div>
+        <div class="stepper" aria-label="박스 이동"><button type="button" id="prev-box" aria-label="이전 박스">◀</button><span id="box-step-name">-</span><button type="button" id="next-box" aria-label="다음 박스">▶</button></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><span>MARKET DATA</span><span id="box-latest-date">-</span></div>
+        <table class="stat-table"><tbody>
+          <tr><th scope="row">현재 시세</th><td id="box-current">-</td></tr>
+          <tr><th scope="row">박스 정가</th><td id="box-retail">-</td></tr>
+          <tr><th scope="row">정가 대비</th><td id="box-rate">-</td></tr>
+          <tr><th scope="row">팩 수</th><td id="box-pack-count">-</td></tr>
+          <tr><th scope="row">팩 정가</th><td id="box-pack-retail">-</td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <section class="panel box-history-panel">
+      <div class="box-history-head"><div><p class="text-small text-muted">BOX PRICE HISTORY</p><h2>박스 시세 변화</h2></div><span class="chip chip--signal" id="box-history-count">-</span></div>
+      <div id="box-price-chart" class="market-chart"></div>
+      <div class="scroll-x"><table class="box-history-table"><thead><tr><th>기록일</th><th>가격</th><th>출처</th><th>판매처</th></tr></thead><tbody id="box-history-body"></tbody></table></div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="/js/market-chart.js"></script><script src="/js/box.js"></script>
+</body></html>
