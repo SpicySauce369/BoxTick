@@ -10,13 +10,11 @@
 .home-orb:after{left:50%;top:50%;width:54px;height:54px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 8px var(--ink);transform:translate(-50%,-50%)}
 .home-orb span{display:none}
 .home-menu-wrap{padding-block:var(--sp-2)}
-.home-menu-wrap .circle-menu{grid-template-columns:repeat(5,minmax(0,132px));justify-content:center}
-.home-menu-wrap .circle-menu:has(#admin-menu-item[hidden]){grid-template-columns:repeat(4,minmax(0,132px))}
+.home-menu-wrap .circle-menu:has(#admin-menu-item[hidden]){grid-template-columns:repeat(4,minmax(0,1fr));max-width:820px;margin-inline:auto}
 .home-status-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(360px,.75fr);gap:var(--sp-3);align-items:start}
 .home-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-2)}
 .home-summary__item{display:flex;flex-direction:column;gap:4px;min-width:0}
 .home-summary__item span{font-size:var(--fs-small);font-weight:700;color:var(--text-muted)}
 .home-summary__item strong{font-size:1.35rem;font-variant-numeric:tabular-nums}
-@media(max-width:1024px){.home-menu-wrap .circle-menu{grid-template-columns:repeat(4,minmax(0,132px))}}
 @media(max-width:900px){.home-hero{grid-template-columns:1fr}.home-orb{justify-self:start;width:140px}.home-status-grid{grid-template-columns:1fr}.home-summary{max-width:560px}}
-@media(max-width:700px){.home-menu-wrap .circle-menu,.home-menu-wrap .circle-menu:has(#admin-menu-item[hidden]){grid-template-columns:repeat(2,132px)}.home-main{gap:var(--sp-4)}.home-hero h1{font-size:3.2rem}.home-orb{display:none}.home-summary{grid-template-columns:1fr}.home-summary__item{flex-direction:row;justify-content:space-between;align-items:center}}
+@media(max-width:700px){.home-menu-wrap .circle-menu:has(#admin-menu-item[hidden]){grid-template-columns:repeat(2,132px);max-width:none}.home-main{gap:var(--sp-4)}.home-hero h1{font-size:3.2rem}.home-orb{display:none}.home-summary{grid-template-columns:1fr}.home-summary__item{flex-direction:row;justify-content:space-between;align-items:center}}
