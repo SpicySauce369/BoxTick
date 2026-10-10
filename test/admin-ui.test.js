@@ -40,3 +40,29 @@ describe('관리자 정적 파일', () => {
     assert.equal((await request(app).get('/js/admin.js')).status, 200);
   });
 });
+
+describe('관리자 회원 · 게시글 관리 화면', () => {
+  const { app } = setup();
+
+  for (const [path, ids, script] of [
+    ['/admin/users.html', ['admin-sidebar', 'status-filter', 'item-list', 'detail-panel', 'status-button'], '/js/admin-users.js'],
+    ['/admin/posts.html', ['admin-sidebar', 'category-filter', 'item-list', 'detail-panel', 'delete-button'], '/js/admin-posts.js'],
+  ]) {
+    it(`${path} 는 관리자 공통 틀과 필요한 요소 · 스크립트를 포함한다`, async () => {
+      const res = await request(app).get(path);
+      assert.equal(res.status, 200);
+      assert.match(res.text, /data-stage="neutral"/);
+      for (const id of ids) assert.ok(res.text.includes(`id="${id}"`), id);
+      for (const asset of ['/css/base.css', '/css/admin.css', '/css/admin-manage.css', '/js/common.js', '/js/admin.js', '/js/admin-manage.js', script]) {
+        assert.ok(res.text.includes(asset), asset);
+      }
+    });
+  }
+
+  it('메뉴의 회원 관리 · 게시글 관리 주소가 실제 파일과 이어진다', async () => {
+    for (const key of ['users', 'posts']) {
+      const item = items.find((i) => i.key === key);
+      assert.equal((await request(app).get(item.href)).status, 200, item.href);
+    }
+  });
+});
