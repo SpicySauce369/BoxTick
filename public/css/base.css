@@ -1074,6 +1074,35 @@ a.control-hint:hover .key {
   margin-top: var(--sp-3);
 }
 
+/* 처음 접속 안내 (ABXY 튜토리얼) */
+.tutorial__title {
+  margin-bottom: var(--sp-1);
+  font-size: 1.125rem;
+}
+
+.tutorial__keys {
+  display: grid;
+  gap: 8px;
+  margin: var(--sp-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tutorial__keys li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--label-cell);
+}
+
+.tutorial__keys .key {
+  flex: none;
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
 /* ---------- 17. 시세 표기 ---------- */
 .num {
   font-variant-numeric: tabular-nums;
