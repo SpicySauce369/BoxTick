@@ -26,6 +26,27 @@ async function createUser(db, { username, password, nickname, role = 'user' }) {
   return findById(db, info.lastInsertRowid);
 }
 
+function findPasswordHashById(db, id) {
+  const row = db.prepare('SELECT password_hash FROM users WHERE id = ?').get(id);
+  return row ? row.password_hash : null;
+}
+
+/** 넘긴 값만 바꾼다 (undefined 는 그대로 둔다). 바뀐 회원 정보를 돌려준다. */
+function updateProfile(db, id, { nickname, passwordHash }) {
+  db.prepare(
+    `UPDATE users
+        SET nickname      = COALESCE(@nickname, nickname),
+            password_hash = COALESCE(@passwordHash, password_hash)
+      WHERE id = @id`
+  ).run({ id, nickname: nickname ?? null, passwordHash: passwordHash ?? null });
+  return findById(db, id);
+}
+
+function setStatus(db, id, status) {
+  db.prepare('UPDATE users SET status = ? WHERE id = ?').run(status, id);
+  return findById(db, id);
+}
+
 function toPublicUser(user) {
   const { password_hash: _omit, ...rest } = user;
   return rest;
@@ -38,5 +59,8 @@ module.exports = {
   findById,
   findByUsernameWithHash,
   createUser,
+  findPasswordHashById,
+  updateProfile,
+  setStatus,
   toPublicUser,
 };

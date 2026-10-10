@@ -2,24 +2,9 @@ const { describe, it, beforeEach } = require('node:test');
 const assert = require('node:assert/strict');
 const request = require('supertest');
 
-const { openDatabase, initSchema } = require('../db/database');
 const { createUser } = require('../db/users');
-const { createApp, SESSION_COOKIE_NAME } = require('../app');
-
-const PASSWORD = 'password123';
-
-function setup() {
-  const db = openDatabase(':memory:');
-  initSchema(db);
-  const app = createApp({ db, sessionSecret: 'test-secret' });
-  return { db, app };
-}
-
-async function login(app, username, password = PASSWORD) {
-  const agent = request.agent(app);
-  const res = await agent.post('/api/auth/login').send({ username, password });
-  return { agent, res };
-}
+const { SESSION_COOKIE_NAME } = require('../app');
+const { PASSWORD, setup, login } = require('./helpers');
 
 describe('회원가입', () => {
   let db, app;
