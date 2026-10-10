@@ -80,8 +80,22 @@ function validateCard(body) {
   };
 }
 
-function constraintResponse(err, res) {
+function constraintResponse(err, res, context = '') {
   if (!String(err.code || '').startsWith('SQLITE_CONSTRAINT')) return false;
+
+  const message = String(err.message || '');
+  if (context === 'delete-set' && /FOREIGN KEY/i.test(message)) {
+    res.status(409).json({ error: '카드가 남아 있는 세트는 삭제할 수 없습니다.' });
+    return true;
+  }
+
+  if (context === 'card' && /UNIQUE/i.test(message)) {
+    res.status(409).json({
+      error: '같은 세트의 카드 번호 또는 외부 ID가 이미 등록되어 있습니다.',
+    });
+    return true;
+  }
+
   res.status(409).json({ error: '중복되었거나 연결된 데이터 때문에 처리할 수 없습니다.' });
   return true;
 }
@@ -135,7 +149,7 @@ router.delete('/sets/:id', (req, res) => {
     req.app.locals.db.prepare('DELETE FROM card_sets WHERE id = ?').run(id);
     res.status(204).end();
   } catch (err) {
-    if (constraintResponse(err, res)) return;
+    if (constraintResponse(err, res, 'delete-set')) return;
     throw err;
   }
 });
@@ -156,7 +170,7 @@ router.post('/cards', (req, res) => {
       .run(values);
     res.status(201).json({ card: getCardById(req.app.locals.db, info.lastInsertRowid) });
   } catch (err) {
-    if (constraintResponse(err, res)) return;
+    if (constraintResponse(err, res, 'card')) return;
     throw err;
   }
 });
@@ -182,7 +196,7 @@ router.put('/cards/:id', (req, res) => {
       .run({ ...values, id });
     res.json({ card: getCardById(req.app.locals.db, id) });
   } catch (err) {
-    if (constraintResponse(err, res)) return;
+    if (constraintResponse(err, res, 'card')) return;
     throw err;
   }
 });
