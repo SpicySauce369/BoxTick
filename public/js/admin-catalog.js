@@ -414,7 +414,7 @@
 
   function pricePayload() {
     const base = {
-      price:Number(form.price.value),
+      price:form.price.value === '' ? null : Number(form.price.value),
       recorded_at:form.recorded_at.value,
       source:form.source.value,
     };
@@ -429,6 +429,14 @@
 
   async function submitPrice() {
     clearErrors();
+    const clientErrors = {};
+    if (form.price.value === '') clientErrors.price = '가격을 입력해 주세요.';
+    if (!form.recorded_at.value) clientErrors.recorded_at = '기록일을 입력해 주세요.';
+    if (Object.keys(clientErrors).length) {
+      showFieldErrors(form, clientErrors);
+      toast('필수 입력값을 확인해 주세요.', 'error');
+      return;
+    }
     if (!selectedTargetId) {
       toast(mode === 'card-prices' ? '먼저 카드를 선택하세요.' : '먼저 세트를 선택하세요.', 'error');
       return;
@@ -473,11 +481,9 @@
       toast('시세 기록을 삭제했습니다.','success');
       resetForm();
       if(mode==='card-prices'){
-        const data=await api('/api/cards/'+selectedTargetId+'/prices?range=all');
-        currentRecords=data.prices; resultCount.textContent=currentRecords.length+' RECORDS';
-        location.reload();
+        document.getElementById('target-id').dispatchEvent(new Event('change'));
       }else{
-        location.reload();
+        document.getElementById('target-id').dispatchEvent(new Event('change'));
       }
     }catch(err){handleError(err);}
   }
