@@ -18,6 +18,7 @@
 .admin-form{display:flex;flex-direction:column;gap:var(--sp-2)}
 .admin-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-2)}
 .admin-form-grid .select{min-width:0;width:100%}
+.admin-form input[type="date"]{width:100%;min-width:0}
 .admin-form-grid .field:has(#set_id),
 .admin-form-grid .field:has(#source){grid-column:1/-1}
 .admin-form-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:var(--sp-1);padding-top:var(--sp-1)}
@@ -32,6 +33,8 @@
 @media(max-width:1024px){
   .admin-workspace{grid-template-columns:1fr}
   .admin-editor{position:static}
+  .admin-target-controls{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .admin-target-controls #target-id{grid-column:1/-1}
 }
 @media(max-width:700px){
   .admin-toolbar--cards,.admin-form-grid,.admin-target-controls{grid-template-columns:1fr}
