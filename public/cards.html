@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>카드 도감 · BoxTick</title>
+  <link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="/css/cards.css">
+  <script src="/js/common.js"></script>
+</head>
+<body data-stage="sword">
+  <div id="site-header"></div>
+  <main class="container cards-page">
+    <header class="catalog-title-row">
+      <div>
+        <h1 class="page-title"><span class="page-title__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M8 8h8M8 12h5M8 16h7"/></svg></span>CARD DEX</h1>
+        <p class="page-sub">카드 이름, 세트, 희귀도로 찾아보세요.</p>
+      </div>
+      <span class="catalog-count chip chip--sword" id="result-count">-</span>
+    </header>
+
+    <form class="catalog-filter panel" id="card-filter" role="search">
+      <div class="field catalog-filter__search"><label for="q">카드 검색</label><input class="input" id="q" name="q" type="search" placeholder="카드 이름 또는 번호"></div>
+      <div class="field"><label for="set-filter">세트</label><select class="select" id="set-filter" name="set"><option value="">전체 세트</option></select></div>
+      <div class="field"><label for="rarity-filter">희귀도</label><select class="select" id="rarity-filter" name="rarity"><option value="">전체 희귀도</option><option>R</option><option>RR</option><option>AR</option><option>SR</option><option>SAR</option><option>UR</option></select></div>
+      <button class="btn btn--primary" type="submit">검색</button>
+    </form>
+
+    <section class="dex-shell">
+      <div class="dex-list-panel">
+        <span class="list-heading">CARD LIST</span>
+        <ul class="list" id="card-list" aria-live="polite"><li class="loading-state">카드를 불러오는 중입니다.</li></ul>
+        <div class="dex-pagination"><button class="btn btn--secondary" id="prev-page" type="button">◀ 이전</button><span class="chip" id="page-label">1</span><button class="btn btn--secondary" id="next-page" type="button">다음 ▶</button></div>
+      </div>
+
+      <aside class="dex-preview panel diag-accent" id="card-preview" aria-label="선택 카드 미리보기">
+        <div class="panel-head"><span>SELECTED CARD</span><span id="preview-number">-</span></div>
+        <div class="dex-preview__body">
+          <div id="preview-image" class="dex-preview__image"></div>
+          <div class="stack">
+            <div><p class="text-small text-muted">CARD NAME</p><h2 id="preview-name">카드를 선택하세요</h2></div>
+            <div class="row" id="preview-chips"></div>
+            <table class="stat-table"><tbody>
+              <tr><th scope="row">현재 시세</th><td id="preview-price">-</td></tr>
+              <tr><th scope="row">세트</th><td id="preview-set">-</td></tr>
+              <tr><th scope="row">최근 기록</th><td id="preview-date">-</td></tr>
+            </tbody></table>
+            <a class="btn btn--primary btn--block" id="preview-link" href="#" aria-disabled="true">상세 보기</a>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="/js/cards.js"></script>
+</body></html>
