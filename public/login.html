@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>로그인 · BoxTick</title>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/auth.css">
+  <script src="/js/common.js"></script>
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="container auth-main">
+    <section class="auth-card">
+      <h1 class="page-title"><span class="page-title__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>로그인</h1>
+      <form class="panel auth-form" id="login-form" novalidate>
+        <div class="panel-head"><span>LOGIN</span><span>BoxTick</span></div>
+        <p class="auth-message auth-message--ok" id="auth-message" role="status"></p>
+        <div class="field">
+          <label for="username">아이디</label>
+          <input class="input" id="username" name="username" autocomplete="username" required>
+          <p class="field-error" id="username-error"></p>
+        </div>
+        <div class="field">
+          <label for="password">비밀번호</label>
+          <input class="input" id="password" name="password" type="password" autocomplete="current-password" required>
+          <p class="field-error" id="password-error"></p>
+        </div>
+        <button class="btn btn--primary btn--block" type="submit">로그인</button>
+        <p class="auth-switch">아직 회원이 아니신가요? <a href="/register.html" id="register-link">회원가입</a></p>
+      </form>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="/js/auth-pages.js"></script>
+</body>
+</html>
