@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>커뮤니티 · BoxTick</title>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/board.css">
+  <script src="/js/common.js"></script>
+  <script src="/js/board-common.js"></script>
+</head>
+<body data-stage="shield">
+  <div id="site-header"></div>
+  <main class="container board-main">
+    <header class="board-title-row">
+      <div>
+        <h1 class="page-title"><span class="page-title__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4V5z"/><path d="M8 9h8M8 12h5"/></svg></span>Y-COMM</h1>
+        <p class="page-sub">트레이너들과 시세 정보와 개봉 후기를 나눠보세요.</p>
+      </div>
+      <a class="btn btn--accent" href="/write.html" id="write-link">글쓰기</a>
+    </header>
+
+    <nav aria-label="게시판 카테고리">
+      <ul class="round-select board-tabs" id="category-tabs"></ul>
+    </nav>
+
+    <form class="board-search" id="search-form" role="search">
+      <label class="visually-hidden" for="q">게시글 검색</label>
+      <input class="input" id="q" name="q" type="search" placeholder="제목·내용 검색" maxlength="50">
+      <button class="btn btn--primary" type="submit">검색</button>
+    </form>
+
+    <section class="panel board-panel" aria-labelledby="board-list-title">
+      <div class="panel-head"><h2 id="board-list-title">게시글</h2><span id="board-total">-</span></div>
+      <div class="board-head" aria-hidden="true">
+        <span>번호</span><span>제목</span><span>작성자</span><span>날짜</span><span>조회</span>
+      </div>
+      <ul class="list board-list" id="post-list" aria-live="polite"><li class="loading-state">게시글을 불러오는 중입니다.</li></ul>
+      <nav class="board-pages" id="pagination" aria-label="페이지"></nav>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="/js/board.js"></script>
+</body>
+</html>

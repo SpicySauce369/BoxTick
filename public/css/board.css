@@ -1,0 +1,430 @@
+/* 게시판 (board · post · write): Y-COMM 느낌 — 알약 목록 + 프로필 원 + 말풍선 댓글 */
+
+/* ---------- 공통 ---------- */
+.board-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.board-chip {
+  flex: none;
+}
+
+/* 작성자 프로필 원: 닉네임 첫 글자, 닉네임마다 고정 색 */
+.board-avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--panel);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--ink);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.board-avatar--sm {
+  width: 28px;
+  height: 28px;
+  border-width: 2px;
+  box-shadow: 0 0 0 1.5px var(--ink);
+  font-size: var(--fs-small);
+}
+
+.board-avatar--c0 { background: var(--sword); color: var(--ink); }
+.board-avatar--c1 { background: var(--shield); color: #ffffff; }
+.board-avatar--c2 { background: var(--signal); color: var(--ink); }
+.board-avatar--c3 { background: var(--navy); color: #ffffff; }
+
+/* ---------- 목록 (board.html) ---------- */
+.board-title-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+.board-search {
+  display: flex;
+  gap: var(--sp-1);
+  max-width: 520px;
+}
+
+/* 표 머리줄과 각 행이 같은 열 폭을 쓴다: 번호 / 제목 / 작성자 / 날짜 / 조회 */
+.board-head,
+.board-row {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) 140px 96px 56px;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.board-head {
+  padding: 0 6px var(--sp-1) calc(var(--chevron-gap) + var(--sp-3));
+  color: var(--text-muted);
+  font-size: var(--fs-small);
+  font-weight: 800;
+}
+
+.board-head span:nth-child(n + 3),
+.board-row > :nth-child(n + 3) {
+  text-align: center;
+  justify-content: center;
+}
+
+.board-row {
+  padding-right: var(--sp-3);
+}
+
+.board-row__num {
+  color: var(--text-muted);
+  font-size: var(--fs-small);
+}
+
+.board-row__title {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  min-width: 0;
+}
+
+.board-row__text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board-row__comments {
+  flex: none;
+  color: var(--price-up);
+  font-size: var(--fs-small);
+}
+
+.board-row__author {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font-weight: 600;
+}
+
+.board-row__author span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board-row__date,
+.board-row__views {
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+/* 선택(검정 알약)된 행에서는 흐린 글자도 밝게 */
+.board-row:hover .board-row__num,
+.board-row.is-selected .board-row__num,
+.board-row:focus-visible .board-row__num {
+  color: inherit;
+}
+
+/* 페이지 번호 */
+.board-pages {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--sp-1);
+  margin-top: var(--sp-3);
+}
+
+.board-pages .round-select a {
+  min-width: var(--touch);
+  justify-content: center;
+  padding: 0 12px;
+}
+
+.board-pages__arrow {
+  display: inline-grid;
+  place-items: center;
+  width: var(--touch);
+  height: var(--touch);
+  border-radius: 50%;
+  color: var(--text);
+  text-decoration: none;
+}
+
+span.board-pages__arrow {
+  opacity: 0.3;
+}
+
+.board-pages__gap {
+  align-self: center;
+  color: var(--text-muted);
+}
+
+/* ---------- 상세 (post.html) ---------- */
+.post-main {
+  max-width: 880px;
+}
+
+.post-back {
+  align-self: flex-start;
+}
+
+.post-title {
+  margin: var(--sp-1) 0 var(--sp-2);
+  font-size: var(--fs-h2);
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-3);
+  padding-bottom: var(--sp-2);
+  border-bottom: 2px solid var(--line);
+  color: var(--text-muted);
+  font-size: var(--fs-small);
+}
+
+.post-meta__author {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--text);
+  font-size: var(--fs-body);
+}
+
+.post-content {
+  min-height: 120px;
+  padding: var(--sp-3) 0;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.post-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-1);
+}
+
+/* 댓글: 왼쪽 프로필 원 + 말풍선. 내 댓글은 오른쪽으로 */
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0 0 var(--sp-3);
+  padding: 0;
+  list-style: none;
+}
+
+.comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.comment--mine {
+  flex-direction: row-reverse;
+}
+
+.comment__bubble {
+  position: relative;
+  min-width: 0;
+  max-width: min(100%, 640px);
+  padding: 10px var(--sp-2);
+  border-radius: 4px var(--radius-lg) var(--radius-lg) var(--radius-lg);
+  background: var(--label-cell);
+  box-shadow: var(--shadow);
+}
+
+.comment--mine .comment__bubble {
+  border-radius: var(--radius-lg) 4px var(--radius-lg) var(--radius-lg);
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+.comment--mine .comment__meta .text-muted {
+  color: inherit;
+  opacity: 0.7;
+}
+
+:root[data-theme="dark"] .comment--mine .comment__bubble {
+  background: #f1f1f3;
+  color: #111;
+}
+
+.comment__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px var(--sp-1);
+}
+
+.comment__badge {
+  padding: 0 8px;
+}
+
+.comment__text {
+  margin: 4px 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.comment__delete {
+  min-height: 28px;
+  margin-left: auto;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: inherit;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.comment-form__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+.comment-form .textarea {
+  min-height: 96px;
+}
+
+.comment-login {
+  margin: 0;
+  padding: var(--sp-2);
+  border-radius: var(--radius);
+  background: var(--row);
+  text-align: center;
+  font-weight: 700;
+}
+
+/* ---------- 글쓰기 (write.html) ---------- */
+.write-main {
+  max-width: 880px;
+}
+
+.write-main .page-title {
+  margin: 0;
+}
+
+.write-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.write-categories {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.write-categories legend {
+  margin-bottom: 6px;
+  padding: 0;
+  font-weight: 700;
+}
+
+.write-content {
+  min-height: 320px;
+}
+
+.write-content__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+.write-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-1);
+}
+
+/* ---------- 태블릿 ---------- */
+@media (max-width: 1024px) {
+  .board-head,
+  .board-row {
+    grid-template-columns: 48px minmax(0, 1fr) 120px 96px;
+  }
+
+  /* 조회수는 태블릿부터 숨긴다 */
+  .board-head span:nth-child(5),
+  .board-row__views {
+    display: none;
+  }
+}
+
+/* ---------- 모바일: 작성자·조회수·번호를 줄이고 제목 + 날짜만 ---------- */
+@media (max-width: 700px) {
+  .board-title-row {
+    align-items: center;
+  }
+
+  .board-search {
+    max-width: none;
+  }
+
+  .board-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+  }
+
+  .board-tabs a {
+    white-space: nowrap;
+  }
+
+  .board-head {
+    display: none;
+  }
+
+  .board-list {
+    padding-left: var(--sp-2);
+  }
+
+  .board-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding-right: var(--sp-2);
+  }
+
+  .board-row__num,
+  .board-row__author {
+    display: none;
+  }
+
+  .board-row__year {
+    display: none;
+  }
+
+  /* 좁은 화면에서는 화살표 대신 번호만 (번호 칸은 44px 유지) */
+  .board-pages__arrow {
+    display: none;
+  }
+
+  .board-pages .round-select {
+    gap: 6px;
+  }
+
+  .comment__bubble {
+    max-width: calc(100% - 52px);
+  }
+
+  .write-actions .btn,
+  .post-actions .btn {
+    flex: 1;
+  }
+}
