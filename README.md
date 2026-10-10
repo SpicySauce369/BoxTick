@@ -26,7 +26,7 @@ Node.js 22 이상이 필요합니다.
 
 ```bash
 npm install
-npm run db:init   # data/boxtick.db 생성 + 관리자 계정(admin / admin1234) 생성
+npm run db:init   # data/boxtick.db 생성 + 관리자 계정·샘플 데이터 (여러 번 실행해도 중복 없음)
 npm start         # http://localhost:3000
 npm test          # node:test + supertest
 ```
@@ -37,3 +37,15 @@ npm test          # node:test + supertest
 | `DB_PATH` | `data/boxtick.db` | SQLite 파일 경로 |
 | `SESSION_SECRET` | (임시 랜덤값) | 세션 서명 키. `NODE_ENV=production` 이면 필수 |
 | `ADMIN_USERNAME` / `ADMIN_PASSWORD` / `ADMIN_NICKNAME` | `admin` / `admin1234` / `관리자` | `db:init` 이 만드는 초기 관리자 계정 |
+
+### 시연 계정
+
+`npm run db:init` 이 만드는 계정입니다.
+
+| 구분 | 아이디 | 비밀번호 |
+|------|--------|----------|
+| 관리자 | `admin` | `admin1234` (`ADMIN_PASSWORD` 로 변경 가능) |
+| 일반 회원 | `ash01`, `brock`, `dawn`, `gary`, `misty` | `test1234!` |
+
+샘플 데이터: 카드 세트 3, 카드 24, 카드·박스 시세 이력, 게시글 16, 댓글 28 (`data/*.seed.json`).
+시세는 기능 구현용 샘플이며 실제 거래 가격이 아닙니다.
