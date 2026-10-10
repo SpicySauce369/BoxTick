@@ -1262,9 +1262,11 @@ a.control-hint:hover .key {
     padding-inline: var(--sp-2);
   }
 
-  /* 원형 메뉴: 2열 */
+  /* 원형 메뉴: 2열. 화면 양 끝으로 벌어지지 않게 열 폭을 고정하고 가운데로 모은다 */
   .circle-menu {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, 132px);
+    justify-content: center;
+    gap: var(--sp-3) var(--sp-3);
   }
 
   .circle-item {
