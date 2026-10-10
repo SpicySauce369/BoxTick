@@ -62,6 +62,12 @@
   }
 
   if (registerForm) {
+    const next = params.get('next');
+    if (next) {
+      const loginLink = document.getElementById('login-link');
+      if (loginLink) loginLink.href = '/login.html?next=' + encodeURIComponent(next);
+    }
+
     registerForm.addEventListener('submit', (event) => {
       event.preventDefault();
       const body = {
@@ -81,7 +87,6 @@
       submitting(registerForm, async () => {
         try {
           await api('/api/auth/register', { method: 'POST', body });
-          const next = params.get('next');
           location.replace('/login.html?registered=1' + (next ? '&next=' + encodeURIComponent(next) : ''));
         } catch (err) {
           if (err.fields && Object.keys(err.fields).length) {
