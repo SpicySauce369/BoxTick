@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS box_price_history (
   price       INTEGER NOT NULL CHECK (price >= 0),
   recorded_at DATE    NOT NULL,
   source      TEXT    NOT NULL DEFAULT 'seed'
-              CHECK (source IN ('seed', 'admin', 'naver', 'danawa', 'cardshop', 'other')),
+              CHECK (source IN ('seed', 'admin', 'naver-reference', 'danawa-reference', 'cardshop-reference', 'other')),
   source_url  TEXT,
   seller_name TEXT
 );

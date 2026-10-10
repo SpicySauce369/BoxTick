@@ -45,12 +45,12 @@ describe('스키마 제약조건', () => {
     db.prepare('INSERT INTO box_price_history (set_id, price, recorded_at) VALUES (?, 62000, ?)').run(setId, '2026-10-01');
     db.prepare(
       'INSERT INTO box_price_history (set_id, price, recorded_at, source, source_url, seller_name) VALUES (?, ?, ?, ?, ?, ?)'
-    ).run(setId, 65000, '2026-10-02', 'danawa', 'https://example.com/box', '카드샵A');
+    ).run(setId, 65000, '2026-10-02', 'danawa-reference', 'https://example.com/box', '카드샵A');
 
     const rows = db.prepare('SELECT source, source_url, seller_name FROM box_price_history ORDER BY recorded_at').all();
     assert.deepEqual(rows, [
       { source: 'seed', source_url: null, seller_name: null },
-      { source: 'danawa', source_url: 'https://example.com/box', seller_name: '카드샵A' },
+      { source: 'danawa-reference', source_url: 'https://example.com/box', seller_name: '카드샵A' },
     ]);
   });
 
