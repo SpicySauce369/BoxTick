@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>박스 시세 관리 · BoxTick</title>
+  <link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="/css/admin.css"><link rel="stylesheet" href="/css/admin-catalog.css">
+  <script src="/js/common.js"></script><script src="/js/admin.js"></script>
+</head>
+<body data-stage="neutral" data-admin-catalog="box-prices">
+  <div id="site-header"></div>
+  <main class="container admin-layout">
+    <aside class="admin-sidebar" id="admin-sidebar"></aside>
+    <section class="admin-catalog" aria-labelledby="admin-title">
+      <div class="admin-head">
+        <div>
+          <h1 class="page-title" id="admin-title"><span class="page-title__icon" aria-hidden="true">▱</span>박스 시세</h1>
+          <p class="page-sub">세트별 박스 시세와 참고 출처를 관리합니다.</p>
+        </div>
+        <button class="btn btn--primary" type="button" data-new>새 시세</button>
+      </div>
+
+      <section class="panel admin-target-panel">
+        <div class="panel-head"><h2>대상 세트</h2><span id="target-summary">-</span></div>
+        <div class="admin-target-controls admin-target-controls--single">
+          <select class="select" id="target-id"><option value="">세트를 선택하세요</option></select>
+        </div>
+      </section>
+
+      <div class="admin-workspace admin-workspace--prices">
+        <section class="panel admin-list-panel">
+          <div class="panel-head"><h2>박스 시세 이력</h2><span id="result-count">-</span></div>
+          <div id="item-list" class="admin-record-list"><div class="empty-state">세트를 선택하세요.</div></div>
+        </section>
+
+        <section class="panel admin-editor">
+          <div class="panel-head"><h2 id="editor-title">새 박스 시세</h2><span id="editor-state">NEW</span></div>
+          <form id="editor-form" class="admin-form" novalidate>
+            <input type="hidden" name="id"><input type="hidden" name="set_id">
+            <div class="admin-form-grid">
+              <div class="field"><label for="price">가격 *</label><input class="input" id="price" name="price" type="number" min="0" step="1" required><div class="field-error" id="price-error"></div></div>
+              <div class="field"><label for="recorded_at">기록일 *</label><input class="input" id="recorded_at" name="recorded_at" type="date" required><div class="field-error" id="recorded_at-error"></div></div>
+            </div>
+            <div class="field"><label for="source">출처 *</label><select class="select" id="source" name="source"><option value="admin">관리자 입력</option><option value="naver-reference">네이버 참고</option><option value="danawa-reference">다나와 참고</option><option value="cardshop-reference">카드샵 참고</option><option value="other">기타</option></select><div class="field-error" id="source-error"></div></div>
+            <div class="field"><label for="seller_name">판매처 이름</label><input class="input" id="seller_name" name="seller_name"><div class="field-error" id="seller_name-error"></div></div>
+            <div class="field"><label for="source_url">출처 URL</label><input class="input" id="source_url" name="source_url" type="url"><div class="field-error" id="source_url-error"></div></div>
+            <div class="admin-form-actions">
+              <button class="btn btn--secondary" type="button" data-reset>초기화</button>
+              <button class="btn btn--danger" type="button" data-delete hidden>삭제</button>
+              <button class="btn btn--primary" type="submit">저장</button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="/js/admin-catalog.js"></script>
+</body></html>
