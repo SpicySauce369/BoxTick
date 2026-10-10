@@ -19,3 +19,26 @@ describe('로그인 · 회원가입 화면', () => {
     });
   }
 });
+
+describe('마이페이지 화면', () => {
+  const { app } = setup();
+
+  it('/mypage.html 은 두 탭과 수정 폼, 전용 스크립트를 포함한다', async () => {
+    const res = await request(app).get('/mypage.html');
+    assert.equal(res.status, 200);
+    for (const id of ['tab-info', 'tab-posts', 'nickname-form', 'password-form', 'my-post-list']) {
+      assert.ok(res.text.includes(`id="${id}"`), id);
+    }
+    for (const asset of ['/css/base.css', '/css/mypage.css', '/js/common.js', '/js/mypage.js']) {
+      assert.ok(res.text.includes(asset), asset);
+    }
+  });
+
+  it('폼의 입력 이름이 PUT /api/auth/me 계약(nickname, currentPassword, newPassword)과 같다', async () => {
+    const res = await request(app).get('/mypage.html');
+    for (const name of ['nickname', 'currentPassword', 'newPassword']) {
+      assert.ok(res.text.includes(`name="${name}"`), name);
+      assert.ok(res.text.includes(`id="${name}-error"`), `${name}-error`);
+    }
+  });
+});
