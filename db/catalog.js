@@ -86,7 +86,7 @@ function listCards(db, { q = '', setId = null, rarity = '', page, size, offset }
   const params = { limit: size, offset };
 
   if (q) {
-    where.push("(c.name LIKE @q ESCAPE '\\\\' OR c.card_number LIKE @q ESCAPE '\\\\')");
+    where.push("(c.name LIKE @q ESCAPE '\\' OR c.card_number LIKE @q ESCAPE '\\')");
     params.q = `%${escapeLike(q)}%`;
   }
   if (setId != null) {
