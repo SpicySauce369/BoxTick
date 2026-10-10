@@ -353,7 +353,7 @@
         ? [...currentRecords].reverse().map((record)=>recordButton({
             id:record.id,
             title:formatPrice(record.price),
-            meta:formatDate(record.recorded_at)+' · '+record.source,
+            meta:formatDate(record.recorded_at),
             aside:sourceLabel(record.source),
             onClick:(event)=>editCardPrice(record,event.currentTarget),
           }))
@@ -405,7 +405,7 @@
         ? [...currentRecords].reverse().map((record)=>recordButton({
             id:record.id,
             title:formatPrice(record.price),
-            meta:formatDate(record.recorded_at)+' · '+record.source+(record.seller_name?' · '+record.seller_name:''),
+            meta:formatDate(record.recorded_at)+(record.seller_name?' · '+record.seller_name:''),
             aside:sourceLabel(record.source),
             onClick:(event)=>editBoxPrice(record,event.currentTarget),
           }))
@@ -469,7 +469,7 @@
         const data=await api('/api/cards/'+selectedTargetId+'/prices?range=all');
         currentRecords=data.prices; resultCount.textContent=currentRecords.length+' RECORDS';
         replaceChildren(list,[...currentRecords].reverse().map((record)=>recordButton({
-          id:record.id,title:formatPrice(record.price),meta:formatDate(record.recorded_at)+' · '+record.source,aside:sourceLabel(record.source),
+          id:record.id,title:formatPrice(record.price),meta:formatDate(record.recorded_at),aside:sourceLabel(record.source),
           onClick:(event)=>{selectRecord(record.id,event.currentTarget);form.id.value=record.id;form.card_id.value=selectedTargetId;form.price.value=record.price;form.recorded_at.value=record.recorded_at;form.source.value=record.source==='seed'?'admin':record.source;setEditor(true,'카드 시세 수정');clearErrors();},
         })));
         document.getElementById('target-summary').textContent=card.name;
@@ -477,7 +477,7 @@
         const data=await api('/api/sets/'+selectedTargetId);
         currentRecords=data.set.box_prices; resultCount.textContent=currentRecords.length+' RECORDS';
         replaceChildren(list,[...currentRecords].reverse().map((record)=>recordButton({
-          id:record.id,title:formatPrice(record.price),meta:formatDate(record.recorded_at)+' · '+record.source+(record.seller_name?' · '+record.seller_name:''),aside:sourceLabel(record.source),
+          id:record.id,title:formatPrice(record.price),meta:formatDate(record.recorded_at)+(record.seller_name?' · '+record.seller_name:''),aside:sourceLabel(record.source),
           onClick:(event)=>{selectRecord(record.id,event.currentTarget);form.id.value=record.id;form.set_id.value=selectedTargetId;form.price.value=record.price;form.recorded_at.value=record.recorded_at;form.source.value=record.source==='seed'?'admin':record.source;form.seller_name.value=record.seller_name||'';form.source_url.value=record.source_url||'';setEditor(true,'박스 시세 수정');clearErrors();},
         })));
       }
