@@ -1,0 +1,1202 @@
+[
+  {
+    "card": "black-bolt-01",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 7200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 7700,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 8400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 8100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 8700,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 8900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 9000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 9200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 9400,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "black-bolt-02",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 15400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 16500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 18000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 17400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 18700,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 19000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 19400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 19800,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 20100,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "black-bolt-03",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 5200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 5600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 6100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 5900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 6300,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 6400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 6500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 6700,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 6800,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "black-bolt-04",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 4000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 4300,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 4700,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 4500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 4800,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 4900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 5000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 5100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 5200,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "black-bolt-05",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 4600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 4900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 5400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 5200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 5600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 5700,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 5800,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 5900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 6000,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "black-bolt-06",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 3000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 3200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 3500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 3300,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 3600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 3700,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 3700,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 3800,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 3900,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "black-bolt-07",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 2600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 2800,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 3100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 3000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 3200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 3200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 3300,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 3400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 3400,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "black-bolt-08",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 2600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 2700,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 3000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 2900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 3100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 3100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 3200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 3200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 3300,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "white-flare-01",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 7600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 8100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 8900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 8600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 9200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 9400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 9600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 9800,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 9900,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "white-flare-02",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 4300,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 4600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 5000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 4800,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 5200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 5300,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 5400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 5500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 5600,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "white-flare-03",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 5600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 6000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 6600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 6400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 6800,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 6900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 7100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 7200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 7300,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "white-flare-04",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 4500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 4800,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 5200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 5000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 5400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 5500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 5600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 5700,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 5800,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "white-flare-05",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 2600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 2800,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 3100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 3000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 3200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 3200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 3300,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 3400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 3400,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "white-flare-06",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 2400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 2500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 2800,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 2700,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 2900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 2900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 3000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 3000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 3100,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "white-flare-07",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 2900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 3100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 3400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 3300,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 3500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 3500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 3600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 3700,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 3700,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "white-flare-08",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 6200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 6600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 7200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 6900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 7400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 7600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 7700,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 7900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 8000,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "terastal-festival-01",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 36000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 38500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 41900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 40600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 43500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 44400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 45200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 46100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 46900,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "terastal-festival-02",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 30900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 33100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 36000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 34900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 37400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 38100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 38800,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 39600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 40300,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "terastal-festival-03",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 47400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 50700,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 55100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 53400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 57300,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 58400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 59500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 60600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 61700,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "terastal-festival-04",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 19100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 20400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 22200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 21500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 23000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 23500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 23900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 24400,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 24800,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "terastal-festival-05",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 20500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 21900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 23900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 23100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 24800,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 25300,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 25800,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 26300,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 26700,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "terastal-festival-06",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 18000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 19300,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 21000,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 20300,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 21800,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 22200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 22600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 23100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 23500,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "terastal-festival-07",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 17300,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 18500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 20100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 19500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 20900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 21300,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 21700,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 22100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 22500,
+        "source": "seed"
+      }
+    ]
+  },
+  {
+    "card": "terastal-festival-08",
+    "history": [
+      {
+        "date": "2026-05-01",
+        "price": 16500,
+        "source": "seed"
+      },
+      {
+        "date": "2026-06-01",
+        "price": 17600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-07-01",
+        "price": 19200,
+        "source": "seed"
+      },
+      {
+        "date": "2026-08-01",
+        "price": 18600,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-01",
+        "price": 19900,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-15",
+        "price": 20300,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-22",
+        "price": 20700,
+        "source": "seed"
+      },
+      {
+        "date": "2026-09-29",
+        "price": 21100,
+        "source": "seed"
+      },
+      {
+        "date": "2026-10-01",
+        "price": 21400,
+        "source": "seed"
+      }
+    ]
+  }
+]

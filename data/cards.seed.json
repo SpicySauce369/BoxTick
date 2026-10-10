@@ -1,0 +1,218 @@
+[
+  {
+    "seed_id": "black-bolt-01",
+    "set": "black-bolt",
+    "name": "제크로무 ex",
+    "card_number": "001/100",
+    "rarity": "RR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "black-bolt-02",
+    "set": "black-bolt",
+    "name": "비크티니",
+    "card_number": "002/100",
+    "rarity": "AR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "black-bolt-03",
+    "set": "black-bolt",
+    "name": "메로엣타 ex",
+    "card_number": "003/100",
+    "rarity": "RR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "black-bolt-04",
+    "set": "black-bolt",
+    "name": "몰드류 ex",
+    "card_number": "004/100",
+    "rarity": "RR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "black-bolt-05",
+    "set": "black-bolt",
+    "name": "샤로다 ex",
+    "card_number": "005/100",
+    "rarity": "RR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "black-bolt-06",
+    "set": "black-bolt",
+    "name": "늑골라",
+    "card_number": "006/100",
+    "rarity": "AR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "black-bolt-07",
+    "set": "black-bolt",
+    "name": "두더류",
+    "card_number": "007/100",
+    "rarity": "AR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "black-bolt-08",
+    "set": "black-bolt",
+    "name": "자망칼",
+    "card_number": "008/100",
+    "rarity": "AR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "white-flare-01",
+    "set": "white-flare",
+    "name": "레시라무 ex",
+    "card_number": "001/100",
+    "rarity": "RR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "white-flare-02",
+    "set": "white-flare",
+    "name": "비크티니",
+    "card_number": "002/100",
+    "rarity": "R",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "white-flare-03",
+    "set": "white-flare",
+    "name": "조로아크 ex",
+    "card_number": "003/100",
+    "rarity": "RR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "white-flare-04",
+    "set": "white-flare",
+    "name": "염무왕 ex",
+    "card_number": "004/100",
+    "rarity": "RR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "white-flare-05",
+    "set": "white-flare",
+    "name": "고디모아젤",
+    "card_number": "005/100",
+    "rarity": "AR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "white-flare-06",
+    "set": "white-flare",
+    "name": "아이앤트",
+    "card_number": "006/100",
+    "rarity": "AR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "white-flare-07",
+    "set": "white-flare",
+    "name": "치릴리",
+    "card_number": "007/100",
+    "rarity": "AR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "white-flare-08",
+    "set": "white-flare",
+    "name": "크레세리아",
+    "card_number": "008/100",
+    "rarity": "AR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "terastal-festival-01",
+    "set": "terastal-festival",
+    "name": "피카츄 ex",
+    "card_number": "001/100",
+    "rarity": "SAR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "terastal-festival-02",
+    "set": "terastal-festival",
+    "name": "님피아 ex",
+    "card_number": "002/100",
+    "rarity": "SAR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "terastal-festival-03",
+    "set": "terastal-festival",
+    "name": "블래키 ex",
+    "card_number": "003/100",
+    "rarity": "SAR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "terastal-festival-04",
+    "set": "terastal-festival",
+    "name": "리피아 ex",
+    "card_number": "004/100",
+    "rarity": "SAR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "terastal-festival-05",
+    "set": "terastal-festival",
+    "name": "글레이시아 ex",
+    "card_number": "005/100",
+    "rarity": "SAR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "terastal-festival-06",
+    "set": "terastal-festival",
+    "name": "부스터 ex",
+    "card_number": "006/100",
+    "rarity": "SAR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "terastal-festival-07",
+    "set": "terastal-festival",
+    "name": "샤미드 ex",
+    "card_number": "007/100",
+    "rarity": "SAR",
+    "image_url": null,
+    "external_id": null
+  },
+  {
+    "seed_id": "terastal-festival-08",
+    "set": "terastal-festival",
+    "name": "쥬피썬더 ex",
+    "card_number": "008/100",
+    "rarity": "SAR",
+    "image_url": null,
+    "external_id": null
+  }
+]

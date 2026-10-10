@@ -4,8 +4,10 @@ const express = require('express');
 const session = require('express-session');
 
 const authRoutes = require('./routes/auth');
+const catalogRoutes = require('./routes/catalog');
 const adminRoutes = require('./routes/admin');
 const adminUsersRoutes = require('./routes/adminUsers');
+const adminCatalogRoutes = require('./routes/adminCatalog');
 const postRoutes = require('./routes/posts');
 const commentRoutes = require('./routes/comments');
 const adminPostsRoutes = require('./routes/adminPosts');
@@ -38,19 +40,20 @@ function createApp({ db, sessionSecret, secureCookie = false }) {
         httpOnly: true,
         sameSite: 'lax',
         secure: secureCookie,
-        maxAge: 1000 * 60 * 60 * 24 * 7, // 7일
+        maxAge: 1000 * 60 * 60 * 24 * 7,
       },
     })
   );
 
   app.use('/api/auth', authRoutes);
+  app.use('/api', catalogRoutes);
   app.use('/api/posts', postRoutes);
   app.use('/api/comments', commentRoutes);
   app.use('/api/admin/users', adminUsersRoutes);
   app.use('/api/admin/posts', adminPostsRoutes);
+  app.use('/api/admin', adminCatalogRoutes);
   app.use('/api/admin', adminRoutes);
 
-  // 정의되지 않은 API 는 HTML 대신 JSON 404 를 돌려준다.
   app.use('/api', (req, res) => {
     res.status(404).json({ error: '요청한 API 를 찾을 수 없습니다.' });
   });
