@@ -271,6 +271,62 @@ describe('관리자 카드/시세 API', () => {
     assert.equal((await adminAgent.delete(`/api/admin/sets/${created.body.set.id}`)).status, 204);
   });
 
+
+  it('잘못된 날짜와 존재하지 않는 날짜를 거부한다', async () => {
+    const cardId = db.prepare("SELECT id FROM cards WHERE name='비크티니' AND rarity='AR'").get().id;
+    const setId = db.prepare("SELECT id FROM card_sets WHERE name='블랙볼트'").get().id;
+
+    const badCard = await adminAgent.post('/api/admin/prices').send({
+      card_id: cardId,
+      price: 20000,
+      recorded_at: 'abc',
+      source: 'admin',
+    });
+    assert.equal(badCard.status, 400);
+    assert.ok(badCard.body.fields.recorded_at);
+
+    const impossibleBox = await adminAgent.post('/api/admin/box-prices').send({
+      set_id: setId,
+      price: 70000,
+      recorded_at: '2026-02-30',
+      source: 'admin',
+    });
+    assert.equal(impossibleBox.status, 400);
+    assert.ok(impossibleBox.body.fields.recorded_at);
+
+    const badSet = await adminAgent.post('/api/admin/sets').send({
+      name: '날짜 오류 세트',
+      release_date: '2026-13-01',
+      box_price: 50000,
+      packs_per_box: 20,
+    });
+    assert.equal(badSet.status, 400);
+    assert.ok(badSet.body.fields.release_date);
+  });
+
+  it('관리자 API에서는 source=seed 를 사용할 수 없다', async () => {
+    const cardId = db.prepare("SELECT id FROM cards WHERE name='비크티니' AND rarity='AR'").get().id;
+    const setId = db.prepare("SELECT id FROM card_sets WHERE name='블랙볼트'").get().id;
+
+    const card = await adminAgent.post('/api/admin/prices').send({
+      card_id: cardId,
+      price: 22222,
+      recorded_at: '2026-10-11',
+      source: 'seed',
+    });
+    assert.equal(card.status, 400);
+    assert.ok(card.body.fields.source);
+
+    const box = await adminAgent.post('/api/admin/box-prices').send({
+      set_id: setId,
+      price: 70000,
+      recorded_at: '2026-10-11',
+      source: 'seed',
+    });
+    assert.equal(box.status, 400);
+    assert.ok(box.body.fields.source);
+  });
+
   it('허용되지 않은 시세 source는 400', async () => {
     const setId = db.prepare("SELECT id FROM card_sets WHERE name='블랙볼트'").get().id;
     const res = await adminAgent.post('/api/admin/box-prices').send({
