@@ -1,0 +1,1290 @@
+/* =========================================================
+   BoxTick 공통 기반 스타일 — Sword/Shield UI 문법
+   1) 밝은 바탕 + 가운데 큰 대각선 띠. 띠 색만 페이지마다 연하게 바꾼다 (body[data-stage])
+   2) 그 위는 단순하게: 흰 알약 행, 굵은 글자, 테두리·그림자 최소
+   3) 선택 = 검정 알약 + 흰 글자 + 왼쪽 바깥 굵은 검정 ">" (강조색 채우기가 아님)
+   4) 표 = 회색 라벨 칸 + 흰 값 칸
+   5) 화면 맨 아래 검정 조작 안내 바 (Ⓐ 결정  Ⓑ 돌아가기)
+   - 페이지 고유 레이아웃(도감·상태창·가방·Y-COMM·관리자)은 각 페이지 CSS 에서 만든다.
+   - 게임 원본 에셋(아이콘·로고·폰트·텍스처)은 쓰지 않고 CSS 도형으로만 표현한다.
+   ========================================================= */
+
+/* ---------- 1. 디자인 토큰 ---------- */
+:root {
+  /* 브랜드 */
+  --sword: #00a6c8;
+  --shield: #e52b70;
+  --signal: #ffd447;
+  --navy: #171a24;
+  --off-white: #f7f7f4;
+
+  /* 시세 (상승 빨강 ▲ / 하락 파랑 ▼ — 색만으로 의미를 전달하지 않는다) */
+  --price-up: #e5484d;
+  --price-down: #3e63dd;
+
+  /* 잉크: 선택 표시·조작 바·헤더에 쓰는 검정 */
+  --ink: #18181c;
+  --on-ink: #ffffff;
+
+  /* 스테이지(페이지 배경): 밝은 바탕은 고정, 대각선 띠 색만 body[data-stage] 로 바꾼다 */
+  --stage: #eef0f3;
+  --band-color: var(--sword);   /* 띠 색 */
+  --band-strength: 20%;         /* 띠 진하기 (연하게) */
+  --band-angle: 112deg;         /* 띠 각도·위치 — breakpoint 마다 바뀐다 */
+  --band-from: 56%;
+  --band-to: 74%;
+  --on-stage: var(--ink);       /* 바탕 위에 바로 놓이는 제목 글자 */
+
+  /* 페이지 주 강조색 (작은 포인트용: 소제목 띠, 진행 바 등) */
+  --accent: var(--sword);
+  --on-accent: var(--ink);
+
+  /* 표면 */
+  --panel: #ffffff;
+  --row: #ffffff;
+  --label-cell: #e4e4e6;   /* 표 라벨 칸 */
+  --capsule: #3a3a40;      /* 행 오른쪽 값 캡슐 */
+  --on-capsule: #ffffff;
+  --text: var(--ink);
+  --text-muted: #5d5f68;
+  --line: #d6d6da;
+  --overlay: rgba(10, 10, 14, 0.6);
+
+  /* 호환 별칭 (이전 토큰 이름) */
+  --bg: var(--stage);
+  --surface: var(--panel);
+  --surface-alt: var(--label-cell);
+  --surface-dark: var(--ink);
+  --on-surface-dark: var(--on-ink);
+  --border: var(--line);
+
+  /* 타이포 */
+  --font: "Segoe UI", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  --fs-h1: 1.75rem;
+  --fs-h2: 1.375rem;
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+
+  /* 간격 (8px 단위) */
+  --sp-1: 8px;
+  --sp-2: 16px;
+  --sp-3: 24px;
+  --sp-4: 32px;
+  --sp-6: 48px;
+
+  /* 모양 */
+  --radius: 10px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+  --touch: 44px;
+  --row-h: 48px;
+  --chevron-gap: 30px;     /* 선택 ">" 가 들어갈 왼쪽 여백 */
+  --content-max: 1080px;
+  --header-h: 56px;
+  --bar-h: 44px;
+  --shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
+}
+
+/* ---------- 2. 스테이지 (대각선 띠 색) ----------
+   바탕은 모든 페이지가 같고, 가운데 대각선 띠 색과 강조색만 바뀐다.
+   <body data-stage="sword">   시안 (기본값 — 생략해도 같음)
+   <body data-stage="shield">  마젠타
+   <body data-stage="signal">  노랑
+   <body data-stage="neutral"> 회색 (관리자 등) */
+body[data-stage="shield"] {
+  --band-color: var(--shield);
+  --band-strength: 16%;
+  --accent: var(--shield);
+  --on-accent: #ffffff;
+}
+
+body[data-stage="signal"] {
+  --band-color: var(--signal);
+  --band-strength: 45%; /* 노랑은 밝아서 더 진하게 섞어야 같은 정도로 보인다 */
+  --accent: #f08c00;
+  --on-accent: var(--ink);
+}
+
+body[data-stage="neutral"] {
+  --band-color: #8a8d99;
+  --band-strength: 18%;
+  --accent: #5d5f68;
+  --on-accent: #ffffff;
+}
+
+/* ---------- 3. 다크 테마 (<html data-theme="dark">) ----------
+   게임에는 없는 모드라, 바탕을 어둡게 하고 선택 표시를 반전(흰 알약 + 검정 글자)한다. */
+:root[data-theme="dark"] {
+  --panel: #202127;
+  --row: #2a2b32;
+  --label-cell: #34353d;
+  --capsule: #4a4b55;
+  --text: #f1f1f3;
+  --text-muted: #a9abb5;
+  --line: #3b3c45;
+  --ink: #0e0e11;
+  --price-down: #7b96f0; /* 어두운 배경에서 대비 확보 */
+  color-scheme: dark;
+}
+
+:root[data-theme="dark"] body {
+  --stage: #15161b;
+  background-image:
+    linear-gradient(var(--band-angle), transparent 0 var(--band-from), var(--band) var(--band-from) var(--band-to), transparent var(--band-to));
+  --band-strength: 14%;
+  --on-stage: #f1f1f3;
+}
+
+:root[data-theme="dark"] body[data-stage="signal"] {
+  --band-strength: 18%;
+}
+
+/* ---------- 4. reset / 기본 typography ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  /* 밝은 바탕 + 가운데 큰 대각선 띠 (연한 띠 색) + 왼쪽 가는 흰 띠 */
+  --band: color-mix(in srgb, var(--band-color) var(--band-strength), transparent);
+  background-color: var(--stage);
+  background-image:
+    linear-gradient(var(--band-angle), transparent 0 var(--band-from), var(--band) var(--band-from) var(--band-to), transparent var(--band-to)),
+    linear-gradient(var(--band-angle), transparent 0 8%, rgba(255, 255, 255, 0.55) 8% 20%, transparent 20%);
+  background-attachment: fixed;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+figure {
+  margin: 0;
+}
+
+h1 {
+  font-size: var(--fs-h1);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: var(--fs-h2);
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+:focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px var(--ink);
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- 5. 레이아웃 ---------- */
+.container {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding-inline: var(--sp-2);
+}
+
+main {
+  flex: 1;
+  padding-block: var(--sp-4) var(--sp-6);
+}
+
+/* 스테이지 위 페이지 제목: 흰 원 아이콘 + 굵은 글자 (가방 화면 "BAG") */
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--on-stage);
+  font-size: var(--fs-h1);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.page-title__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 3px var(--ink);
+}
+
+.page-title__icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.page-sub {
+  color: var(--on-stage);
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+/* ---------- 6. 공통 header (검정 상단 바) ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: var(--header-h);
+}
+
+.site-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--touch);
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* 로고 마크: 두 색으로 나뉜 원 (자체 도형) */
+.site-logo__mark {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--sword) 0 50%, var(--shield) 50% 100%);
+  box-shadow: 0 0 0 3px #ffffff;
+}
+
+.site-logo__tick {
+  color: var(--signal);
+}
+
+.site-nav {
+  display: flex;
+  gap: 4px;
+}
+
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch);
+  padding: 0 var(--sp-2);
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-nav a:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* 현재 메뉴: 검정 바 위에서는 반전된 흰 알약 */
+.site-nav a[aria-current="page"] {
+  background: #ffffff;
+  color: var(--ink);
+}
+
+.site-search {
+  flex: 1;
+  display: flex;
+  max-width: 300px;
+  margin-left: auto;
+}
+
+.site-search input {
+  width: 100%;
+  min-height: var(--touch);
+  padding: 0 var(--sp-2);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: #ffffff;
+  color: var(--ink);
+}
+
+.site-search input::placeholder {
+  color: #77798a;
+}
+
+.site-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.site-actions a,
+.site-actions button {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch);
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--on-ink);
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.site-actions a:hover,
+.site-actions button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.site-actions .btn--accent {
+  background: #ffffff;
+  color: var(--ink);
+}
+
+.site-user {
+  max-width: 10em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.site-actions .badge-admin {
+  min-height: 24px;
+  padding: 0 10px;
+  background: var(--signal);
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.site-actions .theme-toggle {
+  justify-content: center;
+  width: var(--touch);
+  padding: 0;
+  font-size: 1.1rem;
+}
+
+/* ---------- 7. 공통 footer ---------- */
+.site-footer {
+  padding: var(--sp-3) 0;
+  background: var(--ink);
+  color: #b4b5bd;
+  font-size: var(--fs-small);
+}
+
+.site-footer__name {
+  color: #ffffff;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.site-footer p + p {
+  margin-top: 2px;
+}
+
+/* ---------- 8. 하단 조작 안내 바 (게임 화면 맨 아래 검정 바) ----------
+   initPage({ hints: [{ key: 'A', label: '결정' }, { key: 'B', label: '돌아가기', onClick }] }) 로 만든다. */
+.control-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 40;
+  background: var(--ink);
+  color: var(--on-ink);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.control-bar__inner {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0 var(--sp-3);
+  min-height: var(--bar-h);
+}
+
+.control-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--bar-h);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-weight: 700;
+  font-size: var(--fs-small);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+button.control-hint,
+a.control-hint {
+  cursor: pointer;
+}
+
+button.control-hint:hover .key,
+a.control-hint:hover .key {
+  background: var(--signal);
+}
+
+/* 동그라미 글자 (Ⓐ) */
+.key {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+/* ---------- 9. 선택 표시 primitive ----------
+   선택 = 검정 알약 + 흰 글자 + 왼쪽 바깥의 굵은 검정 ">".
+   .is-selected / [aria-selected="true"] / [aria-current="page"] / [aria-pressed="true"] 모두 같은 모양.
+   행의 부모(.list)는 왼쪽에 --chevron-gap 만큼 여백을 둔다. 단독으로 쓸 때는 <span class="chevron">. */
+.chevron {
+  display: inline-block;
+  width: 18px;
+  height: 24px;
+  background: var(--ink);
+  clip-path: polygon(0 0, 48% 0, 100% 50%, 48% 100%, 0 100%, 52% 50%);
+}
+
+/* ---------- 10. 알약 행 목록 (기술·가방 목록) ----------
+   <ul class="list">
+     <li><a class="list-row is-selected" href="…">
+       <span class="list-row__main">이름</span><span class="list-row__aside">5/5</span>
+     </a></li>
+   </ul> */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 0 0 var(--chevron-gap);
+  margin: 0;
+  list-style: none;
+}
+
+.list-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+  min-height: var(--row-h);
+  padding: 0 6px 0 var(--sp-3);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--row);
+  color: var(--text);
+  font-weight: 700;
+  text-align: left;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+}
+
+.list-row__main {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 오른쪽 짙은 회색 값 캡슐 (PP 5/5 자리) */
+.list-row__aside {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 96px;
+  min-height: calc(var(--row-h) - 12px);
+  padding: 0 var(--sp-2);
+  border-radius: var(--radius-pill);
+  background: var(--capsule);
+  color: var(--on-capsule);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.list-row:hover,
+.list-row.is-selected,
+.list-row[aria-selected="true"],
+.list-row[aria-current="page"],
+.list-row[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+.list-row:hover::before,
+.list-row.is-selected::before,
+.list-row[aria-selected="true"]::before,
+.list-row[aria-current="page"]::before,
+.list-row[aria-pressed="true"]::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--chevron-gap) * -1 + 2px);
+  top: 50%;
+  width: 18px;
+  height: 24px;
+  background: var(--ink);
+  clip-path: polygon(0 0, 48% 0, 100% 50%, 48% 100%, 0 100%, 52% 50%);
+  transform: translateY(-50%);
+}
+
+/* 다크 테마: 선택 표시를 반전 */
+:root[data-theme="dark"] .list-row:hover,
+:root[data-theme="dark"] .list-row.is-selected,
+:root[data-theme="dark"] .list-row[aria-selected="true"],
+:root[data-theme="dark"] .list-row[aria-current="page"],
+:root[data-theme="dark"] .list-row[aria-pressed="true"] {
+  background: #f1f1f3;
+  color: #111;
+}
+
+:root[data-theme="dark"] .list-row::before,
+:root[data-theme="dark"] .chevron {
+  background: #f1f1f3;
+}
+
+/* 목록 위 소제목 띠 (가방의 "TMs" 주황 띠) */
+.list-heading {
+  display: block;
+  width: fit-content;
+  min-width: 50%;
+  margin-left: auto;
+  padding: 4px var(--sp-3);
+  border-radius: var(--radius-pill) 0 0 var(--radius-pill);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: var(--fs-small);
+  font-weight: 800;
+  text-align: center;
+}
+
+/* ---------- 11. round selector primitive ----------
+   알약 버튼 묶음 (탭·필터). 선택 = 검정 알약.
+   <ul class="round-select"><li><button aria-pressed="true">전체</button></li>…</ul> */
+.round-select {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.round-select button,
+.round-select a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--touch);
+  padding: 0 var(--sp-3);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--row);
+  color: var(--text);
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+}
+
+.round-select [aria-pressed="true"],
+.round-select [aria-selected="true"],
+.round-select [aria-current="page"] {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+:root[data-theme="dark"] .round-select [aria-pressed="true"],
+:root[data-theme="dark"] .round-select [aria-selected="true"],
+:root[data-theme="dark"] .round-select [aria-current="page"] {
+  background: #f1f1f3;
+  color: #111;
+}
+
+/* ◀ 값 ▶ 넘기기 (박스 화면 "◀ Box 1 ▶") */
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  min-width: 240px;
+  min-height: var(--row-h);
+  padding: 0 4px;
+  border-radius: var(--radius-pill);
+  background: var(--row);
+  font-size: 1.125rem;
+  font-weight: 800;
+  box-shadow: var(--shadow);
+}
+
+.stepper button {
+  width: var(--touch);
+  height: var(--touch);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.stepper button:hover {
+  background: var(--label-cell);
+}
+
+/* ---------- 12. 원형 메뉴 primitive (메인 메뉴의 흰 원 아이콘 + 라벨) ----------
+   <ul class="circle-menu"><li><a class="circle-item" href="…">
+     <span class="circle-item__icon">…SVG…</span><span>카드 시세</span>
+   </a></li></ul> */
+.circle-menu {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--sp-4) var(--sp-2);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.circle-item {
+  --circle: 104px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--on-stage);
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+}
+
+.circle-item__icon {
+  display: grid;
+  place-items: center;
+  width: var(--circle);
+  height: var(--circle);
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--ink);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.14);
+  transition: transform 0.12s ease;
+}
+
+.circle-item__icon svg {
+  width: 50%;
+  height: 50%;
+}
+
+.circle-item:hover .circle-item__icon,
+.circle-item.is-selected .circle-item__icon,
+.circle-item:focus-visible .circle-item__icon {
+  box-shadow: 0 0 0 5px var(--ink);
+  transform: scale(1.04);
+}
+
+.circle-item:hover::before,
+.circle-item.is-selected::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--circle) / 2 - 13px);
+  left: calc(50% - var(--circle) / 2 - 30px);
+  width: 20px;
+  height: 26px;
+  background: var(--ink);
+  clip-path: polygon(0 0, 48% 0, 100% 50%, 48% 100%, 0 100%, 52% 50%);
+}
+
+:root[data-theme="dark"] .circle-item:hover .circle-item__icon,
+:root[data-theme="dark"] .circle-item.is-selected .circle-item__icon {
+  box-shadow: 0 0 0 5px #f1f1f3;
+}
+
+:root[data-theme="dark"] .circle-item::before {
+  background: #f1f1f3;
+}
+
+/* ---------- 13. 정보 띠 (메뉴 화면의 반투명 검정 알림 문구) ---------- */
+.info-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 14px var(--sp-3);
+  border-radius: 4px;
+  background: rgba(20, 20, 24, 0.82);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+:root[data-theme="dark"] .info-bar {
+  background: #2c2d35;
+}
+
+/* ---------- 14. 패널 · 표 · 칩 ---------- */
+.panel {
+  background: var(--panel);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-3);
+  box-shadow: var(--shadow);
+}
+
+/* 패널 상단 검정 헤더 띠 (상태창 "Victini Lv. 50") */
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin: calc(var(--sp-3) * -1) calc(var(--sp-3) * -1) var(--sp-2);
+  padding: 10px var(--sp-3);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--ink);
+  color: var(--on-ink);
+  font-weight: 800;
+}
+
+/* 회색 라벨 칸 + 흰 값 칸 표 (박스 화면 HP/공격 표)
+   <table class="stat-table"><tr><th>현재 시세</th><td>125,000원</td></tr></table> */
+.stat-table {
+  border-collapse: separate;
+  border-spacing: 0 4px;
+}
+
+.stat-table th,
+.stat-table td {
+  padding: 8px var(--sp-2);
+  font-weight: 600;
+}
+
+.stat-table th {
+  width: 40%;
+  background: var(--label-cell);
+  color: var(--text);
+  text-align: center;
+  font-weight: 700;
+}
+
+.stat-table td {
+  background: var(--panel);
+  border-bottom: 2px solid var(--line);
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 작은 라벨 칩 (타입 배지 자리: 희귀도·카테고리) */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 12px;
+  border-radius: 4px;
+  background: var(--capsule);
+  color: var(--on-capsule);
+  font-size: var(--fs-small);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.chip--sword { background: var(--sword); color: var(--ink); }
+.chip--shield { background: var(--shield); color: #ffffff; }
+.chip--signal { background: var(--signal); color: var(--ink); }
+
+/* 대각선 장식 면 (상태창 왼쪽 아래의 사선) — 섹션에 덧붙여 쓴다 */
+.diag-accent {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.diag-accent::after {
+  content: "";
+  position: absolute;
+  left: -10%;
+  bottom: -40px;
+  z-index: -1;
+  width: 55%;
+  height: 90px;
+  background: var(--accent);
+  transform: skewY(-12deg);
+}
+
+/* 대각선으로 잘린 패널 */
+.diag {
+  clip-path: polygon(0 0, 100% 0, calc(100% - 28px) 100%, 0 100%);
+  padding-right: calc(var(--sp-3) + 28px);
+}
+
+/* ---------- 15. 버튼 · 입력 ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-1);
+  min-height: var(--touch);
+  padding: 0 var(--sp-3);
+  border: 0;
+  border-radius: var(--radius-pill);
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: var(--shadow);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+:root[data-theme="dark"] .btn--primary {
+  background: #f1f1f3;
+  color: #111;
+}
+
+.btn--accent {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.btn--secondary {
+  background: var(--row);
+  color: var(--text);
+}
+
+.btn--danger {
+  background: var(--price-up);
+  color: #ffffff;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field label {
+  font-weight: 800;
+  font-size: var(--fs-small);
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  min-height: var(--touch);
+  padding: 10px var(--sp-2);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--text);
+}
+
+.input,
+.select {
+  border-radius: var(--radius-pill);
+  padding-inline: var(--sp-3);
+}
+
+.textarea {
+  min-height: 160px;
+  resize: vertical;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--ink);
+  outline: none;
+}
+
+:root[data-theme="dark"] .input:focus,
+:root[data-theme="dark"] .select:focus,
+:root[data-theme="dark"] .textarea:focus {
+  border-color: #f1f1f3;
+}
+
+.input[aria-invalid="true"],
+.select[aria-invalid="true"],
+.textarea[aria-invalid="true"] {
+  border-color: var(--price-up);
+}
+
+.field-error {
+  min-height: 1.4em;
+  color: var(--price-up);
+  font-size: var(--fs-small);
+  font-weight: 700;
+}
+
+/* ---------- 16. toast (정보 띠 모양) · modal ---------- */
+.toast-region {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--bar-h) + var(--sp-2));
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+  width: min(92vw, 480px);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.toast {
+  width: 100%;
+  padding: 14px var(--sp-3);
+  border-radius: 4px;
+  background: rgba(20, 20, 24, 0.9);
+  color: #ffffff;
+  font-weight: 600;
+  animation: toast-in 0.16s ease-out;
+  pointer-events: auto;
+}
+
+.toast--error {
+  box-shadow: inset 6px 0 0 var(--price-up);
+}
+
+.toast--success {
+  box-shadow: inset 6px 0 0 var(--sword);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.modal {
+  width: min(92vw, 440px);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--panel);
+  color: var(--text);
+  overflow: hidden;
+}
+
+.modal::backdrop {
+  background: var(--overlay);
+}
+
+.modal__body {
+  padding: var(--sp-3);
+  font-weight: 600;
+}
+
+.modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-1);
+  margin-top: var(--sp-3);
+}
+
+/* ---------- 17. 시세 표기 ---------- */
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.price-up {
+  color: var(--price-up);
+  font-weight: 800;
+}
+
+.price-down {
+  color: var(--price-down);
+  font-weight: 800;
+}
+
+.price-flat {
+  color: var(--text-muted);
+  font-weight: 800;
+}
+
+/* ---------- 18. 상태 표시 ---------- */
+.empty-state,
+.loading-state {
+  padding: var(--sp-6) var(--sp-2);
+  text-align: center;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.skeleton {
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, var(--label-cell) 25%, var(--line) 50%, var(--label-cell) 75%);
+  background-size: 200% 100%;
+  animation: skeleton 1.2s linear infinite;
+}
+
+@keyframes skeleton {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.img-placeholder {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 63 / 88;
+  border: 2px dashed var(--line);
+  border-radius: var(--radius);
+  background: var(--label-cell);
+  color: var(--text-muted);
+  font-size: var(--fs-small);
+  font-weight: 700;
+}
+
+/* ---------- 19. 공통 utility ---------- */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-1) var(--sp-2);
+}
+
+.spread {
+  justify-content: space-between;
+}
+
+.on-stage {
+  color: var(--on-stage);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-small {
+  font-size: var(--fs-small);
+}
+
+.mt-2 {
+  margin-top: var(--sp-2);
+}
+
+.mt-3 {
+  margin-top: var(--sp-3);
+}
+
+.scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- 20. breakpoint ----------
+   Desktop ≥ 1025px / Tablet 701–1024px / Mobile ≤ 700px */
+@media (max-width: 1024px) {
+  :root {
+    --fs-h1: 1.5rem;
+    --band-angle: 108deg;
+    --band-from: 54%;
+    --band-to: 78%;
+  }
+
+  .site-search {
+    max-width: 200px;
+  }
+
+  .circle-menu {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .circle-item {
+    --circle: 88px;
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    /* 세로로 긴 화면: 띠를 더 세우고 넓혀서 가운데를 지나가게 */
+    --band-angle: 100deg;
+    --band-from: 46%;
+    --band-to: 82%;
+    --fs-h1: 1.375rem;
+    --fs-h2: 1.25rem;
+    --row-h: 46px;
+    --chevron-gap: 24px;
+  }
+
+  main {
+    padding-block-start: var(--sp-3);
+  }
+
+  /* 헤더 재배치: 1줄 로고·액션 / 2줄 메뉴(가로 스크롤) / 3줄 검색 */
+  .site-header__inner {
+    flex-wrap: wrap;
+    gap: 4px var(--sp-1);
+    padding-block: 6px;
+  }
+
+  .site-actions {
+    margin-left: auto;
+  }
+
+  .site-user {
+    max-width: 6em;
+  }
+
+  .site-nav {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .site-search {
+    order: 4;
+    max-width: none;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .site-search input {
+    min-height: var(--touch);
+  }
+
+  .panel {
+    padding: var(--sp-2);
+  }
+
+  .panel-head {
+    margin: calc(var(--sp-2) * -1) calc(var(--sp-2) * -1) var(--sp-2);
+    padding-inline: var(--sp-2);
+  }
+
+  /* 원형 메뉴: 2열. 화면 양 끝으로 벌어지지 않게 열 폭을 고정하고 가운데로 모은다 */
+  .circle-menu {
+    grid-template-columns: repeat(2, 132px);
+    justify-content: center;
+    gap: var(--sp-3) var(--sp-3);
+  }
+
+  .circle-item {
+    --circle: 84px;
+  }
+
+  .list-row__aside {
+    min-width: 72px;
+    padding: 0 12px;
+  }
+
+  /* 조작 바: 가운데 정렬, 간격 축소 */
+  .control-bar__inner {
+    justify-content: center;
+    gap: 0 var(--sp-2);
+  }
+
+  .btn {
+    padding: 0 var(--sp-2);
+  }
+}
