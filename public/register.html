@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>회원가입 · BoxTick</title>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/auth.css">
+  <script src="/js/common.js"></script>
+</head>
+<body data-stage="shield">
+  <div id="site-header"></div>
+  <main class="container auth-main">
+    <section class="auth-card">
+      <h1 class="page-title"><span class="page-title__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><circle cx="10" cy="8" r="4"/><path d="M3 21c1-4 4-6 7-6M17 14v6M14 17h6"/></svg></span>회원가입</h1>
+      <form class="panel auth-form" id="register-form" novalidate>
+        <div class="panel-head"><span>NEW TRAINER</span><span>BoxTick</span></div>
+        <p class="auth-message" id="auth-message" role="alert"></p>
+        <div class="field">
+          <label for="username">아이디 <span class="text-muted text-small">영문·숫자·_ 4~20자</span></label>
+          <input class="input" id="username" name="username" autocomplete="username" maxlength="20" required>
+          <p class="field-error" id="username-error"></p>
+        </div>
+        <div class="field">
+          <label for="nickname">닉네임 <span class="text-muted text-small">2~20자</span></label>
+          <input class="input" id="nickname" name="nickname" autocomplete="nickname" maxlength="20" required>
+          <p class="field-error" id="nickname-error"></p>
+        </div>
+        <div class="field">
+          <label for="password">비밀번호 <span class="text-muted text-small">8자 이상</span></label>
+          <input class="input" id="password" name="password" type="password" autocomplete="new-password" required>
+          <p class="field-error" id="password-error"></p>
+        </div>
+        <div class="field">
+          <label for="passwordConfirm">비밀번호 확인</label>
+          <input class="input" id="passwordConfirm" name="passwordConfirm" type="password" autocomplete="new-password" required>
+          <p class="field-error" id="passwordConfirm-error"></p>
+        </div>
+        <button class="btn btn--primary btn--block" type="submit">가입하기</button>
+        <p class="auth-switch">이미 회원이신가요? <a href="/login.html">로그인</a></p>
+      </form>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="/js/auth-pages.js"></script>
+</body>
+</html>
