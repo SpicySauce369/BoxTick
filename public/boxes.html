@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>박스 시세 · BoxTick</title>
+  <link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="/css/boxes.css">
+  <script src="/js/common.js"></script>
+</head>
+<body data-stage="signal">
+  <div id="site-header"></div>
+  <main class="container boxes-page">
+    <header class="box-title-row">
+      <div>
+        <h1 class="page-title"><span class="page-title__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M3 8v8l9 4 9-4V8M12 12v8"/></svg></span>BOX BAG</h1>
+        <p class="page-sub">박스를 고르면 현재 시세와 정가 대비 변화를 확인할 수 있어요.</p>
+      </div>
+      <span class="chip chip--signal" id="box-count">-</span>
+    </header>
+
+    <section class="bag-shell">
+      <div class="bag-list"><span class="list-heading">EXPANSION BOX</span><ul class="list" id="box-list"><li class="loading-state">박스 정보를 불러오는 중입니다.</li></ul></div>
+      <aside class="bag-detail panel diag-accent" id="box-preview">
+        <div class="panel-head"><span>BOX DATA</span><span id="box-preview-date">-</span></div>
+        <div class="bag-detail__body">
+          <div class="box-visual" id="box-preview-image" aria-hidden="true"><span>BOX</span></div>
+          <div class="stack">
+            <h2 id="box-preview-name">박스를 선택하세요</h2>
+            <table class="stat-table"><tbody>
+              <tr><th scope="row">현재 시세</th><td id="box-current-price">-</td></tr>
+              <tr><th scope="row">박스 정가</th><td id="box-retail-price">-</td></tr>
+              <tr><th scope="row">정가 대비</th><td id="box-change-rate">-</td></tr>
+              <tr><th scope="row">팩 수</th><td id="box-packs">-</td></tr>
+              <tr><th scope="row">팩 정가</th><td id="box-pack-price">-</td></tr>
+            </tbody></table>
+            <a class="btn btn--primary btn--block" id="box-preview-link" href="#" aria-disabled="true">상세 보기</a>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="/js/boxes.js"></script>
+</body></html>
