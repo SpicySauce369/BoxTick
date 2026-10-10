@@ -380,11 +380,30 @@
   }
 
   /**
+   * 화면 맨 아래 검정 조작 안내 바. 게임의 "Ⓐ 결정  Ⓑ 돌아가기" 자리.
+   * hints: [{ key: 'A', label: '결정' }, { key: 'B', label: '돌아가기', onClick }, { key: 'Y', label: '글쓰기', href }]
+   * href/onClick 이 있으면 실제로 누를 수 있는 버튼·링크가 된다.
+   */
+  function renderControlBar(hints) {
+    const items = hints.map(({ key, label, href, onClick }) => {
+      const content = [el('span', { class: 'key', 'aria-hidden': 'true' }, key), label];
+      if (href) return el('a', { class: 'control-hint', href }, content);
+      if (onClick) return el('button', { type: 'button', class: 'control-hint', onClick }, content);
+      return el('span', { class: 'control-hint' }, content);
+    });
+    return el('nav', { class: 'control-bar', 'aria-label': '조작 안내' }, el('div', { class: 'container control-bar__inner' }, items));
+  }
+
+  /** 자주 쓰는 안내: 뒤로 가기 */
+  const HINT_BACK = { key: 'B', label: '돌아가기', onClick: () => history.back() };
+
+  /**
    * 페이지 공통 초기화. 로그인한 회원(또는 null)을 돌려준다.
    * options.active : 헤더에서 강조할 메뉴 ('cards' | 'boxes' | 'board')
    * options.auth   : 'login' 이면 비로그인 시 로그인 페이지로, 'admin' 이면 관리자만 (아니면 홈으로)
+   * options.hints  : 하단 조작 안내 바 항목 (renderControlBar 참고). 없으면 바를 그리지 않는다.
    */
-  async function initPage({ active, auth } = {}) {
+  async function initPage({ active, auth, hints } = {}) {
     if (document.readyState === 'loading') {
       await new Promise((resolve) => document.addEventListener('DOMContentLoaded', resolve, { once: true }));
     }
@@ -399,7 +418,12 @@
     const headerSlot = document.getElementById('site-header');
     if (headerSlot) renderHeader(headerSlot, { active, user });
     const footerSlot = document.getElementById('site-footer');
-    if (footerSlot) renderFooter(footerSlot);
+    const footer = footerSlot ? renderFooter(footerSlot) : null;
+    if (hints && hints.length) {
+      const bar = renderControlBar(hints);
+      if (footer) footer.before(bar);
+      else document.body.append(bar);
+    }
 
     if ((auth === 'login' || auth === 'admin') && !user) {
       location.replace(loginUrl());
@@ -451,6 +475,8 @@
     showFieldErrors,
     confirm: confirmDialog,
     image,
+    renderControlBar,
+    HINT_BACK,
     initPage,
   };
 

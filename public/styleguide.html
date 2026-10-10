@@ -9,58 +9,95 @@
   <style>
     /* 이 페이지 전용: 견본 배치만 */
     .sg-section { margin-top: var(--sp-6); }
-    .sg-section > h2 { margin-bottom: var(--sp-2); }
-    .sg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--sp-2); }
-    .sg-swatch { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
-    .sg-swatch > div { height: 72px; }
-    .sg-swatch > p { padding: var(--sp-1); font-size: var(--fs-small); }
-    .sg-two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
+    .sg-section > h2 { margin-bottom: var(--sp-2); color: var(--on-stage); }
+    .sg-two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); align-items: start; }
+    .sg-swatches { display: flex; flex-wrap: wrap; gap: 8px; }
+    .sg-swatch { display: flex; align-items: center; gap: 8px; padding: 6px 14px 6px 6px; border-radius: var(--radius-pill); background: var(--row); font-size: var(--fs-small); font-weight: 700; }
+    .sg-swatch i { width: 28px; height: 28px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
     @media (max-width: 700px) { .sg-two { grid-template-columns: 1fr; } }
   </style>
 </head>
-<body data-accent="sword">
+<body data-stage="shield">
   <div id="site-header"></div>
 
   <main class="container">
-    <h1 class="diag-title">스타일 가이드</h1>
-    <p class="text-muted mt-2">공통 기반(<code>css/base.css</code>, <code>js/common.js</code>)의 토큰과 primitive 견본입니다. 페이지 고유 레이아웃은 각 페이지 CSS에서 만듭니다.</p>
-
-    <div class="row mt-3">
-      <span class="text-small text-muted">주 강조색</span>
-      <ul class="round-select round-select--row" id="accent-select">
-        <li><button type="button" aria-pressed="true" data-accent="sword">Sword</button></li>
-        <li><button type="button" aria-pressed="false" data-accent="shield">Shield</button></li>
+    <div class="row spread">
+      <h1 class="page-title">
+        <span class="page-title__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+        </span>
+        스타일 가이드
+      </h1>
+      <ul class="round-select" id="stage-select" aria-label="스테이지 색">
+        <li><button type="button" aria-pressed="true" data-stage="shield">Shield</button></li>
+        <li><button type="button" aria-pressed="false" data-stage="signal">Signal</button></li>
+        <li><button type="button" aria-pressed="false" data-stage="sword">Sword</button></li>
+        <li><button type="button" aria-pressed="false" data-stage="">Light</button></li>
       </ul>
     </div>
+    <p class="page-sub">공통 기반(css/base.css, js/common.js) 견본입니다. 페이지마다 <code>&lt;body data-stage&gt;</code>로 배경 색을 고릅니다.</p>
 
-    <section class="sg-section" aria-labelledby="sg-color">
-      <h2 id="sg-color">컬러 토큰</h2>
-      <div class="sg-grid" id="swatches"></div>
+    <!-- 원형 메뉴 + 정보 띠 : 메인 메뉴 화면 문법 -->
+    <section class="sg-section" aria-labelledby="sg-menu">
+      <h2 id="sg-menu">원형 메뉴 · 정보 띠</h2>
+      <ul class="circle-menu">
+        <li><a class="circle-item is-selected" href="#"><span class="circle-item__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#e52b70" stroke-width="2.2" stroke-linejoin="round"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M9 15l2-3 2 2 2-4"/></svg>
+        </span>카드 시세</a></li>
+        <li><a class="circle-item" href="#"><span class="circle-item__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#f08c00" stroke-width="2.2" stroke-linejoin="round"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M3 8v8l9 4 9-4V8M12 12v8"/></svg>
+        </span>박스 시세</a></li>
+        <li><a class="circle-item" href="#"><span class="circle-item__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00a6c8" stroke-width="2.2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4V5z"/><path d="M8 9h8M8 12h5"/></svg>
+        </span>커뮤니티</a></li>
+        <li><a class="circle-item" href="#"><span class="circle-item__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7a4cd9" stroke-width="2.2" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>
+        </span>마이페이지</a></li>
+        <li><a class="circle-item" href="#"><span class="circle-item__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3a3a40" stroke-width="2.2" stroke-linejoin="round"><circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg>
+        </span>관리자</a></li>
+      </ul>
+      <p class="info-bar mt-3">리자몽 ex SAR 시세가 1주 동안 ▲ 8.2% 올랐어요.</p>
     </section>
 
-    <section class="sg-section" aria-labelledby="sg-type">
-      <h2 id="sg-type">타이포그래피 · 시세 표기</h2>
-      <div class="panel stack">
-        <h1>페이지 제목 h1 (28px / 800)</h1>
-        <h2>섹션 제목 h2 (22px / 700)</h2>
-        <p>본문 16px. 시스템 폰트 스택(Segoe UI, Noto Sans KR, Malgun Gothic, Apple SD Gothic Neo)을 씁니다.</p>
-        <p class="text-small text-muted">보조 텍스트 14px</p>
-        <div class="row" id="price-samples"></div>
+    <!-- 알약 행 목록 + 상태창 표 : 기술 화면 / 박스 화면 문법 -->
+    <section class="sg-section" aria-labelledby="sg-list">
+      <h2 id="sg-list">알약 행 목록 · 상태창 표</h2>
+      <div class="sg-two">
+        <div class="stack">
+          <span class="list-heading">카드 시세 TOP</span>
+          <ul class="list" id="demo-list"></ul>
+        </div>
+        <section class="panel">
+          <div class="panel-head"><span>리자몽 ex · SAR</span><span class="num">No. 201</span></div>
+          <div class="row" style="margin-bottom: var(--sp-2)">
+            <span class="chip chip--shield">SAR</span>
+            <span class="chip">블랙볼트</span>
+          </div>
+          <table class="stat-table">
+            <tbody id="demo-table"></tbody>
+          </table>
+        </section>
       </div>
     </section>
 
-    <section class="sg-section" aria-labelledby="sg-btn">
-      <h2 id="sg-btn">버튼 · 입력</h2>
+    <!-- 선택 · 넘기기 · 버튼 · 입력 -->
+    <section class="sg-section" aria-labelledby="sg-ctrl">
+      <h2 id="sg-ctrl">선택 · 버튼 · 입력</h2>
       <div class="sg-two">
         <div class="panel stack">
+          <ul class="round-select" id="demo-tabs">
+            <li><button type="button" aria-pressed="true">전체</button></li>
+            <li><button type="button" aria-pressed="false">자유</button></li>
+            <li><button type="button" aria-pressed="false">시세 정보</button></li>
+          </ul>
+          <div class="stepper"><button type="button" aria-label="이전 기간">◀</button><span>1개월</span><button type="button" aria-label="다음 기간">▶</button></div>
           <div class="row">
             <button class="btn btn--primary" type="button">기본</button>
             <button class="btn btn--accent" type="button">강조</button>
-            <button class="btn btn--secondary" type="button">보조</button>
+            <button class="btn btn--secondary" type="button" id="demo-toast">토스트</button>
             <button class="btn btn--danger" type="button" id="demo-confirm">삭제</button>
-            <button class="btn btn--ghost" type="button" id="demo-toast">토스트</button>
           </div>
-          <button class="btn btn--accent btn--block" type="button" disabled>비활성</button>
         </div>
         <form class="panel stack" id="demo-form" novalidate>
           <div class="field">
@@ -79,45 +116,15 @@
       </div>
     </section>
 
-    <section class="sg-section" aria-labelledby="sg-prim">
-      <h2 id="sg-prim">Primitive</h2>
-      <div class="sg-two">
-        <div class="stack">
-          <div class="panel panel--dark diag">
-            <h3>.diag</h3>
-            <p class="text-small">오른쪽 아래가 비스듬히 잘린 패널</p>
-          </div>
-          <div class="panel diag--left">
-            <h3>.diag--left</h3>
-            <p class="text-small text-muted">왼쪽이 잘린 패널</p>
-          </div>
-          <div class="panel diag-band">
-            <h3>.diag-band</h3>
-            <p class="text-small text-muted">섹션 배경의 대각선 색 면</p>
-          </div>
+    <section class="sg-section" aria-labelledby="sg-color">
+      <h2 id="sg-color">컬러 토큰 · 상태</h2>
+      <div class="panel stack">
+        <div class="sg-swatches" id="swatches"></div>
+        <div class="row" id="price-samples"></div>
+        <div class="sg-two">
+          <div class="skeleton" style="height: 120px"></div>
+          <div id="demo-image" style="max-width: 120px"></div>
         </div>
-        <div class="panel">
-          <h3>.round-select</h3>
-          <ul class="round-select mt-2" id="demo-select">
-            <li><button type="button" aria-pressed="true">카드 시세</button></li>
-            <li><button type="button" aria-pressed="false">박스 시세</button></li>
-            <li><button type="button" aria-pressed="false">커뮤니티</button></li>
-          </ul>
-        </div>
-      </div>
-      <nav class="control-hint" aria-label="조작 안내">
-        <span><kbd>A</kbd> 결정</span>
-        <span><kbd>B</kbd> 돌아가기</span>
-        <span><kbd>Y</kbd> 검색</span>
-      </nav>
-    </section>
-
-    <section class="sg-section" aria-labelledby="sg-state">
-      <h2 id="sg-state">상태</h2>
-      <div class="sg-grid">
-        <div class="panel"><div class="skeleton" style="height: 96px"></div><p class="text-small text-muted mt-2">로딩 (.skeleton)</p></div>
-        <div class="panel" id="demo-image"></div>
-        <div class="panel"><p class="empty-state">검색 결과가 없습니다.</p></div>
       </div>
     </section>
   </main>
@@ -127,38 +134,64 @@
   <script>
     (async () => {
       const { el, changeBadge, formatPrice, formatPriceChange, toast, confirm, image, showFieldErrors } = BoxTick;
-      await BoxTick.initPage();
+      await BoxTick.initPage({
+        active: 'cards',
+        hints: [
+          { key: 'A', label: '결정' },
+          { key: 'Y', label: '검색', href: '#' },
+          { key: 'B', label: '돌아가기', onClick: () => history.back() },
+        ],
+      });
 
-      // 컬러 견본
-      const tokens = ['--sword', '--shield', '--signal', '--navy', '--off-white', '--price-up', '--price-down',
-        '--accent', '--bg', '--surface', '--surface-dark', '--text', '--text-muted', '--border'];
+      // 알약 행 목록 (선택 행 = 검정 알약 + ">")
+      const rows = [
+        ['리자몽 ex SAR', 412000, 8.2],
+        ['피카츄 프로모', 38000, -3.1],
+        ['뮤 ex UR', 156000, 0],
+        ['님피아 ex SAR', 89000, 12.4],
+      ];
+      const list = document.getElementById('demo-list');
+      rows.forEach(([name, price, rate], i) => {
+        list.append(el('li', null, el('a', { class: `list-row${i === 0 ? ' is-selected' : ''}`, href: '#' }, [
+          el('span', { class: 'list-row__main' }, name),
+          changeBadge(rate),
+          el('span', { class: 'list-row__aside' }, formatPrice(price)),
+        ])));
+      });
+
+      // 상태창 표
+      const change = formatPriceChange(31000);
+      const table = [
+        ['현재 시세', el('strong', { class: 'num' }, formatPrice(412000))],
+        ['1주 변동', el('span', { class: `${change.className} num` }, `${change.text} (${BoxTick.formatChange(8.2).text})`)],
+        ['최고가', formatPrice(430000)],
+        ['최저가', formatPrice(351000)],
+        ['팩 환산', '팩 약 165개 값'],
+      ];
+      for (const [label, value] of table) {
+        document.getElementById('demo-table').append(el('tr', null, [el('th', { scope: 'row' }, label), el('td', null, value)]));
+      }
+
+      // 컬러 토큰
+      const tokens = ['--sword', '--shield', '--signal', '--ink', '--stage', '--panel', '--label-cell', '--capsule', '--price-up', '--price-down'];
       const swatches = document.getElementById('swatches');
       const renderSwatches = () => BoxTick.replaceChildren(swatches, tokens.map((name) =>
-        el('div', { class: 'sg-swatch' }, [
-          el('div', { style: `background: var(${name})` }),
-          el('p', { class: 'num' }, [el('strong', null, name), el('br'), BoxTick.cssVar(name)]),
-        ])));
+        el('span', { class: 'sg-swatch' }, [el('i', { style: `background: var(${name})` }), `${name} ${BoxTick.cssVar(name)}`])));
       renderSwatches();
       document.addEventListener('boxtick:themechange', renderSwatches);
 
-      // 시세 표기
-      const change = formatPriceChange(9500);
       document.getElementById('price-samples').append(
-        el('strong', { class: 'num' }, formatPrice(125000)),
-        changeBadge(8.24),
-        changeBadge(-3.1),
-        changeBadge(0),
-        el('span', { class: `${change.className} num` }, change.text),
-      );
+        el('strong', { class: 'num' }, formatPrice(125000)), changeBadge(8.24), changeBadge(-3.1), changeBadge(0));
 
-      // 강조색 전환
-      for (const select of [document.getElementById('accent-select'), document.getElementById('demo-select')]) {
-        select.addEventListener('click', (event) => {
+      // 스테이지 · 탭 전환
+      for (const group of document.querySelectorAll('#stage-select, #demo-tabs')) {
+        group.addEventListener('click', (event) => {
           const button = event.target.closest('button');
           if (!button) return;
-          for (const b of select.querySelectorAll('button')) b.setAttribute('aria-pressed', String(b === button));
-          if (button.dataset.accent) {
-            document.body.dataset.accent = button.dataset.accent;
+          for (const b of group.querySelectorAll('button')) b.setAttribute('aria-pressed', String(b === button));
+          if (group.id === 'stage-select') {
+            if (button.dataset.stage) document.body.dataset.stage = button.dataset.stage;
+            else delete document.body.dataset.stage;
             renderSwatches();
           }
         });
@@ -173,10 +206,7 @@
         event.preventDefault();
         showFieldErrors(event.currentTarget, { title: '제목을 입력해 주세요.' });
       });
-      document.getElementById('demo-image').append(
-        image('/missing-card.png', '이미지를 불러오지 못한 카드'),
-        el('p', { class: 'text-small text-muted mt-2' }, '이미지 실패 → 자리표시'),
-      );
+      document.getElementById('demo-image').append(image('/missing-card.png', '이미지를 불러오지 못한 카드'));
     })();
   </script>
 </body>
