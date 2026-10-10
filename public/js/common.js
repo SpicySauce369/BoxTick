@@ -511,7 +511,6 @@
       const bar = renderControlBar(hints);
       if (footer) footer.before(bar);
       else document.body.append(bar);
-      showTutorialOnce();
     }
 
     if ((auth === 'login' || auth === 'admin') && !user) {
@@ -523,6 +522,9 @@
       setTimeout(() => location.replace('/'), 800);
       return new Promise(() => {});
     }
+    // 튜토리얼은 권한 검사를 통과해 이 페이지에 머무를 때만 띄운다
+    // (로그인 페이지로 바로 넘어가는 경우 '본 것'으로 기록되지 않도록)
+    if (hints && hints.length) showTutorialOnce();
     return user;
   }
 
