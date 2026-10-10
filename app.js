@@ -6,6 +6,9 @@ const session = require('express-session');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const adminUsersRoutes = require('./routes/adminUsers');
+const postRoutes = require('./routes/posts');
+const commentRoutes = require('./routes/comments');
+const adminPostsRoutes = require('./routes/adminPosts');
 
 const SESSION_COOKIE_NAME = 'boxtick.sid';
 
@@ -41,7 +44,10 @@ function createApp({ db, sessionSecret, secureCookie = false }) {
   );
 
   app.use('/api/auth', authRoutes);
+  app.use('/api/posts', postRoutes);
+  app.use('/api/comments', commentRoutes);
   app.use('/api/admin/users', adminUsersRoutes);
+  app.use('/api/admin/posts', adminPostsRoutes);
   app.use('/api/admin', adminRoutes);
 
   // 정의되지 않은 API 는 HTML 대신 JSON 404 를 돌려준다.
