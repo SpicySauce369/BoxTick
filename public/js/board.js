@@ -112,6 +112,11 @@
     if (q) query.set('q', q);
     const data = await api('/api/posts?' + query);
     const last = Math.max(1, Math.ceil(data.total / data.size));
+    // 주소에 마지막 페이지보다 큰 번호가 들어오면 마지막 페이지로 바로잡는다
+    if (data.page > last) {
+      location.replace(listUrl({ page: last }));
+      return;
+    }
 
     setText(document.getElementById('board-total'), q ? `"${q}" 검색 ${data.total}건` : `${data.total}건`);
     replaceChildren(list, data.posts.length
