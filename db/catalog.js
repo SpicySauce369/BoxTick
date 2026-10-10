@@ -25,7 +25,7 @@ function addSetMetrics(row) {
 function listSets(db) {
   const rows = db
     .prepare(
-      \`SELECT s.id, s.name, s.release_date, s.box_price, s.packs_per_box,
+      `SELECT s.id, s.name, s.release_date, s.box_price, s.packs_per_box,
               s.image_url, s.external_id,
               (SELECT COUNT(*) FROM cards c WHERE c.set_id = s.id) AS card_count,
               (SELECT b.price
@@ -39,7 +39,7 @@ function listSets(db) {
                 ORDER BY b.recorded_at DESC, b.id DESC
                 LIMIT 1) AS latest_box_price_at
          FROM card_sets s
-        ORDER BY COALESCE(s.release_date, '0000-00-00') DESC, s.id DESC\`
+        ORDER BY COALESCE(s.release_date, '0000-00-00') DESC, s.id DESC`
     )
     .all();
 
@@ -49,7 +49,7 @@ function listSets(db) {
 function getSetById(db, id) {
   const row = db
     .prepare(
-      \`SELECT s.id, s.name, s.release_date, s.box_price, s.packs_per_box,
+      `SELECT s.id, s.name, s.release_date, s.box_price, s.packs_per_box,
               s.image_url, s.external_id,
               (SELECT COUNT(*) FROM cards c WHERE c.set_id = s.id) AS card_count,
               (SELECT b.price
@@ -63,7 +63,7 @@ function getSetById(db, id) {
                 ORDER BY b.recorded_at DESC, b.id DESC
                 LIMIT 1) AS latest_box_price_at
          FROM card_sets s
-        WHERE s.id = ?\`
+        WHERE s.id = ?`
     )
     .get(id);
 
@@ -71,10 +71,10 @@ function getSetById(db, id) {
 
   const boxPrices = db
     .prepare(
-      \`SELECT id, price, recorded_at, source, source_url, seller_name
+      `SELECT id, price, recorded_at, source, source_url, seller_name
          FROM box_price_history
         WHERE set_id = ?
-        ORDER BY recorded_at ASC, id ASC\`
+        ORDER BY recorded_at ASC, id ASC`
     )
     .all(id);
 
@@ -87,7 +87,7 @@ function listCards(db, { q = '', setId = null, rarity = '', page, size, offset }
 
   if (q) {
     where.push("(c.name LIKE @q ESCAPE '\\\\' OR c.card_number LIKE @q ESCAPE '\\\\')");
-    params.q = \`%\${escapeLike(q)}%\`;
+    params.q = `%${escapeLike(q)}%`;
   }
   if (setId != null) {
     where.push('c.set_id = @setId');
@@ -98,14 +98,14 @@ function listCards(db, { q = '', setId = null, rarity = '', page, size, offset }
     params.rarity = rarity;
   }
 
-  const whereSql = where.length ? \`WHERE \${where.join(' AND ')}\` : '';
+  const whereSql = where.length ? `WHERE ${where.join(' AND ')}` : '';
   const { total } = db
-    .prepare(\`SELECT COUNT(*) AS total FROM cards c \${whereSql}\`)
+    .prepare(`SELECT COUNT(*) AS total FROM cards c ${whereSql}`)
     .get(params);
 
   const cards = db
     .prepare(
-      \`SELECT c.id, c.set_id, c.name, c.card_number, c.rarity,
+      `SELECT c.id, c.set_id, c.name, c.card_number, c.rarity,
               c.image_url, c.external_id, c.created_at,
               s.name AS set_name,
               (SELECT p.price
@@ -120,9 +120,9 @@ function listCards(db, { q = '', setId = null, rarity = '', page, size, offset }
                 LIMIT 1) AS latest_price_at
          FROM cards c
          JOIN card_sets s ON s.id = c.set_id
-         \${whereSql}
+         ${whereSql}
         ORDER BY c.name COLLATE NOCASE ASC, c.id ASC
-        LIMIT @limit OFFSET @offset\`
+        LIMIT @limit OFFSET @offset`
     )
     .all(params);
 
@@ -132,7 +132,7 @@ function listCards(db, { q = '', setId = null, rarity = '', page, size, offset }
 function getCardById(db, id) {
   return db
     .prepare(
-      \`SELECT c.id, c.set_id, c.name, c.card_number, c.rarity,
+      `SELECT c.id, c.set_id, c.name, c.card_number, c.rarity,
               c.image_url, c.external_id, c.created_at,
               s.name AS set_name, s.release_date AS set_release_date,
               s.box_price AS set_box_price, s.packs_per_box,
@@ -148,7 +148,7 @@ function getCardById(db, id) {
                 LIMIT 1) AS latest_price_at
          FROM cards c
          JOIN card_sets s ON s.id = c.set_id
-        WHERE c.id = ?\`
+        WHERE c.id = ?`
     )
     .get(id);
 }
@@ -199,20 +199,20 @@ function getCardPriceHistory(db, cardId, range = '1m') {
   if (range === 'all') {
     prices = db
       .prepare(
-        \`SELECT id, price, recorded_at, source
+        `SELECT id, price, recorded_at, source
            FROM price_history
           WHERE card_id = ?
-          ORDER BY recorded_at ASC, id ASC\`
+          ORDER BY recorded_at ASC, id ASC`
       )
       .all(cardId);
   } else {
     prices = db
       .prepare(
-        \`SELECT id, price, recorded_at, source
+        `SELECT id, price, recorded_at, source
            FROM price_history
           WHERE card_id = ?
             AND recorded_at >= date(?, ?)
-          ORDER BY recorded_at ASC, id ASC\`
+          ORDER BY recorded_at ASC, id ASC`
       )
       .all(cardId, latest, RANGE_MODIFIERS[range]);
   }
