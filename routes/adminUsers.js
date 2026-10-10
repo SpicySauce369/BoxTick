@@ -3,16 +3,13 @@ const express = require('express');
 const { requireAdmin } = require('../middleware/auth');
 const { PUBLIC_COLUMNS, findById, setStatus } = require('../db/users');
 const { parsePagination, escapeLike } = require('../lib/pagination');
+const { parseId } = require('../lib/params');
 
 const router = express.Router();
 router.use(requireAdmin);
 
 const STATUSES = ['active', 'banned'];
 const ROLES = ['user', 'admin'];
-
-function parseId(raw) {
-  return /^[1-9]\d*$/.test(raw) ? Number(raw) : null;
-}
 
 // GET /api/admin/users?q=&status=&role=&page=&size=
 // q 는 아이디·닉네임 부분 검색

@@ -1,0 +1,198 @@
+[
+  {
+    "seed_id": "comment-001",
+    "post": "post-notice-welcome",
+    "author": "user-ash",
+    "content": "잘 부탁드립니다!",
+    "created_at": "2026-08-02 10:00:00"
+  },
+  {
+    "seed_id": "comment-002",
+    "post": "post-free-first",
+    "author": "user-misty",
+    "content": "처음이면 최신 확장팩 한 박스 사서 개봉해보는 걸 추천해요.",
+    "created_at": "2026-09-03 21:40:00"
+  },
+  {
+    "seed_id": "comment-003",
+    "post": "post-free-first",
+    "author": "user-brock",
+    "content": "수집 위주면 좋아하는 포켓몬이 많이 나오는 세트로 고르세요!",
+    "created_at": "2026-09-03 22:02:00"
+  },
+  {
+    "seed_id": "comment-004",
+    "post": "post-free-first",
+    "author": "user-ash",
+    "content": "감사합니다! 주말에 카드샵 가볼게요.",
+    "created_at": "2026-09-03 22:30:00"
+  },
+  {
+    "seed_id": "comment-005",
+    "post": "post-free-sleeve",
+    "author": "user-dawn",
+    "content": "저는 이너 + 아우터 쓰고 고가는 탑로더까지 써요.",
+    "created_at": "2026-09-07 14:10:00"
+  },
+  {
+    "seed_id": "comment-006",
+    "post": "post-free-sleeve",
+    "author": "user-gary",
+    "content": "이중 슬리브면 충분하고, 보관은 습기만 조심하면 됩니다.",
+    "created_at": "2026-09-07 15:22:00"
+  },
+  {
+    "seed_id": "comment-007",
+    "post": "post-free-binder",
+    "author": "user-misty",
+    "content": "번호순 정리 진짜 좋죠. 사진 보고 싶네요!",
+    "created_at": "2026-09-15 22:40:00"
+  },
+  {
+    "seed_id": "comment-008",
+    "post": "post-free-question-grading",
+    "author": "user-gary",
+    "content": "해외 그레이딩은 왕복 배송까지 두세 달은 잡으셔야 해요.",
+    "created_at": "2026-09-21 11:05:00"
+  },
+  {
+    "seed_id": "comment-009",
+    "post": "post-free-question-grading",
+    "author": "user-brock",
+    "content": "비용은 등급 서비스마다 달라서 카드 가치 보고 결정하는 게 좋아요.",
+    "created_at": "2026-09-21 12:30:00"
+  },
+  {
+    "seed_id": "comment-010",
+    "post": "post-free-question-grading",
+    "author": "user-dawn",
+    "content": "답변 감사합니다. 일단 한 장만 맡겨볼게요.",
+    "created_at": "2026-09-21 13:00:00"
+  },
+  {
+    "seed_id": "comment-011",
+    "post": "post-free-event",
+    "author": "user-ash",
+    "content": "3승 1패면 대단한데요! 덱 공유 가능할까요?",
+    "created_at": "2026-10-05 21:15:00"
+  },
+  {
+    "seed_id": "comment-012",
+    "post": "post-price-box-up",
+    "author": "user-brock",
+    "content": "발매 초기에 사둘 걸 그랬네요.",
+    "created_at": "2026-09-10 09:00:00"
+  },
+  {
+    "seed_id": "comment-013",
+    "post": "post-price-box-up",
+    "author": "user-misty",
+    "content": "재판 소식 나오면 다시 내려갈 수도 있어요.",
+    "created_at": "2026-09-10 10:25:00"
+  },
+  {
+    "seed_id": "comment-014",
+    "post": "post-price-box-up",
+    "author": "user-dawn",
+    "content": "정가 대비 상승률 그래프 보니 확실히 오르긴 했네요.",
+    "created_at": "2026-09-10 12:40:00"
+  },
+  {
+    "seed_id": "comment-015",
+    "post": "post-price-charizard",
+    "author": "user-gary",
+    "content": "정리 감사합니다. 저도 하락 추세로 보고 있어요.",
+    "created_at": "2026-09-18 19:30:00"
+  },
+  {
+    "seed_id": "comment-016",
+    "post": "post-price-charizard",
+    "author": "user-ash",
+    "content": "언젠가는 꼭 사고 싶은 카드...",
+    "created_at": "2026-09-18 20:10:00"
+  },
+  {
+    "seed_id": "comment-017",
+    "post": "post-price-pikachu",
+    "author": "user-brock",
+    "content": "상태 좋으면 꽤 받을 수 있을 거예요. 시세 페이지 그래프 참고해 보세요.",
+    "created_at": "2026-09-25 15:00:00"
+  },
+  {
+    "seed_id": "comment-018",
+    "post": "post-price-tip",
+    "author": "user-misty",
+    "content": "배송비 포함 비교 꿀팁이네요.",
+    "created_at": "2026-10-02 12:20:00"
+  },
+  {
+    "seed_id": "comment-019",
+    "post": "post-price-tip",
+    "author": "user-ash",
+    "content": "저장해두겠습니다!",
+    "created_at": "2026-10-02 13:05:00"
+  },
+  {
+    "seed_id": "comment-020",
+    "post": "post-brag-sar",
+    "author": "user-misty",
+    "content": "축하드려요!! 첫 박스에서 SAR은 진짜 운 좋으시네요.",
+    "created_at": "2026-09-12 23:45:00"
+  },
+  {
+    "seed_id": "comment-021",
+    "post": "post-brag-sar",
+    "author": "user-gary",
+    "content": "부럽습니다... 저는 다섯 박스째 못 봤어요.",
+    "created_at": "2026-09-13 00:10:00"
+  },
+  {
+    "seed_id": "comment-022",
+    "post": "post-brag-sar",
+    "author": "user-brock",
+    "content": "탑로더 꼭 끼워두세요!",
+    "created_at": "2026-09-13 08:30:00"
+  },
+  {
+    "seed_id": "comment-023",
+    "post": "post-brag-sar",
+    "author": "user-ash",
+    "content": "다들 감사합니다 ㅎㅎ",
+    "created_at": "2026-09-13 09:00:00"
+  },
+  {
+    "seed_id": "comment-024",
+    "post": "post-brag-full-art",
+    "author": "user-dawn",
+    "content": "10팩에 풀아트 2장이면 확률 좋은데요?",
+    "created_at": "2026-09-27 17:40:00"
+  },
+  {
+    "seed_id": "comment-025",
+    "post": "post-brag-complete",
+    "author": "user-ash",
+    "content": "컴플리트 축하드려요! 저도 목표로 해봐야겠어요.",
+    "created_at": "2026-10-06 21:50:00"
+  },
+  {
+    "seed_id": "comment-026",
+    "post": "post-brag-complete",
+    "author": "user-gary",
+    "content": "일반 카드까지 다 모으는 게 제일 어렵죠. 고생하셨습니다.",
+    "created_at": "2026-10-06 22:15:00"
+  },
+  {
+    "seed_id": "comment-027",
+    "post": "post-brag-promo",
+    "author": "user-misty",
+    "content": "저도 갔는데 줄 때문에 포기했어요 ㅠ",
+    "created_at": "2026-10-08 17:10:00"
+  },
+  {
+    "seed_id": "comment-028",
+    "post": "post-brag-promo",
+    "author": "user-brock",
+    "content": "득템 축하해요!",
+    "created_at": "2026-10-08 18:00:00"
+  }
+]

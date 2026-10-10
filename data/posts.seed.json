@@ -1,0 +1,146 @@
+[
+  {
+    "seed_id": "post-notice-welcome",
+    "author": "admin",
+    "category": "notice",
+    "title": "BoxTick 커뮤니티 이용 안내",
+    "content": "BoxTick 커뮤니티에 오신 것을 환영합니다!\n\n· 자유게시판: 자유로운 이야기\n· 시세 정보: 카드·박스 거래가 공유\n· 개봉 자랑: 카드팩 개봉 결과 자랑\n\n욕설, 도배, 개인 거래 유도 글은 관리자가 삭제할 수 있습니다.",
+    "views": 412,
+    "created_at": "2026-08-01 09:00:00"
+  },
+  {
+    "seed_id": "post-notice-sample-price",
+    "author": "admin",
+    "category": "notice",
+    "title": "시세 데이터 안내",
+    "content": "본 사이트의 카드·박스 시세는 기능 구현과 테스트를 위한 샘플 데이터입니다.\n실제 거래 가격을 보장하지 않으니 거래 전에는 꼭 여러 판매처를 직접 확인해 주세요.",
+    "views": 287,
+    "created_at": "2026-08-01 09:10:00"
+  },
+  {
+    "seed_id": "post-notice-maintenance",
+    "author": "admin",
+    "category": "notice",
+    "title": "10월 시세 업데이트 일정",
+    "content": "10월부터 박스 시세는 매주 월요일에 네이버·다나와·카드샵 가격을 참고해 갱신합니다.\n누락된 세트가 있으면 자유게시판에 남겨 주세요.",
+    "views": 153,
+    "created_at": "2026-09-28 18:00:00"
+  },
+  {
+    "seed_id": "post-free-first",
+    "author": "user-ash",
+    "category": "free",
+    "title": "포켓몬카드 입문했습니다",
+    "content": "친구 따라 시작했는데 생각보다 재밌네요.\n처음엔 어떤 박스부터 사는 게 좋을까요? 덱 짜는 것보다는 수집 위주로 하려고 합니다.",
+    "views": 96,
+    "created_at": "2026-09-03 21:14:00"
+  },
+  {
+    "seed_id": "post-free-sleeve",
+    "author": "user-misty",
+    "category": "free",
+    "title": "슬리브 어떤 거 쓰세요?",
+    "content": "이너 슬리브 + 아우터 슬리브 이중으로 끼우는 게 맞나요?\n고가 카드는 탑로더까지 쓰는지 궁금합니다.",
+    "views": 74,
+    "created_at": "2026-09-07 13:40:00"
+  },
+  {
+    "seed_id": "post-free-binder",
+    "author": "user-brock",
+    "category": "free",
+    "title": "바인더 정리 끝냈어요",
+    "content": "주말 내내 세트별로 바인더 정리했습니다.\n번호순으로 꽂으니까 빈칸이 한눈에 보여서 좋네요. 다음 목표는 세트 컴플리트!",
+    "views": 58,
+    "created_at": "2026-09-15 22:05:00"
+  },
+  {
+    "seed_id": "post-free-question-grading",
+    "author": "user-dawn",
+    "category": "free",
+    "title": "그레이딩 맡겨본 분 계신가요?",
+    "content": "PSA나 BGS 같은 그레이딩 서비스 맡겨보신 분 후기 궁금합니다.\n기간이랑 비용이 어느 정도인지요.",
+    "views": 121,
+    "created_at": "2026-09-21 10:30:00"
+  },
+  {
+    "seed_id": "post-free-event",
+    "author": "user-gary",
+    "category": "free",
+    "title": "이번 주말 카드샵 대회 후기",
+    "content": "동네 카드샵 대회 다녀왔습니다. 3승 1패로 마무리!\n참가상으로 프로모 카드도 받아서 만족합니다.",
+    "views": 67,
+    "created_at": "2026-10-05 20:50:00"
+  },
+  {
+    "seed_id": "post-price-box-up",
+    "author": "user-gary",
+    "category": "price",
+    "title": "최근 확장팩 박스 가격 많이 올랐네요",
+    "content": "발매 직후 정가 근처였던 박스가 한 달 만에 꽤 올랐습니다.\n다나와 최저가 기준으로 정가 대비 30% 정도 오른 것 같아요.",
+    "views": 233,
+    "created_at": "2026-09-10 08:20:00"
+  },
+  {
+    "seed_id": "post-price-charizard",
+    "author": "user-brock",
+    "category": "price",
+    "title": "리자몽 ex SAR 시세 정리",
+    "content": "최근 2주 동안 커뮤니티 거래가 모아보니 조금씩 하락하는 추세입니다.\n재판 소식이 영향을 준 것 같네요. 급하지 않으면 조금 기다려보는 것도 방법일 듯합니다.",
+    "views": 305,
+    "created_at": "2026-09-18 19:00:00"
+  },
+  {
+    "seed_id": "post-price-pikachu",
+    "author": "user-misty",
+    "category": "price",
+    "title": "피카츄 프로모 카드 가격 문의",
+    "content": "행사에서 받은 피카츄 프로모가 있는데 요즘 어느 정도에 거래되나요?\n상태는 민트급입니다.",
+    "views": 142,
+    "created_at": "2026-09-25 14:12:00"
+  },
+  {
+    "seed_id": "post-price-tip",
+    "author": "user-dawn",
+    "category": "price",
+    "title": "시세 확인할 때 팁",
+    "content": "한 판매처 가격만 보지 말고 최소 세 곳은 비교하세요.\n배송비 포함 가격으로 비교하는 것도 잊지 마시고요.",
+    "views": 188,
+    "created_at": "2026-10-02 11:45:00"
+  },
+  {
+    "seed_id": "post-brag-sar",
+    "author": "user-ash",
+    "category": "brag",
+    "title": "첫 박스에서 SAR 나왔습니다!!",
+    "content": "입문 첫 박스에서 SAR이 나왔어요 ㅠㅠ\n손이 떨려서 바로 슬리브 끼웠습니다. 다들 행운을 빕니다!",
+    "views": 267,
+    "created_at": "2026-09-12 23:30:00"
+  },
+  {
+    "seed_id": "post-brag-full-art",
+    "author": "user-gary",
+    "category": "brag",
+    "title": "10팩 개봉 결과",
+    "content": "10팩 까서 풀아트 2장 나왔습니다.\n박스 시세가 올라서 그런지 팩으로 사는 게 더 재밌네요.",
+    "views": 119,
+    "created_at": "2026-09-27 17:05:00"
+  },
+  {
+    "seed_id": "post-brag-complete",
+    "author": "user-brock",
+    "category": "brag",
+    "title": "세트 컴플리트 달성",
+    "content": "드디어 한 세트 일반 카드까지 전부 모았습니다.\n바인더 한 권이 꽉 차니까 뿌듯하네요.",
+    "views": 98,
+    "created_at": "2026-10-06 21:20:00"
+  },
+  {
+    "seed_id": "post-brag-promo",
+    "author": "user-dawn",
+    "category": "brag",
+    "title": "행사 프로모 득템",
+    "content": "주말 행사에서 한정 프로모 받아왔어요.\n줄이 길었지만 기다린 보람이 있네요!",
+    "views": 84,
+    "created_at": "2026-10-08 16:40:00"
+  }
+]

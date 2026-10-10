@@ -1,0 +1,46 @@
+[
+  {
+    "seed_id": "admin",
+    "managed_by_env": true
+  },
+  {
+    "seed_id": "user-ash",
+    "username": "ash01",
+    "password": "test1234!",
+    "nickname": "지우",
+    "role": "user",
+    "status": "active"
+  },
+  {
+    "seed_id": "user-brock",
+    "username": "brock",
+    "password": "test1234!",
+    "nickname": "웅이",
+    "role": "user",
+    "status": "active"
+  },
+  {
+    "seed_id": "user-dawn",
+    "username": "dawn",
+    "password": "test1234!",
+    "nickname": "빛나",
+    "role": "user",
+    "status": "active"
+  },
+  {
+    "seed_id": "user-gary",
+    "username": "gary",
+    "password": "test1234!",
+    "nickname": "바람",
+    "role": "user",
+    "status": "active"
+  },
+  {
+    "seed_id": "user-misty",
+    "username": "misty",
+    "password": "test1234!",
+    "nickname": "이슬",
+    "role": "user",
+    "status": "active"
+  }
+]

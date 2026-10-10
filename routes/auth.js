@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const { requireLogin } = require('../middleware/auth');
 const { parsePagination } = require('../lib/pagination');
+const { listPosts } = require('../db/posts');
 const {
   BCRYPT_ROUNDS,
   createUser,
@@ -175,21 +176,8 @@ router.put('/me', requireLogin, async (req, res) => {
 
 // GET /api/auth/me/posts?page=&size= — 내가 쓴 글
 router.get('/me/posts', requireLogin, (req, res) => {
-  const db = req.app.locals.db;
   const { page, size, offset } = parsePagination(req.query);
-
-  const { total } = db.prepare('SELECT COUNT(*) AS total FROM posts WHERE user_id = ?').get(req.user.id);
-  const posts = db
-    .prepare(
-      `SELECT p.id, p.category, p.title, p.views, p.created_at, p.updated_at,
-              (SELECT COUNT(*) FROM comments c WHERE c.post_id = p.id) AS comment_count
-         FROM posts p
-        WHERE p.user_id = ?
-        ORDER BY p.created_at DESC, p.id DESC
-        LIMIT ? OFFSET ?`
-    )
-    .all(req.user.id, size, offset);
-
+  const { posts, total } = listPosts(req.app.locals.db, { userId: req.user.id }, { size, offset });
   res.json({ posts, page, size, total });
 });
 
