@@ -5,8 +5,9 @@ const { getCardById, getSetById } = require('../db/catalog');
 const router = express.Router();
 router.use(requireAdmin);
 
-const CARD_PRICE_SOURCES = ['seed', 'admin', 'report', 'auto'];
-const BOX_PRICE_SOURCES = ['seed', 'admin', 'naver-reference', 'danawa-reference', 'cardshop-reference', 'other'];
+const CARD_PRICE_SOURCES = ['admin', 'report', 'auto'];
+const BOX_PRICE_SOURCES = ['admin', 'naver-reference', 'danawa-reference', 'cardshop-reference', 'other'];
+const DATE_RE = /^\\d{4}-\\d{2}-\\d{2}$/;
 
 function parseId(raw) {
   return /^[1-9]\d*$/.test(raw) ? Number(raw) : null;
@@ -25,7 +26,13 @@ function parseNullableInteger(value, field, { min = 0 } = {}) {
   return { value: number };
 }
 
-function validateSet(body) {
+function isValidDate(db, value) {
+  if (!value || !DATE_RE.test(value)) return false;
+  const row = db.prepare('SELECT date(?) AS normalized').get(value);
+  return row.normalized === value;
+}
+
+function validateSet(db, body) {
   const errors = {};
   const name = trimOrNull(body.name);
   if (!name || name.length > 100) errors.name = '세트 이름은 1~100자여야 합니다.';
@@ -35,11 +42,16 @@ function validateSet(body) {
   const packs = parseNullableInteger(body.packs_per_box, 'packs_per_box', { min: 1 });
   if (packs.error) errors.packs_per_box = packs.error;
 
+  const releaseDate = trimOrNull(body.release_date);
+  if (releaseDate && !isValidDate(db, releaseDate)) {
+    errors.release_date = 'release_date는 실제 존재하는 YYYY-MM-DD 날짜여야 합니다.';
+  }
+
   return {
     errors,
     values: {
       name,
-      release_date: trimOrNull(body.release_date),
+      release_date: releaseDate,
       box_price: boxPrice.value,
       packs_per_box: packs.value,
       image_url: trimOrNull(body.image_url),
@@ -75,7 +87,7 @@ function constraintResponse(err, res) {
 }
 
 router.post('/sets', (req, res) => {
-  const { errors, values } = validateSet(req.body || {});
+  const { errors, values } = validateSet(req.app.locals.db, req.body || {});
   if (Object.keys(errors).length) return res.status(400).json({ error: '입력값을 확인해 주세요.', fields: errors });
 
   try {
@@ -96,7 +108,7 @@ router.put('/sets/:id', (req, res) => {
   const id = parseId(req.params.id);
   if (!id || !getSetById(req.app.locals.db, id)) return res.status(404).json({ error: '세트를 찾을 수 없습니다.' });
 
-  const { errors, values } = validateSet(req.body || {});
+  const { errors, values } = validateSet(req.app.locals.db, req.body || {});
   if (Object.keys(errors).length) return res.status(400).json({ error: '입력값을 확인해 주세요.', fields: errors });
 
   try {
@@ -183,39 +195,45 @@ router.delete('/cards/:id', (req, res) => {
 });
 
 router.post('/prices', (req, res) => {
+  const db = req.app.locals.db;
   const cardId = parseId(String(req.body?.card_id ?? ''));
   const price = Number(req.body?.price);
   const recordedAt = trimOrNull(req.body?.recorded_at);
   const source = trimOrNull(req.body?.source) || 'admin';
 
-  if (!cardId || !getCardById(req.app.locals.db, cardId)) return res.status(400).json({ error: '존재하는 card_id가 필요합니다.' });
+  if (!cardId || !getCardById(db, cardId)) return res.status(400).json({ error: '존재하는 card_id가 필요합니다.' });
   if (!Number.isInteger(price) || price < 0) return res.status(400).json({ error: 'price는 0 이상의 정수여야 합니다.' });
-  if (!recordedAt) return res.status(400).json({ error: 'recorded_at이 필요합니다.' });
-  if (!CARD_PRICE_SOURCES.includes(source)) return res.status(400).json({ error: '허용되지 않은 source입니다.' });
+  if (!isValidDate(db, recordedAt)) {
+    return res.status(400).json({ error: '입력값을 확인해 주세요.', fields: { recorded_at: '실제 존재하는 YYYY-MM-DD 날짜여야 합니다.' } });
+  }
+  if (!CARD_PRICE_SOURCES.includes(source)) {
+    return res.status(400).json({ error: '입력값을 확인해 주세요.', fields: { source: '관리자 입력에서 사용할 수 없는 source입니다.' } });
+  }
 
-  const info = req.app.locals.db
+  const info = db
     .prepare('INSERT INTO price_history (card_id, price, recorded_at, source) VALUES (?, ?, ?, ?)')
     .run(cardId, price, recordedAt, source);
-  const row = req.app.locals.db.prepare('SELECT * FROM price_history WHERE id = ?').get(info.lastInsertRowid);
+  const row = db.prepare('SELECT * FROM price_history WHERE id = ?').get(info.lastInsertRowid);
   res.status(201).json({ price: row });
 });
 
 router.put('/prices/:id', (req, res) => {
+  const db = req.app.locals.db;
   const id = parseId(req.params.id);
-  const exists = id && req.app.locals.db.prepare('SELECT id FROM price_history WHERE id = ?').get(id);
+  const exists = id && db.prepare('SELECT id FROM price_history WHERE id = ?').get(id);
   if (!exists) return res.status(404).json({ error: '카드 시세 기록을 찾을 수 없습니다.' });
 
   const price = Number(req.body?.price);
   const recordedAt = trimOrNull(req.body?.recorded_at);
   const source = trimOrNull(req.body?.source) || 'admin';
-  if (!Number.isInteger(price) || price < 0 || !recordedAt || !CARD_PRICE_SOURCES.includes(source)) {
-    return res.status(400).json({ error: '시세 입력값을 확인해 주세요.' });
-  }
+  const errors = {};
+  if (!Number.isInteger(price) || price < 0) errors.price = 'price는 0 이상의 정수여야 합니다.';
+  if (!isValidDate(db, recordedAt)) errors.recorded_at = '실제 존재하는 YYYY-MM-DD 날짜여야 합니다.';
+  if (!CARD_PRICE_SOURCES.includes(source)) errors.source = '관리자 입력에서 사용할 수 없는 source입니다.';
+  if (Object.keys(errors).length) return res.status(400).json({ error: '입력값을 확인해 주세요.', fields: errors });
 
-  req.app.locals.db
-    .prepare('UPDATE price_history SET price=?, recorded_at=?, source=? WHERE id=?')
-    .run(price, recordedAt, source, id);
-  res.json({ price: req.app.locals.db.prepare('SELECT * FROM price_history WHERE id = ?').get(id) });
+  db.prepare('UPDATE price_history SET price=?, recorded_at=?, source=? WHERE id=?').run(price, recordedAt, source, id);
+  res.json({ price: db.prepare('SELECT * FROM price_history WHERE id = ?').get(id) });
 });
 
 router.delete('/prices/:id', (req, res) => {
@@ -226,6 +244,7 @@ router.delete('/prices/:id', (req, res) => {
 });
 
 router.post('/box-prices', (req, res) => {
+  const db = req.app.locals.db;
   const setId = parseId(String(req.body?.set_id ?? ''));
   const price = Number(req.body?.price);
   const recordedAt = trimOrNull(req.body?.recorded_at);
@@ -233,23 +252,28 @@ router.post('/box-prices', (req, res) => {
   const sourceUrl = trimOrNull(req.body?.source_url);
   const sellerName = trimOrNull(req.body?.seller_name);
 
-  if (!setId || !getSetById(req.app.locals.db, setId)) return res.status(400).json({ error: '존재하는 set_id가 필요합니다.' });
+  if (!setId || !getSetById(db, setId)) return res.status(400).json({ error: '존재하는 set_id가 필요합니다.' });
   if (!Number.isInteger(price) || price < 0) return res.status(400).json({ error: 'price는 0 이상의 정수여야 합니다.' });
-  if (!recordedAt) return res.status(400).json({ error: 'recorded_at이 필요합니다.' });
-  if (!BOX_PRICE_SOURCES.includes(source)) return res.status(400).json({ error: '허용되지 않은 source입니다.' });
+  if (!isValidDate(db, recordedAt)) {
+    return res.status(400).json({ error: '입력값을 확인해 주세요.', fields: { recorded_at: '실제 존재하는 YYYY-MM-DD 날짜여야 합니다.' } });
+  }
+  if (!BOX_PRICE_SOURCES.includes(source)) {
+    return res.status(400).json({ error: '입력값을 확인해 주세요.', fields: { source: '관리자 입력에서 사용할 수 없는 source입니다.' } });
+  }
 
-  const info = req.app.locals.db
+  const info = db
     .prepare(
       'INSERT INTO box_price_history (set_id, price, recorded_at, source, source_url, seller_name) VALUES (?, ?, ?, ?, ?, ?)'
     )
     .run(setId, price, recordedAt, source, sourceUrl, sellerName);
-  const row = req.app.locals.db.prepare('SELECT * FROM box_price_history WHERE id = ?').get(info.lastInsertRowid);
+  const row = db.prepare('SELECT * FROM box_price_history WHERE id = ?').get(info.lastInsertRowid);
   res.status(201).json({ price: row });
 });
 
 router.put('/box-prices/:id', (req, res) => {
+  const db = req.app.locals.db;
   const id = parseId(req.params.id);
-  const exists = id && req.app.locals.db.prepare('SELECT id FROM box_price_history WHERE id = ?').get(id);
+  const exists = id && db.prepare('SELECT id FROM box_price_history WHERE id = ?').get(id);
   if (!exists) return res.status(404).json({ error: '박스 시세 기록을 찾을 수 없습니다.' });
 
   const price = Number(req.body?.price);
@@ -257,16 +281,16 @@ router.put('/box-prices/:id', (req, res) => {
   const source = trimOrNull(req.body?.source) || 'admin';
   const sourceUrl = trimOrNull(req.body?.source_url);
   const sellerName = trimOrNull(req.body?.seller_name);
-  if (!Number.isInteger(price) || price < 0 || !recordedAt || !BOX_PRICE_SOURCES.includes(source)) {
-    return res.status(400).json({ error: '시세 입력값을 확인해 주세요.' });
-  }
+  const errors = {};
+  if (!Number.isInteger(price) || price < 0) errors.price = 'price는 0 이상의 정수여야 합니다.';
+  if (!isValidDate(db, recordedAt)) errors.recorded_at = '실제 존재하는 YYYY-MM-DD 날짜여야 합니다.';
+  if (!BOX_PRICE_SOURCES.includes(source)) errors.source = '관리자 입력에서 사용할 수 없는 source입니다.';
+  if (Object.keys(errors).length) return res.status(400).json({ error: '입력값을 확인해 주세요.', fields: errors });
 
-  req.app.locals.db
-    .prepare(
-      'UPDATE box_price_history SET price=?, recorded_at=?, source=?, source_url=?, seller_name=? WHERE id=?'
-    )
-    .run(price, recordedAt, source, sourceUrl, sellerName, id);
-  res.json({ price: req.app.locals.db.prepare('SELECT * FROM box_price_history WHERE id = ?').get(id) });
+  db.prepare(
+    'UPDATE box_price_history SET price=?, recorded_at=?, source=?, source_url=?, seller_name=? WHERE id=?'
+  ).run(price, recordedAt, source, sourceUrl, sellerName, id);
+  res.json({ price: db.prepare('SELECT * FROM box_price_history WHERE id = ?').get(id) });
 });
 
 router.delete('/box-prices/:id', (req, res) => {
