@@ -1,5 +1,13 @@
 (async()=> {
   const { api, initPage, formatPrice, formatChange } = BoxTick;
+  const orb = document.getElementById('home-orb');
+  if (orb) {
+    orb.addEventListener('click', () => {
+      const on = orb.getAttribute('aria-pressed') !== 'true';
+      orb.setAttribute('aria-pressed', String(on));
+      orb.setAttribute('aria-label', on ? '볼 닫기' : '볼 열기');
+    });
+  }
   const user = await initPage({ hints: [{ key:'A', label:'선택' }, { key:'Y', label:'카드 검색', href:'/cards.html' }] });
   if (user?.role === 'admin') document.getElementById('admin-menu-item').hidden = false;
   try {
