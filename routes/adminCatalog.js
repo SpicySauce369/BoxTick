@@ -7,7 +7,7 @@ router.use(requireAdmin);
 
 const CARD_PRICE_SOURCES = ['admin', 'report', 'auto'];
 const BOX_PRICE_SOURCES = ['admin', 'naver-reference', 'danawa-reference', 'cardshop-reference', 'other'];
-const DATE_RE = /^\\d{4}-\\d{2}-\\d{2}$/;
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 function parseId(raw) {
   return /^[1-9]\d*$/.test(raw) ? Number(raw) : null;
