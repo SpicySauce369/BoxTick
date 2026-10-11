@@ -71,3 +71,38 @@ describe('조작 키 (ABXY)', () => {
     assert.equal(BoxTick.isTyping({ tagName: 'A' }), false);
   });
 });
+
+describe('방향키 이동 (pickNext)', () => {
+  const DOWN = { x: 0, y: 1 };
+  const UP = { x: 0, y: -1 };
+  const RIGHT = { x: 1, y: 0 };
+  const LEFT = { x: -1, y: 0 };
+
+  it('세로 목록에서는 바로 아래 · 위 항목을 고른다', () => {
+    const rows = [{ x: 100, y: 0 }, { x: 100, y: 60 }, { x: 100, y: 120 }];
+    assert.equal(BoxTick.pickNext({ x: 100, y: 60 }, rows, DOWN), 2);
+    assert.equal(BoxTick.pickNext({ x: 100, y: 60 }, rows, UP), 0);
+  });
+
+  it('그 방향에 항목이 없으면 -1 (화면 스크롤에 맡긴다)', () => {
+    const rows = [{ x: 100, y: 0 }, { x: 100, y: 60 }];
+    assert.equal(BoxTick.pickNext({ x: 100, y: 60 }, rows, DOWN), -1);
+    assert.equal(BoxTick.pickNext({ x: 100, y: 60 }, rows, RIGHT), -1);
+  });
+
+  it('격자(원형 메뉴)에서는 같은 열 · 같은 줄을 먼저 고른다', () => {
+    // 3열 2줄: 0 1 2 / 3 4 5
+    const grid = [
+      { x: 0, y: 0 }, { x: 150, y: 0 }, { x: 300, y: 0 },
+      { x: 0, y: 150 }, { x: 150, y: 150 }, { x: 300, y: 150 },
+    ];
+    const at = (i) => grid[i];
+    const others = (i) => grid.filter((_, j) => j !== i);
+    const pick = (i, dir) => grid.indexOf(others(i)[BoxTick.pickNext(at(i), others(i), dir)]);
+    assert.equal(pick(1, DOWN), 4);
+    assert.equal(pick(4, UP), 1);
+    assert.equal(pick(4, RIGHT), 5);
+    assert.equal(pick(4, LEFT), 3);
+    assert.equal(pick(2, DOWN), 5);
+  });
+});
