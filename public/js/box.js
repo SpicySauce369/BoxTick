@@ -1,6 +1,6 @@
 (async()=> {
   const { api, initPage, replaceChildren, el, formatPrice, formatChange, formatDate, handleError } = BoxTick;
-  await initPage({ active:'boxes', hints:[{ key:'B', label:'가방으로', href:'/boxes.html' }] });
+  await initPage({ active:'boxes', hints:[{ key:'B', label:'박스 목록', href:'/boxes.html' }] });
 
   const id = Number(new URLSearchParams(location.search).get('id'));
   if (!id) { location.replace('/boxes.html'); return; }
