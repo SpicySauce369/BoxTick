@@ -547,9 +547,10 @@
     }
   }
 
-  /** 입력칸에서 Esc → 입력칸을 빠져나와 방향키 · ABXY 를 바로 쓸 수 있게 한다 */
+  /** 입력칸에서 Esc → 입력칸을 빠져나와 방향키 · ABXY 를 바로 쓸 수 있게 한다 (입력한 글자는 그대로) */
   function leaveInput(event) {
     if (event.key !== 'Escape' || !isTyping(event.target) || event.target.closest('dialog')) return;
+    event.preventDefault(); // 검색칸(type=search)의 기본 Esc 동작(입력값 지우기)을 막는다
     event.target.blur();
   }
 
