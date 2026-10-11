@@ -528,16 +528,29 @@
     const target = others[index];
     target.focus();
     target.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
 
-    // 원형 메뉴처럼 '선택 표시'를 쓰는 묶음이면 표시도 함께 옮긴다 (관리 목록의 선택은 클릭으로만)
-    if (target.matches('.circle-item, .list-row') && !target.classList.contains('is-selected')) {
-      const group = target.closest('ul, ol');
-      const marked = group && group.querySelector(':scope > li > .is-selected');
-      if (marked) {
-        marked.classList.remove('is-selected');
-        target.classList.add('is-selected');
-      }
+  /**
+   * Tab · 방향키로 포커스가 옮겨 가면, 같은 묶음 안의 '선택 표시'(.is-selected)도 따라 옮긴다.
+   * → 화면에 선택된 항목이 하나만 보이고, 그 항목이 곧 A 키로 열릴 항목이 된다.
+   * (선택 표시가 없는 묶음은 CSS :focus-visible 이 같은 모양을 그린다. 관리 목록의 선택은 클릭으로만)
+   */
+  function followFocus(event) {
+    const target = event.target;
+    if (!(target instanceof Element) || !target.matches('main .circle-item, main .list-row')) return;
+    if (target.classList.contains('is-selected')) return;
+    const group = target.closest('ul, ol');
+    const marked = group && group.querySelector(':scope > li > .is-selected');
+    if (marked) {
+      marked.classList.remove('is-selected');
+      target.classList.add('is-selected');
     }
+  }
+
+  /** 입력칸에서 Esc → 입력칸을 빠져나와 방향키 · ABXY 를 바로 쓸 수 있게 한다 */
+  function leaveInput(event) {
+    if (event.key !== 'Escape' || !isTyping(event.target) || event.target.closest('dialog')) return;
+    event.target.blur();
   }
 
   let arrowNavInstalled = false;
@@ -545,6 +558,8 @@
     if (arrowNavInstalled) return;
     arrowNavInstalled = true;
     document.addEventListener('keydown', moveFocus);
+    document.addEventListener('keydown', leaveInput);
+    document.addEventListener('focusin', followFocus);
   }
 
   /* ---------- 처음 접속 안내 (ABXY 조작 튜토리얼) ---------- */

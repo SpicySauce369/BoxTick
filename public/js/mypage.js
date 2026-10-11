@@ -1,4 +1,4 @@
-// 마이페이지: 트레이너 카드 + [내 정보] / [내가 쓴 글] 탭
+// 마이페이지: 프로필 카드 + [내 정보] / [내가 쓴 글] 탭
 (async () => {
   const { api, el, initPage, setText, replaceChildren, formatDate, showFieldErrors, toast, getMe, HINT_BACK } = BoxTick;
 
@@ -18,13 +18,13 @@
     ],
   });
 
-  /* ---------- 트레이너 카드 ---------- */
+  /* ---------- 프로필 카드 ---------- */
 
   function renderCard(me) {
     setText(document.getElementById('my-nickname'), me.nickname);
     setText(document.getElementById('my-username'), '@' + me.username);
     setText(document.getElementById('my-joined'), formatDate(me.created_at));
-    setText(document.getElementById('my-role'), me.role === 'admin' ? '관리자' : '트레이너');
+    setText(document.getElementById('my-role'), me.role === 'admin' ? '관리자' : '일반 회원');
     // 헤더의 닉네임도 같이 바꾼다
     const headerName = document.querySelector('.site-user');
     if (headerName) setText(headerName, me.nickname);
