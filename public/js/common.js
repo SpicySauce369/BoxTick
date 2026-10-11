@@ -449,6 +449,120 @@
     return el('nav', { class: 'control-bar', 'aria-label': '조작 안내' }, el('div', { class: 'container control-bar__inner' }, items));
   }
 
+  /* ---------- 방향키로 항목 이동 ---------- */
+
+  // 방향키로 옮겨 다닐 "메뉴 항목": 목록 행, 원형 메뉴, 관리 목록 행, 알약 버튼
+  const NAV_ITEMS_SELECTOR = [
+    'main .list-row',
+    'main .circle-item',
+    'main .admin-record',
+    'main .round-select a',
+    'main .round-select button',
+  ].join(', ');
+
+  const DIRECTIONS = {
+    ArrowUp: { x: 0, y: -1 },
+    ArrowDown: { x: 0, y: 1 },
+    ArrowLeft: { x: -1, y: 0 },
+    ArrowRight: { x: 1, y: 0 },
+  };
+
+  /**
+   * from 위치에서 dir 방향으로 가장 가까운 후보의 번호를 고른다 (없으면 -1).
+   * 위치는 화면 좌표의 중심점 { x, y }. 진행 방향 거리 + 옆으로 벗어난 거리 ×2 가 작은 쪽이 가깝다.
+   * → 세로 목록에서는 바로 위·아래, 격자(원형 메뉴)에서는 같은 열·같은 줄을 먼저 고른다.
+   */
+  function pickNext(from, candidates, dir) {
+    let best = -1;
+    let bestScore = Infinity;
+    candidates.forEach((point, index) => {
+      const dx = point.x - from.x;
+      const dy = point.y - from.y;
+      const forward = dx * dir.x + dy * dir.y;
+      if (forward <= 4) return; // 그 방향에 있지 않은 항목
+      const side = Math.abs(dir.x ? dy : dx);
+      const score = forward + side * 2;
+      if (score < bestScore) {
+        bestScore = score;
+        best = index;
+      }
+    });
+    return best;
+  }
+
+  function centerOf(node) {
+    const r = node.getBoundingClientRect();
+    return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+  }
+
+  function visibleNavItems() {
+    return [...document.querySelectorAll(NAV_ITEMS_SELECTOR)].filter((node) => {
+      if (node.disabled || node.closest('[hidden]')) return false;
+      const r = node.getBoundingClientRect();
+      return r.width > 0 && r.height > 0;
+    });
+  }
+
+  function moveFocus(event) {
+    const dir = DIRECTIONS[event.key];
+    if (!dir || event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
+    if (isTyping(event.target) || document.querySelector('dialog[open]')) return;
+
+    const items = visibleNavItems();
+    if (!items.length) return;
+    const active = document.activeElement;
+    const hasFocus = active && active !== document.body && !active.closest('.control-bar, .site-header');
+
+    // 아직 아무것도 고르지 않았다면: 지금 선택된 항목(없으면 첫 항목)에 먼저 자리를 잡는다
+    if (!hasFocus) {
+      const start = items.find((node) => node.matches('.is-selected, [aria-current="page"], [aria-pressed="true"]')) || items[0];
+      event.preventDefault();
+      start.focus();
+      return;
+    }
+
+    const others = items.filter((node) => node !== active);
+    const index = pickNext(centerOf(active), others.map(centerOf), dir);
+    if (index < 0) return; // 그 방향에 항목이 없으면 원래대로 화면만 스크롤
+    event.preventDefault();
+    const target = others[index];
+    target.focus();
+    target.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+
+  /**
+   * Tab · 방향키로 포커스가 옮겨 가면, 같은 묶음 안의 '선택 표시'(.is-selected)도 따라 옮긴다.
+   * → 화면에 선택된 항목이 하나만 보이고, 그 항목이 곧 A 키로 열릴 항목이 된다.
+   * (선택 표시가 없는 묶음은 CSS :focus-visible 이 같은 모양을 그린다. 관리 목록의 선택은 클릭으로만)
+   */
+  function followFocus(event) {
+    const target = event.target;
+    if (!(target instanceof Element) || !target.matches('main .circle-item, main .list-row')) return;
+    if (target.classList.contains('is-selected')) return;
+    const group = target.closest('ul, ol');
+    const marked = group && group.querySelector(':scope > li > .is-selected');
+    if (marked) {
+      marked.classList.remove('is-selected');
+      target.classList.add('is-selected');
+    }
+  }
+
+  /** 입력칸에서 Esc → 입력칸을 빠져나와 방향키 · ABXY 를 바로 쓸 수 있게 한다 (입력한 글자는 그대로) */
+  function leaveInput(event) {
+    if (event.key !== 'Escape' || !isTyping(event.target) || event.target.closest('dialog')) return;
+    event.preventDefault(); // 검색칸(type=search)의 기본 Esc 동작(입력값 지우기)을 막는다
+    event.target.blur();
+  }
+
+  let arrowNavInstalled = false;
+  function installArrowNav() {
+    if (arrowNavInstalled) return;
+    arrowNavInstalled = true;
+    document.addEventListener('keydown', moveFocus);
+    document.addEventListener('keydown', leaveInput);
+    document.addEventListener('focusin', followFocus);
+  }
+
   /* ---------- 처음 접속 안내 (ABXY 조작 튜토리얼) ---------- */
 
   const TUTORIAL_KEY = 'boxtick-tutorial-seen';
@@ -461,18 +575,19 @@
       return; // 저장할 수 없는 환경에서는 매번 띄우지 않도록 생략
     }
     const rows = [
-      ['A', '선택한 항목 열기 · 결정'],
-      ['B', '돌아가기'],
-      ['X', '화면마다 다른 기능 (아래 바 참고)'],
-      ['Y', '검색 · 바로가기 (아래 바 참고)'],
+      ['↕', '방향키', '항목 이동 (← → 도 가능)'],
+      ['A', 'A 키', '선택한 항목 열기 · 결정'],
+      ['B', 'B 키', '돌아가기'],
+      ['X', 'X 키', '화면마다 다른 기능 (아래 바 참고)'],
+      ['Y', 'Y 키', '검색 · 바로가기 (아래 바 참고)'],
     ];
     const close = el('button', { type: 'submit', class: 'btn btn--primary' }, '알겠어요');
     const dialog = el('dialog', { class: 'modal tutorial', 'aria-labelledby': 'tutorial-title' }, [
       el('form', { method: 'dialog', class: 'modal__body' }, [
         el('h2', { id: 'tutorial-title', class: 'tutorial__title' }, '키보드로도 조작할 수 있어요'),
-        el('p', { class: 'text-muted text-small' }, '게임처럼 A · B · X · Y 키를 눌러 보세요. 화면 아래 검정 바의 버튼을 눌러도 똑같이 동작해요.'),
-        el('ul', { class: 'tutorial__keys' }, rows.map(([key, label]) =>
-          el('li', null, [el('span', { class: 'key', 'aria-hidden': 'true' }, key), el('span', null, [el('strong', null, key + ' 키'), ' ' + label])]))),
+        el('p', { class: 'text-muted text-small' }, '게임처럼 방향키로 고르고 A · B · X · Y 키를 눌러 보세요. 화면 아래 검정 바의 버튼을 눌러도 똑같이 동작해요.'),
+        el('ul', { class: 'tutorial__keys' }, rows.map(([key, name, label]) =>
+          el('li', null, [el('span', { class: 'key', 'aria-hidden': 'true' }, key), el('span', null, [el('strong', null, name), ' ' + label])]))),
         el('div', { class: 'modal__actions' }, close),
       ]),
     ]);
@@ -508,6 +623,7 @@
     const footerSlot = document.getElementById('site-footer');
     const footer = footerSlot ? renderFooter(footerSlot) : null;
     if (hints && hints.length) {
+      installArrowNav();
       const bar = renderControlBar(hints);
       if (footer) footer.before(bar);
       else document.body.append(bar);
@@ -569,6 +685,7 @@
     renderControlBar,
     findHint,
     isTyping,
+    pickNext,
     HINT_BACK,
     initPage,
   };

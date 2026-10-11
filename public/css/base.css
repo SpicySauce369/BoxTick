@@ -573,6 +573,7 @@ a.control-hint:hover .key {
 }
 
 .list-row:hover,
+.list-row:focus-visible,
 .list-row.is-selected,
 .list-row[aria-selected="true"],
 .list-row[aria-current="page"],
@@ -582,6 +583,7 @@ a.control-hint:hover .key {
 }
 
 .list-row:hover::before,
+.list-row:focus-visible::before,
 .list-row.is-selected::before,
 .list-row[aria-selected="true"]::before,
 .list-row[aria-current="page"]::before,
@@ -599,6 +601,7 @@ a.control-hint:hover .key {
 
 /* 다크 테마: 선택 표시를 반전 */
 :root[data-theme="dark"] .list-row:hover,
+:root[data-theme="dark"] .list-row:focus-visible,
 :root[data-theme="dark"] .list-row.is-selected,
 :root[data-theme="dark"] .list-row[aria-selected="true"],
 :root[data-theme="dark"] .list-row[aria-current="page"],
@@ -751,6 +754,7 @@ a.control-hint:hover .key {
 }
 
 .circle-item:hover::before,
+.circle-item:focus-visible::before,
 .circle-item.is-selected::before {
   content: "";
   position: absolute;
@@ -763,6 +767,7 @@ a.control-hint:hover .key {
 }
 
 :root[data-theme="dark"] .circle-item:hover .circle-item__icon,
+:root[data-theme="dark"] .circle-item:focus-visible .circle-item__icon,
 :root[data-theme="dark"] .circle-item.is-selected .circle-item__icon {
   box-shadow: 0 0 0 5px #f1f1f3;
 }
