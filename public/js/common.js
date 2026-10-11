@@ -15,7 +15,7 @@
 
   const THEME_KEY = 'boxtick-theme';
 
-  // 헤더 메뉴. href 는 페이지 담당이 파일을 만들면 그대로 연결된다.
+  // 헤더 메뉴
   const NAV_ITEMS = [
     { key: 'cards', label: '카드 시세', href: '/cards.html' },
     { key: 'boxes', label: '박스 시세', href: '/boxes.html' },

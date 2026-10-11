@@ -9,7 +9,7 @@ const { setup } = require('./helpers');
 const items = MENU.flatMap((group) => group.items);
 
 describe('관리자 메뉴 정의', () => {
-  it('합의한 7개 메뉴가 순서대로 있다', () => {
+  it('관리자 메뉴 7개가 순서대로 있다', () => {
     assert.deepEqual(items.map((item) => item.label), [
       '대시보드', '회원 관리', '게시글 관리', '세트 관리', '카드 관리', '카드 시세', '박스 시세',
     ]);

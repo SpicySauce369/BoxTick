@@ -29,25 +29,24 @@
   };
 
   /**
-   * 관리자 메뉴. 페이지 파일은 담당자가 이 주소로 만든다.
-   * owner 는 담당 표시용(문서 목적)이며 화면에는 나오지 않는다.
+   * 관리자 메뉴 (사이드바 순서 그대로).
    */
   const MENU = [
     {
       label: '운영',
       items: [
         { key: 'dashboard', label: '대시보드', href: '/admin/' },
-        { key: 'users', label: '회원 관리', href: '/admin/users.html', owner: 'claude' },
-        { key: 'posts', label: '게시글 관리', href: '/admin/posts.html', owner: 'claude' },
+        { key: 'users', label: '회원 관리', href: '/admin/users.html' },
+        { key: 'posts', label: '게시글 관리', href: '/admin/posts.html' },
       ],
     },
     {
       label: '카탈로그 · 시세',
       items: [
-        { key: 'sets', label: '세트 관리', href: '/admin/sets.html', owner: 'gpt' },
-        { key: 'cards', label: '카드 관리', href: '/admin/cards.html', owner: 'gpt' },
-        { key: 'card-prices', label: '카드 시세', href: '/admin/card-prices.html', owner: 'gpt' },
-        { key: 'box-prices', label: '박스 시세', href: '/admin/box-prices.html', owner: 'gpt' },
+        { key: 'sets', label: '세트 관리', href: '/admin/sets.html' },
+        { key: 'cards', label: '카드 관리', href: '/admin/cards.html' },
+        { key: 'card-prices', label: '카드 시세', href: '/admin/card-prices.html' },
+        { key: 'box-prices', label: '박스 시세', href: '/admin/box-prices.html' },
       ],
     },
   ];
