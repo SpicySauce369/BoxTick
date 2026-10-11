@@ -1,0 +1,5 @@
+# 제출용 압축(git archive)에서 빼는 개발용 파일
+.gitattributes export-ignore
+CLAUDE.md export-ignore
+docs/추가합의사항.MD export-ignore
+public/styleguide.html export-ignore
